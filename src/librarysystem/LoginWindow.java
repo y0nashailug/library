@@ -61,7 +61,7 @@ public class LoginWindow extends JFrame implements LibWindow {
 	/* This class is a singleton */
     private LoginWindow () {}
     
-    public void init() {     		
+    public void init() {
     		mainPanel = new JPanel();
     		defineUpperHalf();
     		defineMiddleHalf();
@@ -69,7 +69,7 @@ public class LoginWindow extends JFrame implements LibWindow {
     		BorderLayout bl = new BorderLayout();
     		bl.setVgap(30);
     		mainPanel.setLayout(bl);
-    					
+
     		mainPanel.add(upperHalf, BorderLayout.NORTH);
     		mainPanel.add(middleHalf, BorderLayout.CENTER);
     		mainPanel.add(lowerHalf, BorderLayout.SOUTH);

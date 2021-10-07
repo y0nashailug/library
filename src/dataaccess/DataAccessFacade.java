@@ -32,7 +32,13 @@ public class DataAccessFacade implements DataAccess {
 		mems.put(memberId, member);
 		saveToStorage(StorageType.MEMBERS, mems);	
 	}
-	
+	public void saveBook(Book book) {
+		HashMap<String, Book> bks = readBookMap();
+		String isbn = book.getIsbn();
+		bks.put(isbn, book);
+		saveToStorage(StorageType.BOOKS, bks);
+	}
+
 	@SuppressWarnings("unchecked")
 	public  HashMap<String,Book> readBooksMap() {
 		//Returns a Map with name/value pairs being
@@ -55,7 +61,11 @@ public class DataAccessFacade implements DataAccess {
 		//   userId -> User
 		return (HashMap<String, User>)readFromStorage(StorageType.USERS);
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Book> readBookMap() {
+		return (HashMap<String, Book>)readFromStorage(StorageType.BOOKS);
+	}
 	
 	/////load methods - these place test data into the storage area
 	///// - used just once at startup  

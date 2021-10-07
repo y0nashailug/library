@@ -18,7 +18,7 @@ public class UIController extends JFrame implements LibWindow {
 
     private boolean isInitialized = false;
 
-    int height = 420;
+    int height = 480;
     int width = 500;
 
     private UIController() {}
@@ -105,7 +105,8 @@ public class UIController extends JFrame implements LibWindow {
         containerLabelPanel.add(containerLabel);
 
         container.add(containerLabelPanel, BorderLayout.PAGE_START);
-        ViewBookIds viewBooks = new ViewBookIds();
+        ViewBookIds viewBooks = ViewBookIds.INSTANCE;
+        viewBooks.init();
         container.add(viewBooks);
 
         return container;

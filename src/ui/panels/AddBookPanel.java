@@ -1,18 +1,34 @@
 package ui.panels;
 
+import business.Address;
+import business.Author;
+import business.Exceptions.BookException;
+import business.SystemController;
+import ui.BtnEventListener;
 import ui.Util;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class AddBookPanel extends JPanel implements MessageableWindow {
+public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventListener {
 
-    private JComponent[] components = {
+    private JComponent[] jComponents = {
             new JTextField(15),
-            new JTextField(10),
-            new JTextField(8),
+            new JTextField(15),
+            new JTextField(15),
+            new JTextField(15),
+            new JTextField(15),
+            new JTextField(15),
+            new JTextField(15),
+            new JTextField(15),
+            new JTextField(15),
+            new JTextField(15),
+            new JTextField(15),
     };
-    private Component[] component;
+
+    private Component[] components;
 
     public AddBookPanel() {
 
@@ -20,16 +36,24 @@ public class AddBookPanel extends JPanel implements MessageableWindow {
         JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 4));
 
         JButton addBookBtn = new JButton("Add book");
-        //addBookBtn.addActionListener(Control.INSTANCE.getAddBookListener());
+        addEventListener(addBookBtn);
 
         String[] labels = {
-                "Author first name",
-                "Author last name",
-                "Book title",
+                "Isbn",
+                "Title",
+                "Max checkout length",
+                "First name",
+                "Last name",
+                "Cell",
+                "Bio",
+                "Street",
+                "City",
+                "State",
+                "Zip",
         };
 
-        JComponent labelsAndFields = Util.getTwoColumnLayout(labels, components);
-        component = labelsAndFields.getComponents();
+        JComponent labelsAndFields = Util.getTwoColumnLayout(labels, jComponents);
+        components = labelsAndFields.getComponents();
         form.add(labelsAndFields, BorderLayout.CENTER);
 
         bottom.add(addBookBtn);
@@ -38,8 +62,47 @@ public class AddBookPanel extends JPanel implements MessageableWindow {
         this.add(bottom);
     }
 
+    @Override
+    public void addEventListener(JButton btn) {
+        btn.addActionListener(evt -> {
+            try {
+                SystemController systemController = new SystemController();
+                String[] values = new String[components.length / 2];
+                int i = 0;
+                for (Component c: components) {
+                    if (c.getClass().equals(JTextField.class)) {
+                        values[i++] = ((JTextField) c).getText();
+                    }
+                }
+/*
+                "Isbn",0
+                "Title",1
+                "Max checkout length",2
+                "First name",3
+                "Last name",4
+                "Bio",5
+                "Cell",6
+                "Street",7
+                "City",8
+                "State",9
+                "Zip",10
+ */
+                Address address = new Address(values[7], values[8], values[9], values[10]);
+                Author author = new Author(values[3], values[4], values[5], address, values[6]);
+
+                List<Author> authorList = new ArrayList<>();
+                authorList.add(author);
+                systemController.addBook(values[0], values[1], Integer.parseInt(values[2]), authorList);
+                displayInfo("Book added successfully");
+                ViewBookIds.INSTANCE.revalidateTable(values[0]);
+            } catch(BookException e) {
+                displayError(e.getMessage());
+            }
+        });
+    }
+
     public Component[] getComponents() {
-        return component;
+        return components;
     }
 
     @Override

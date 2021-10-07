@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class NewMemberPanel extends JPanel implements MessageableWindow, BtnEventListener {
 
-    private JComponent[] components = {
+    private JComponent[] jComponents = {
             new JTextField(15),
             new JTextField(15),
             new JTextField(15),
@@ -21,7 +21,7 @@ public class NewMemberPanel extends JPanel implements MessageableWindow, BtnEven
             new JTextField(15),
             new JTextField(15),
     };
-    private Component[] component;
+    private Component[] components;
 
     public NewMemberPanel() {
         JPanel container = new JPanel(new BorderLayout());
@@ -42,8 +42,8 @@ public class NewMemberPanel extends JPanel implements MessageableWindow, BtnEven
                 "Zip",
         };
 
-        JComponent labelsAndFields = Util.getTwoColumnLayout(labels, components);
-        component = labelsAndFields.getComponents();
+        JComponent labelsAndFields = Util.getTwoColumnLayout(labels, jComponents);
+        components = labelsAndFields.getComponents();
         form.add(labelsAndFields, BorderLayout.CENTER);
 
         bottom.add(addBookBtn, BorderLayout.CENTER);
@@ -59,7 +59,22 @@ public class NewMemberPanel extends JPanel implements MessageableWindow, BtnEven
         btn.addActionListener(evt -> {
             try {
                 SystemController systemController = new SystemController();
-                systemController.addMember("10201", "Yonas", "Hailu", "4157125785", new Address("1000 4th N", "Fairfield", "IA", "57557"));
+                String[] values = new String[components.length / 2];
+                int i = 0;
+                for (Component c: components) {
+                    if (c.getClass().equals(JTextField.class)) {
+                        values[i++] = ((JTextField) c).getText();
+                    }
+                }
+
+                systemController.addMember(values[0],
+                        values[1],
+                        values[2],
+                        values[3],
+                        new Address(values[4],
+                                values[5],
+                                values[6],
+                                values[7]));
                 displayInfo("Member added successfully");
                 ViewMemberIds.INSTANCE.revalidateTable();
             } catch(LibrarySystemException e) {
@@ -69,7 +84,7 @@ public class NewMemberPanel extends JPanel implements MessageableWindow, BtnEven
     }
 
     public Component[] getComponents() {
-        return component;
+        return components;
     }
 
     @Override

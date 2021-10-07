@@ -1,13 +1,11 @@
 package dataaccess;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import business.Address;
-import business.Author;
-import business.Book;
-import business.LibraryMember;
+import business.*;
 
 /**
  * This class loads data into the data repository and also sets up the storage
@@ -75,6 +73,7 @@ public class TestData {
 		td.bookData();
 		td.libraryMemberData();
 		td.userData();
+		td.checkoutRecordData();
 		DataAccess da = new DataAccessFacade();
 		System.out.println(da.readBooksMap());
 		System.out.println(da.readUserMap());
@@ -109,6 +108,16 @@ public class TestData {
 		members.add(libraryMember);
 
 		DataAccessFacade.loadMemberMap(members);
+	}
+
+	public void checkoutRecordData() {
+		Book book = new Book("48-56882", "Jimmy's First Day of School", 7, Arrays.asList(allAuthors.get(4)));
+		book.addCopy();
+		book.getCopy(1).changeAvailability();
+		CheckoutRecord checkoutRecord = new CheckoutRecord("1004", book.getCopy(0), LocalDate.now(), LocalDate.now());
+		List<CheckoutRecord> checkoutRecordList = new ArrayList<>();
+		checkoutRecordList.add(checkoutRecord);
+		DataAccessFacade.loadCheckoutRecordMap(checkoutRecordList);
 	}
 
 }

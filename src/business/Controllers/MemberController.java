@@ -10,9 +10,12 @@ public class MemberController {
     public boolean memberExists(String memberId, List<String> memberIds) {
         return memberIds.contains(memberId);
     }
-
-    public void addNewMember(LibraryMember libraryMember) {
+    public LibraryMember getMember(String memberId) {
         DataAccessFacade da = new DataAccessFacade();
-        da.saveNewMember(libraryMember);
+        return da.getMember(memberId);
+    }
+    public void updateMember(LibraryMember member) {
+        DataAccessFacade da = new DataAccessFacade();
+        da.saveMember(member);
     }
 }

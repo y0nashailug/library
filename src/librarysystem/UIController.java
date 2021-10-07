@@ -1,28 +1,29 @@
 package librarysystem;
 
 import ui.ListItem;
-import ui.panels.AddBookPanel;
-import ui.panels.LoginPanel;
-import ui.panels.NewMemberPanel;
-import ui.panels.NotificationBar;
+import ui.panels.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
-public class LibrarySystemEntry extends JFrame {
+public class UIController extends JFrame implements LibWindow {
+    public final static UIController INSTANCE = new UIController();
     String[] links;
     public JList<ListItem> linkList;
     JPanel cards;
-    String[] items = { "Login", "View titles", "Add book" };
-    ListItem item1 = new ListItem(items[0], true);
-    ListItem item2 = new ListItem(items[1], false);
-    ListItem item3 = new ListItem(items[2], false);
+    public static List<String> items = new ArrayList<>();
+    DefaultListModel<ListItem> model;
+
+    private boolean isInitialized = false;
 
     int height = 420;
     int width = 500;
 
-    public LibrarySystemEntry() {
+    private UIController() {}
+
+    public void init() {
 
         setSize(width, height);
 
@@ -39,15 +40,40 @@ public class LibrarySystemEntry extends JFrame {
         bottomSplitPane.setDividerLocation(height - 100);
 
         add(bottomSplitPane, BorderLayout.CENTER);
+        Util.centerFrameOnDesktop(this);
+
+        isInitialized(true);
+    }
+
+    @Override
+    public boolean isInitialized() {
+        return false;
+    }
+
+    @Override
+    public void isInitialized(boolean val) {
+        isInitialized = val;
+    }
+
+    public void setItems(List<String> items) {
+        this.items = items;
     }
 
     public void createPanels() {
 
         cards = new JPanel(new CardLayout());
-
-        cards.add(createLoginPanel(), items[0]);
-        cards.add(createNewMemberPanel(), items[1]);
-        cards.add(createAddBookPanel(), items[2]);
+        for (String i: items) {
+            System.out.println(i);
+            if (i == "Add member") {
+                cards.add(createNewMemberPanel(), i);
+            } else if (i == "Add book") {
+                cards.add(createAddBookPanel(), i);
+            } else if (i == "All book ids") {
+                cards.add(createViewBooksPanel(), i);
+            } else if (i == "All member ids") {
+                cards.add(createViewMemberIdsPanel(), i);
+            }
+        }
 
         createListenersToSideBar();
     }
@@ -67,6 +93,39 @@ public class LibrarySystemEntry extends JFrame {
         loginPanel.add(login);
 
         return loginPanel;
+    }
+
+    private JPanel createViewBooksPanel() {
+
+        JPanel container = new JPanel(new BorderLayout());
+        JLabel containerLabel = new JLabel("View books");
+        containerLabel.setForeground(Color.BLUE);
+
+        JPanel containerLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
+        containerLabelPanel.add(containerLabel);
+
+        container.add(containerLabelPanel, BorderLayout.PAGE_START);
+        ViewBookIds viewBooks = new ViewBookIds();
+        container.add(viewBooks);
+
+        return container;
+    }
+
+    private JPanel createViewMemberIdsPanel() {
+
+        JPanel container = new JPanel(new BorderLayout());
+        JLabel containerLabel = new JLabel("View member ids");
+        containerLabel.setForeground(Color.BLUE);
+
+        JPanel containerLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
+        containerLabelPanel.add(containerLabel);
+
+        container.add(containerLabelPanel, BorderLayout.PAGE_START);
+        ViewMemberIds viewMemberIds = ViewMemberIds.INSTANCE;
+        viewMemberIds.init();
+        container.add(viewMemberIds);
+
+        return container;
     }
 
     private JPanel createNewMemberPanel() {
@@ -108,9 +167,8 @@ public class LibrarySystemEntry extends JFrame {
 
         NotificationBar nBar = new NotificationBar();
 
-        //Control.INSTANCE.nBar = nBar;
-        //Control.INSTANCE.nBar.setMessage("Welcome to the Book Club!");
-        //Control.INSTANCE.nBar.getMessage().setForeground(Color.BLUE);
+        nBar.setStatusbar("Welcome!");
+        nBar.getStatusbar().setForeground(Color.BLUE);
 
         return nBar;
     }
@@ -143,26 +201,22 @@ public class LibrarySystemEntry extends JFrame {
         }
     }
 
-    public void setSideBarList(){
+    public void addElementsToModel() {
+        for(String i: items) {
+            model.addElement(new ListItem(i, true));
+        }
+    }
+    public void setSideBarList() {
 
-        DefaultListModel<ListItem> model = new DefaultListModel<>();
-        model.addElement(item1);
-        model.addElement(item2);
-        model.addElement(item3);
-
+        model = new DefaultListModel<>();
+        addElementsToModel();
         linkList = new JList<ListItem>(model);
 
         linkList.setCellRenderer(new DefaultListCellRenderer() {
-
             @SuppressWarnings("rawtypes")
             @Override
-            public Component getListCellRendererComponent(JList list,
-                                                          Object value,
-                                                          int index,
-                                                          boolean isSelected,
-                                                          boolean cellHasFocus) {
-                Component c = super.getListCellRendererComponent(list,
-                        value, index, isSelected, cellHasFocus);
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof ListItem) {
                     ListItem nextItem = (ListItem) value;
                     setText(nextItem.getItemName());
@@ -180,9 +234,7 @@ public class LibrarySystemEntry extends JFrame {
                 }
                 return c;
             }
-
         });
-
     }
 
     public void createListenersToSideBar() {
@@ -195,12 +247,14 @@ public class LibrarySystemEntry extends JFrame {
             CardLayout cl = (CardLayout) (cards.getLayout());
 
             if (!allowed) {
-                value = item1.getItemName();
+                value = model.get(0).getItemName();
                 linkList.setSelectedIndex(0);
             }
             cl.show(cards, value);
         });
+    }
 
-        //Control.INSTANCE.mainFrame = this;
+    public static void main(String[] args) {
+        UIController ls = new UIController();
     }
 }

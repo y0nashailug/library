@@ -1,9 +1,13 @@
 package ui.panels;
 
+import business.LoginException;
+import business.SystemController;
+import ui.BtnEventListener;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class LoginPanel extends JPanel implements MessageableWindow {
+public class LoginPanel extends JPanel implements MessageableWindow, BtnEventListener {
     private JTextField username;
     private JPasswordField password;
 
@@ -16,7 +20,7 @@ public class LoginPanel extends JPanel implements MessageableWindow {
 
         upper.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 4));
         lower.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 4));
-        bottom.setLayout(new FlowLayout(FlowLayout.RIGHT, 15, 4));
+        bottom.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 4));
 
         JLabel usernameLabel = new JLabel("Username");
         JLabel passwordLabel = new JLabel("Password");
@@ -35,6 +39,7 @@ public class LoginPanel extends JPanel implements MessageableWindow {
         lower.add(password);
 
         //Add event listener
+        addEventListener(signin);
         bottom.add(signin);
 
         panel.add(upper, BorderLayout.NORTH);
@@ -42,6 +47,19 @@ public class LoginPanel extends JPanel implements MessageableWindow {
         panel.add(bottom, BorderLayout.SOUTH);
 
         this.add(panel);
+    }
+
+    @Override
+    public void addEventListener(JButton btn) {
+        btn.addActionListener(evt -> {
+            try {
+                SystemController systemController = new SystemController();
+
+                systemController.login(getUserName(), getPassword());
+            } catch(LoginException e) {
+                displayError(e.getMessage());
+            }
+        });
     }
 
     public String getUserName() {

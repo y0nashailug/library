@@ -30,10 +30,10 @@ public class LibrarySystem extends JFrame implements LibWindow {
     private boolean isInitialized = false;
     
     private static LibWindow[] allWindows = { 
-    	LibrarySystem.INSTANCE,
-		LoginWindow.INSTANCE,
-		AllMemberIdsWindow.INSTANCE,	
-		AllBookIdsWindow.INSTANCE
+    	//LibrarySystem.INSTANCE,
+		LoginWindow.INSTANCE, UIController.INSTANCE,
+		//AllMemberIdsWindow.INSTANCE,
+		//AllBookIdsWindow.INSTANCE
 	};
     	
 	public static void hideAllWindows() {
@@ -54,7 +54,8 @@ public class LibrarySystem extends JFrame implements LibWindow {
 		createMenus();
 		//pack();
 		setSize(660,500);
-		isInitialized = true;
+		//isInitialized = false;
+		//allWindows[0].isInitialized(true);
     }
     
     private void formatContentPane() {
@@ -168,7 +169,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
 
 	@Override
 	public void isInitialized(boolean val) {
-		isInitialized =val;
+		isInitialized = val;
 		
 	}
     

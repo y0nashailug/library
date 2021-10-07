@@ -14,14 +14,11 @@ final public class LibraryMember extends Person implements Serializable {
 		super(fname,lname, tel, add);
 		this.memberId = memberId;		
 	}
-	
-	
+
 	public String getMemberId() {
 		return memberId;
 	}
 
-	
-	
 	@Override
 	public String toString() {
 		return "Member Info: " + "ID: " + memberId + ", name: " + getFirstName() + " " + getLastName() + 

@@ -46,6 +46,7 @@ public class Util {
         for (int ii = 0; ii < labels.length; ii++) {
             labels[ii] = new JLabel(labelStrings[ii]);
         }
+
         return getTwoColumnLayout(labels, fields);
     }
 }

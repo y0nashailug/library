@@ -12,11 +12,13 @@ import business.Controllers.MemberController;
 import business.Exceptions.BookException;
 import business.Exceptions.CheckoutRecordException;
 import business.Exceptions.LibrarySystemException;
+import business.Exceptions.LogoutException;
 import dataaccess.Auth;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessFacade;
 import dataaccess.User;
 import librarysystem.LibrarySystem;
+import librarysystem.LoginWindow;
 import librarysystem.UIController;
 import librarysystem.Util;
 
@@ -52,8 +54,13 @@ public class SystemController implements ControllerInterface {
 		}
 	}
 
-	public void addMember(String memberId, String fname, String lname, String tel, Address addr) throws LibrarySystemException {
+	public void logout() throws LogoutException {
+		LibrarySystem.hideAllWindows();
+		LoginWindow.INSTANCE.init();
+		LoginWindow.INSTANCE.setVisible(true);
+	}
 
+	public void addMember(String memberId, String fname, String lname, String tel, Address addr) throws LibrarySystemException {
 		MemberController memberController = new MemberController();
 		if (memberController.memberExists(memberId, allMemberIds())) {
 			throw new LibrarySystemException("Member already existed.");
@@ -64,12 +71,16 @@ public class SystemController implements ControllerInterface {
 		dataAccess.saveMember(libraryMember);
 	}
 
-	public void addBook(String isbn, String title, int maxCheckoutLength, List<Author> authors) throws BookException {
-
+	public void addBook(String isbn, String title, int maxCheckoutLength, String[] autr, String[] addr) throws BookException {
 		BookController bookController = new BookController();
 		if (bookController.bookExists(isbn, allBookIds())) {
 			throw new BookException("Book already existed.");
 		}
+
+		Address address = new Address(addr[0], addr[1], addr[2], addr[3]);
+		Author author = new Author(autr[0], autr[1], autr[2], address, autr[3]);
+		List<Author> authors = new ArrayList<>();
+		authors.add(author);
 
 		Book book = new Book(isbn, title, maxCheckoutLength, authors);
 		DataAccess dataAccess = new DataAccessFacade();
@@ -77,7 +88,6 @@ public class SystemController implements ControllerInterface {
 	}
 
 	public void addCheckoutRecord(String memberId, BookCopy bookCopy, LocalDate checkoutDate, LocalDate dueDate) throws CheckoutRecordException {
-
 		CheckoutController checkoutController = new CheckoutController();
 		if (checkoutController.checkoutRecordExists(memberId, allCheckoutRecordIds())) {
 			throw new CheckoutRecordException("Checkout record already existed.");
@@ -131,11 +141,6 @@ public class SystemController implements ControllerInterface {
 		}
 
 		memberController.updateMember(libraryMember);
-	}
-
-	public List checkoutRecordsForTable() {
-
-		return null;
 	}
 
 	@Override

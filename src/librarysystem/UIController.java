@@ -10,7 +10,6 @@ import java.util.List;
 
 public class UIController extends JFrame implements LibWindow {
     public final static UIController INSTANCE = new UIController();
-    String[] links;
     public JList<ListItem> linkList;
     JPanel cards;
     public static List<String> items = new ArrayList<>();
@@ -21,8 +20,7 @@ public class UIController extends JFrame implements LibWindow {
     int height = 480;
     int width = 500;
 
-    private UIController() {
-    }
+    private UIController() {}
 
     public void init() {
 
@@ -82,26 +80,28 @@ public class UIController extends JFrame implements LibWindow {
                 cards.add(createCheckoutStatusPanel(), i);
             } else if (i == Util.ALL_MENU[8]) {
                 cards.add(createSearchBookPanel(), i);
+            } else if (i == Util.ALL_MENU[9]) {
+                cards.add(createLogoutPanel(), i);
             }
         }
 
         createListenersToSideBar();
     }
 
-    private JPanel createLoginPanel() {
+    private JPanel createLogoutPanel() {
 
-        JPanel loginPanel = new JPanel(new BorderLayout());
+        JPanel logoutPanel = new JPanel(new BorderLayout());
         JPanel loginLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
 
-        JLabel loginLabel = new JLabel("Login");
+        JLabel loginLabel = new JLabel("Logout");
         loginLabel.setForeground(Color.BLUE);
         loginLabelPanel.add(loginLabel);
 
-        loginPanel.add(loginLabelPanel, BorderLayout.PAGE_START);
-        LoginPanel login = new LoginPanel();
-        loginPanel.add(login);
+        logoutPanel.add(loginLabelPanel, BorderLayout.PAGE_START);
+        LogoutPanel logout = new LogoutPanel();
+        logoutPanel.add(logout);
 
-        return loginPanel;
+        return logoutPanel;
     }
 
     private JPanel createViewBooksPanel() {
@@ -323,6 +323,7 @@ public class UIController extends JFrame implements LibWindow {
                         setForeground(Color.BLACK);
                         setBackground(new Color(236, 243, 245));
                     }
+
                 } else {
                     setText("illegal item");
                 }

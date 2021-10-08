@@ -1,10 +1,7 @@
 package ui.panels;
 
 import business.Book;
-import business.ControllerInterface;
 import business.Exceptions.BookException;
-import business.Exceptions.LibrarySystemException;
-import business.LibraryMember;
 import business.SystemController;
 import ui.BtnEventListener;
 import ui.Util;
@@ -23,7 +20,7 @@ public class SearchBookPanel extends JPanel implements MessageableWindow, BtnEve
     private JScrollPane scrollPane;
     private DefaultTableModel model;
     private Component[] components;
-    private final String[] DEFAULT_COLUMN_HEADERS = { "Isbn", "Title", "Available" };
+    private final String[] DEFAULT_COLUMN_HEADERS = { "Isbn", "Title", "Avail", "Next avail" };
     private static final int SCREEN_WIDTH = 420;
     private static final int SCREEN_HEIGHT = 420;
     private static final int TABLE_WIDTH = (int) (0.75 * SCREEN_WIDTH);
@@ -77,7 +74,12 @@ public class SearchBookPanel extends JPanel implements MessageableWindow, BtnEve
     }
 
     private void loadData(Book book) {
-        model.addRow(new String[] { book.getIsbn(), book.getTitle(), book.isAvailable() ? "Yes": "No" });
+        model.addRow(new String[] {
+                book.getIsbn(),
+                book.getTitle(),
+                book.isAvailable() ? "Yes": "No",
+                String.valueOf(book.getNextAvailableCopy().getCopyNum()),
+        });
     }
 
     @Override

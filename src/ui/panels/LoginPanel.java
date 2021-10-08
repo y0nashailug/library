@@ -54,7 +54,6 @@ public class LoginPanel extends JPanel implements MessageableWindow, BtnEventLis
         btn.addActionListener(evt -> {
             try {
                 SystemController systemController = new SystemController();
-
                 systemController.login(getUserName(), getPassword());
             } catch(LoginException e) {
                 displayError(e.getMessage());

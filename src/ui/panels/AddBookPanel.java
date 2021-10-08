@@ -75,12 +75,11 @@ public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventL
                     }
                 }
 
-                Address address = new Address(values[7], values[8], values[9], values[10]);
-                Author author = new Author(values[3], values[4], values[5], address, values[6]);
+                String[] address = { values[7], values[8], values[9], values[10] };
+                String[] author = { values[3], values[4], values[5], values[6] };
 
-                List<Author> authorList = new ArrayList<>();
-                authorList.add(author);
-                systemController.addBook(values[0], values[1], Integer.parseInt(values[2]), authorList);
+                systemController.addBook(values[0], values[1], Integer.parseInt(values[2]), author, address);
+
                 ViewBookIds.INSTANCE.revalidateTable(values[0]);
                 displayInfo("Book added successfully");
             } catch(BookException e) {

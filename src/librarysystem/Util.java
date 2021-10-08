@@ -27,6 +27,7 @@ public class Util {
 			"Checkout book",
 			"Checkout status",
 			"Search book",
+			"Logout",
 	};
 	//rgb(18, 75, 14)
 	

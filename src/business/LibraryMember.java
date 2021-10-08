@@ -8,6 +8,7 @@ import dataaccess.DataAccess;
 import dataaccess.DataAccessFacade;
 
 final public class LibraryMember extends Person implements Serializable {
+
 	private String memberId;
 	private CheckoutRecord checkoutRecord;
 	
@@ -19,7 +20,7 @@ final public class LibraryMember extends Person implements Serializable {
 	public String getMemberId() {
 		return memberId;
 	}
-
+	public CheckoutRecord getCheckoutRecord() { return checkoutRecord; }
 	public void setCheckoutRecord(CheckoutRecord checkoutRecord) {
 		this.checkoutRecord = checkoutRecord;
 	}

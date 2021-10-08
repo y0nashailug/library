@@ -18,4 +18,8 @@ public class MemberController {
         DataAccessFacade da = new DataAccessFacade();
         da.saveMember(member);
     }
+    public void deleteMember(String memberId) {
+        DataAccessFacade da = new DataAccessFacade();
+        da.deleteMember(memberId);
+    }
 }

@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
 
-            LoginWindow.INSTANCE.setTitle("Library Application");
+            LoginWindow.INSTANCE.setTitle(Config.APP_NAME);
             LoginWindow.INSTANCE.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             LoginWindow.INSTANCE.init();

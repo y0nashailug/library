@@ -17,10 +17,7 @@ import dataaccess.Auth;
 import dataaccess.DataAccess;
 import dataaccess.DataAccessFacade;
 import dataaccess.User;
-import librarysystem.LibrarySystem;
-import librarysystem.LoginWindow;
-import librarysystem.UIController;
-import librarysystem.Util;
+import librarysystem.*;
 
 public class SystemController implements ControllerInterface {
 	public static Auth currentAuth = null;
@@ -41,6 +38,7 @@ public class SystemController implements ControllerInterface {
 		if(currentAuth.name().equals(Auth.LIBRARIAN.toString())) {
 			LibrarySystem.hideAllWindows();
 			String[] menu = Util.ALL_MENU;
+			UIController.INSTANCE.setTitle(Config.APP_NAME);
 			UIController.INSTANCE.setItems(new ArrayList<>(Arrays.asList(menu)));
 			UIController.INSTANCE.init();
 			UIController.INSTANCE.setVisible(true);
@@ -88,16 +86,19 @@ public class SystemController implements ControllerInterface {
 	}
 
 	public CheckoutRecord addCheckoutRecord(LibraryMember libraryMember, Book book, LocalDate checkoutDate, LocalDate dueDate) throws CheckoutRecordException, LibrarySystemException, BookException {
-		CheckoutController checkoutController = new CheckoutController();
-//		if (checkoutController.checkoutRecordExists(libraryMember.getMemberId(), allCheckoutRecordIds())) {
-//			throw new CheckoutRecordException("Checkout record already existed.");
-//		}
 
 		if (book.getNextAvailableCopy() == null) {
 			throw new BookException("Book is not available.");
 		}
 
-		CheckoutRecord checkoutRecord = new CheckoutRecord(libraryMember);
+		CheckoutRecord checkoutRecord;
+
+		if (libraryMember.getCheckoutRecord() != null) {
+			checkoutRecord = libraryMember.getCheckoutRecord();
+		} else {
+			checkoutRecord = new CheckoutRecord(libraryMember);
+		}
+
 		CheckoutRecordEntry checkoutRecordEntry = new CheckoutRecordEntry(book.getNextAvailableCopy(), checkoutDate, dueDate.plusDays(book.getMaxCheckoutLength()));
 		checkoutRecord.addCheckoutRecordEntry(checkoutRecordEntry);
 
@@ -156,6 +157,29 @@ public class SystemController implements ControllerInterface {
 		if (!memberController.memberExists(libraryMember.getMemberId(), allMemberIds())) {
 			throw new LibrarySystemException("Member was not updated.");
 		}
+
+		memberController.updateMember(libraryMember);
+	}
+
+	public void deleteMember(String memberId) throws LibrarySystemException {
+		MemberController memberController = new MemberController();
+		if (!memberController.memberExists(memberId, allMemberIds())) {
+			throw new LibrarySystemException("Member was not updated.");
+		}
+
+		memberController.deleteMember(memberId);
+	}
+
+	public void getAndUpdateMember(String memberId, String fname, String lname, String tel) throws LibrarySystemException {
+		MemberController memberController = new MemberController();
+		if (!memberController.memberExists(memberId, allMemberIds())) {
+			throw new LibrarySystemException("Member was not updated.");
+		}
+
+		LibraryMember libraryMember = getMember(memberId);
+		libraryMember.setFirstName(fname);
+		libraryMember.setLastName(lname);
+		libraryMember.setTelephone(tel);
 
 		memberController.updateMember(libraryMember);
 	}

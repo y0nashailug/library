@@ -18,10 +18,11 @@ public class UIController extends JFrame implements LibWindow {
 
     private boolean isInitialized = false;
 
-    int height = 420;
+    int height = 480;
     int width = 500;
 
-    private UIController() {}
+    private UIController() {
+    }
 
     public void init() {
 
@@ -62,15 +63,18 @@ public class UIController extends JFrame implements LibWindow {
     public void createPanels() {
 
         cards = new JPanel(new CardLayout());
-        for (String i: items) {
+        for (String i : items) {
             System.out.println(i);
-            if (i == "Add member") {
+            //{ "Add member", "Add book", "Add book copy", "Search member", "All book ids", "All member ids" };
+            if (i == Util.ALL_MENU[0]) {
                 cards.add(createNewMemberPanel(), i);
-            } else if (i == "Add book") {
+            } else if (i == Util.ALL_MENU[1]) {
                 cards.add(createAddBookPanel(), i);
-            } else if (i == "All book ids") {
+            } else if (i == Util.ALL_MENU[2]) {
+                cards.add(createAddBookCopyPanel(), i);
+            } else if (i == Util.ALL_MENU[4]) {
                 cards.add(createViewBooksPanel(), i);
-            } else if (i == "All member ids") {
+            } else if (i == Util.ALL_MENU[5]) {
                 cards.add(createViewMemberIdsPanel(), i);
             }
         }
@@ -89,7 +93,6 @@ public class UIController extends JFrame implements LibWindow {
 
         loginPanel.add(loginLabelPanel, BorderLayout.PAGE_START);
         LoginPanel login = new LoginPanel();
-        //Control.INSTANCE.login = login;
         loginPanel.add(login);
 
         return loginPanel;
@@ -105,7 +108,8 @@ public class UIController extends JFrame implements LibWindow {
         containerLabelPanel.add(containerLabel);
 
         container.add(containerLabelPanel, BorderLayout.PAGE_START);
-        ViewBookIds viewBooks = new ViewBookIds();
+        ViewBookIds viewBooks = ViewBookIds.INSTANCE;
+        viewBooks.init();
         container.add(viewBooks);
 
         return container;
@@ -157,8 +161,24 @@ public class UIController extends JFrame implements LibWindow {
 
         bookPanel.add(addBookPanel, BorderLayout.PAGE_START);
         AddBookPanel addNewBookPanel = new AddBookPanel();
-        //Control.INSTANCE.addBook = addbook;
         bookPanel.add(addNewBookPanel);
+
+        return bookPanel;
+    }
+
+    private JPanel createAddBookCopyPanel() {
+
+        JPanel bookPanel = new JPanel(new BorderLayout());
+
+        JLabel bookLabel = new JLabel("Add book copy");
+        bookLabel.setForeground(Color.BLUE);
+
+        JPanel addBookPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
+        addBookPanel.add(bookLabel);
+
+        bookPanel.add(addBookPanel, BorderLayout.PAGE_START);
+        AddBookCopyPanel addBookCopyPanel = new AddBookCopyPanel();
+        bookPanel.add(addBookCopyPanel);
 
         return bookPanel;
     }
@@ -202,10 +222,11 @@ public class UIController extends JFrame implements LibWindow {
     }
 
     public void addElementsToModel() {
-        for(String i: items) {
+        for (String i : items) {
             model.addElement(new ListItem(i, true));
         }
     }
+
     public void setSideBarList() {
 
         model = new DefaultListModel<>();
@@ -227,7 +248,7 @@ public class UIController extends JFrame implements LibWindow {
                     }
                     if (isSelected) {
                         setForeground(Color.BLACK);
-                        setBackground(new Color(236,243,245));
+                        setBackground(new Color(236, 243, 245));
                     }
                 } else {
                     setText("illegal item");

@@ -83,8 +83,10 @@ public class ViewMemberIds extends JPanel {
         updateModel(theData);
     }
 
-    public void revalidateTable() {
-        setValues();
+    public void revalidateTable(String id) {
+        //model = new LTableModel();
+        //setValues();
+        model.addRow(new String[] { id});
         model.fireTableDataChanged();
     }
 }

@@ -1,7 +1,7 @@
 package ui.panels;
 
 import business.Address;
-import business.LibrarySystemException;
+import business.Exceptions.LibrarySystemException;
 import business.SystemController;
 import ui.BtnEventListener;
 import ui.Util;
@@ -76,7 +76,7 @@ public class NewMemberPanel extends JPanel implements MessageableWindow, BtnEven
                                 values[6],
                                 values[7]));
                 displayInfo("Member added successfully");
-                ViewMemberIds.INSTANCE.revalidateTable();
+                ViewMemberIds.INSTANCE.revalidateTable(values[0]);
             } catch(LibrarySystemException e) {
                 displayError(e.getMessage());
             }

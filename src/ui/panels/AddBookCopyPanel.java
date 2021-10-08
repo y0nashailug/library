@@ -2,8 +2,6 @@ package ui.panels;
 
 import business.Book;
 import business.Exceptions.BookException;
-import business.Exceptions.LibrarySystemException;
-import business.LibraryMember;
 import business.SystemController;
 import ui.BtnEventListener;
 import ui.Util;
@@ -11,23 +9,22 @@ import ui.Util;
 import javax.swing.*;
 import java.awt.*;
 
-public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventListener {
-
+public class AddBookCopyPanel extends JPanel implements MessageableWindow, BtnEventListener {
     private JComponent[] jComponents = {
             new JTextField(15),
     };
 
     private Component[] components;
 
-    public CheckoutBook() {
+    public AddBookCopyPanel() {
 
         JComponent form = new JPanel(new BorderLayout(5,5));
         JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 4));
 
-        JButton addBookCopy = new JButton("Checkout");
+        JButton addBookCopy = new JButton("Add book copy (+1)");
         addEventListener(addBookCopy);
 
-        String[] labels = { "Member id", "Book isbn" };
+        String[] labels = { "Look up by Isbn" };
 
         JComponent labelsAndFields = Util.getTwoColumnLayout(labels, jComponents);
         components = labelsAndFields.getComponents();
@@ -52,26 +49,16 @@ public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventL
                 }
 
                 if (values[0] == null || values[0].equals("")) {
-                    displayError("Please enter member id.");
-                    return;
-                }
-                if (values[1] == null || values[1].equals("")) {
                     displayError("Please enter isbn of the book.");
                     return;
                 }
 
                 SystemController systemController = new SystemController();
-                Book book = systemController.getBook(values[1].trim());
-                LibraryMember member = systemController.getMember(values[0].trim());
-
-                //TODO:
-                // 1. add record on Checkout collection
-                // 2. add record to member and update Member collection
-                // 3. update book copy and set available to true on Book collection
-
-
+                Book book = systemController.getBook(values[0].trim());
+                book.addCopy();
+                systemController.updateBook(book);
                 displayInfo("Book copy added successfully. Book copy now " + book.getNumCopies());
-            } catch(BookException | LibrarySystemException e) {
+            } catch(BookException e) {
                 displayError(e.getMessage());
             }
         });

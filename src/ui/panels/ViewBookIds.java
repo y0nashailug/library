@@ -13,6 +13,7 @@ import java.util.List;
 
 public class ViewBookIds extends JPanel {
 
+    public static ViewBookIds INSTANCE = new ViewBookIds();
     ControllerInterface ci = new SystemController();
     private JTable table;
     private JScrollPane scrollPane;
@@ -26,7 +27,9 @@ public class ViewBookIds extends JPanel {
     private final float [] COL_WIDTH_PROPORTIONS =
             {0.35f, 0.35f, 0.3f};
 
-    public ViewBookIds() {
+    private ViewBookIds() {}
+
+    public void init() {
         createTableAndTablePane();
         this.add(scrollPane);
         setValues();
@@ -79,5 +82,10 @@ public class ViewBookIds extends JPanel {
     private void updateModel() {
         List<String[]> theData = new ArrayList<String[]>();
         updateModel(theData);
+    }
+
+    public void revalidateTable(String id) {
+        model.addRow(new String[] { id });
+        model.fireTableDataChanged();
     }
 }

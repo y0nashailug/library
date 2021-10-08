@@ -56,7 +56,6 @@ public class AddBookCopyPanel extends JPanel implements MessageableWindow, BtnEv
 
                 SystemController systemController = new SystemController();
                 Book book = systemController.getBook(values[0].trim());
-                book.addCopy();
                 systemController.updateBook(book);
                 displayInfo("Book copy added successfully. Book copy now " + book.getNumCopies());
             } catch(BookException e) {

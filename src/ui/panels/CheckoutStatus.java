@@ -51,15 +51,19 @@ public class CheckoutStatus extends JPanel {
         String[][] checkoutData = new String[checkoutRecords.size()][DEFAULT_COLUMN_HEADERS.length];
         List<String> checkoutRecordIds = ci.allCheckoutRecordIds();
 
+        int index = 0;
         for(int i = 0 ; i < checkoutRecords.size(); i++) {
             CheckoutRecord checkoutRecord = checkoutRecords.get(checkoutRecordIds.get(i));
-            checkoutData[i][0] = checkoutRecord.getLibraryMember().getMemberId();
-            checkoutData[i][1] = checkoutRecord.getCheckoutRecordEntries().get(0).getBookCopy().getBook().getTitle();
-            checkoutData[i][2] = checkoutRecord.getCheckoutRecordEntries().get(0).getBookCopy().getBook().getIsbn();
-            checkoutData[i][3] = checkoutRecord.getCheckoutRecordEntries().get(0).getCheckoutDate().toString();
-            checkoutData[i][4] = checkoutRecord.getCheckoutRecordEntries().get(0).getDueDate().toString();
-            checkoutData[i][5] = checkoutRecord.getLibraryMember().getFirstName();
-            model.addRow(checkoutData[i]);
+            for (int j = 0; j < checkoutRecord.getCheckoutRecordEntries().size(); j++) {
+                checkoutData[index][0] = checkoutRecord.getLibraryMember().getMemberId();
+                checkoutData[index][1] = checkoutRecord.getCheckoutRecordEntries().get(j).getBookCopy().getBook().getTitle();
+                checkoutData[index][2] = checkoutRecord.getCheckoutRecordEntries().get(j).getBookCopy().getBook().getIsbn();
+                checkoutData[index][3] = checkoutRecord.getCheckoutRecordEntries().get(j).getCheckoutDate().toString();
+                checkoutData[index][4] = checkoutRecord.getCheckoutRecordEntries().get(j).getDueDate().toString();
+                checkoutData[index][5] = checkoutRecord.getLibraryMember().getFirstName();
+                model.addRow(checkoutData[i]);
+                index++;
+            }
         }
 
         table.setModel(model);

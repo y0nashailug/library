@@ -147,6 +147,7 @@ public class SystemController implements ControllerInterface {
 			throw new BookException("Book not found.");
 		}
 
+		book.addCopy();
 		bookController.updateBook(book);
 	}
 

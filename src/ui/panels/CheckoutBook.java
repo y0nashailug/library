@@ -77,8 +77,6 @@ public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventL
                 CheckoutRecord checkoutRecord = systemController.getCheckoutRecord(member.getMemberId());
                 member.setCheckoutRecord(checkoutRecord);
 
-                System.out.println(member);
-
                 systemController.updateMember(member);
                 book.getNextAvailableCopy().changeAvailability();
                 systemController.updateBook(book);

@@ -55,7 +55,6 @@ public class SystemController implements ControllerInterface {
 	public void addMember(String memberId, String fname, String lname, String tel, Address addr) throws LibrarySystemException {
 
 		MemberController memberController = new MemberController();
-		//TODO: - Search if the member exists
 		if (memberController.memberExists(memberId, allMemberIds())) {
 			throw new LibrarySystemException("Member already existed.");
 		}
@@ -68,7 +67,6 @@ public class SystemController implements ControllerInterface {
 	public void addBook(String isbn, String title, int maxCheckoutLength, List<Author> authors) throws BookException {
 
 		BookController bookController = new BookController();
-		//TODO: - Search if the book exists
 		if (bookController.bookExists(isbn, allBookIds())) {
 			throw new BookException("Book already existed.");
 		}
@@ -81,8 +79,8 @@ public class SystemController implements ControllerInterface {
 	public void addCheckoutRecord(String memberId, BookCopy bookCopy, LocalDate checkoutDate, LocalDate dueDate) throws CheckoutRecordException {
 
 		CheckoutController checkoutController = new CheckoutController();
-		if (checkoutController.checkoutRecordExists(memberId, allBookIds())) {
-			throw new CheckoutRecordException("Record already existed.");
+		if (checkoutController.checkoutRecordExists(memberId, allCheckoutRecordIds())) {
+			throw new CheckoutRecordException("Checkout record already existed.");
 		}
 
 		CheckoutRecord checkoutRecord = new CheckoutRecord(memberId, bookCopy, checkoutDate, dueDate);

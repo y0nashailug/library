@@ -64,13 +64,14 @@ public class UIController extends JFrame implements LibWindow {
 
         cards = new JPanel(new CardLayout());
         for (String i : items) {
-            //{ "Add member", "Add book", "Add book copy", "Search member", "All book ids", "All member ids" };
             if (i == Util.ALL_MENU[0]) {
                 cards.add(createNewMemberPanel(), i);
             } else if (i == Util.ALL_MENU[1]) {
                 cards.add(createAddBookPanel(), i);
             } else if (i == Util.ALL_MENU[2]) {
                 cards.add(createAddBookCopyPanel(), i);
+            } else if (i == Util.ALL_MENU[3]) {
+                cards.add(createSearchPanel(), i);
             } else if (i == Util.ALL_MENU[4]) {
                 cards.add(createViewBooksPanel(), i);
             } else if (i == Util.ALL_MENU[5]) {
@@ -164,6 +165,23 @@ public class UIController extends JFrame implements LibWindow {
         CheckoutStatus checkoutStatus = CheckoutStatus.INSTANCE;
         checkoutStatus.init();
         container.add(checkoutStatus);
+
+        return container;
+    }
+
+    private JPanel createSearchPanel() {
+
+        JPanel container = new JPanel(new BorderLayout());
+        JLabel containerLabel = new JLabel("Search by member id");
+        containerLabel.setForeground(Color.BLUE);
+
+        JPanel containerLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
+        containerLabelPanel.add(containerLabel);
+
+        container.add(containerLabelPanel, BorderLayout.PAGE_START);
+        SearchPanel searchPanel = SearchPanel.INSTANCE;
+        searchPanel.init();
+        container.add(searchPanel);
 
         return container;
     }

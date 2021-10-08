@@ -17,7 +17,7 @@ public class CheckoutStatus extends JPanel {
     public static CheckoutStatus INSTANCE = new CheckoutStatus();
     private JTable table;
     private JScrollPane scrollPane;
-    public DefaultTableModel model;
+    private DefaultTableModel model;
 
     private final String[] DEFAULT_COLUMN_HEADERS = { "Member Id", "Title", "ISBN", "Checkout date", "Due date", "Librarian" };
     private static final int SCREEN_WIDTH = 420;
@@ -47,13 +47,12 @@ public class CheckoutStatus extends JPanel {
     }
 
     private void loadData() {
-
         HashMap<String, CheckoutRecord> checkoutRecords = ci.allCheckoutRecords();
         HashMap<String, LibraryMember> members = ci.getMembers();
         String[][] checkoutData = new String[checkoutRecords.size()][DEFAULT_COLUMN_HEADERS.length];
         List<String> checkoutRecordIds = ci.allCheckoutRecordIds();
 
-        for(int i = 0 ; i < checkoutRecords.size(); i++){
+        for(int i = 0 ; i < checkoutRecords.size(); i++) {
             CheckoutRecord checkoutRecord = checkoutRecords.get(checkoutRecordIds.get(i));
             checkoutData[i][0] = checkoutRecord.getMemberId();
             checkoutData[i][1] = checkoutRecord.getBookCopy().getBook().getTitle();
@@ -75,6 +74,7 @@ public class CheckoutStatus extends JPanel {
                 checkoutRecord.getCheckoutDate().toString(),
                 checkoutRecord.getDueDate().toString()
         });
+
         model.fireTableDataChanged();
     }
 }

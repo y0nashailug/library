@@ -10,7 +10,6 @@ import java.util.List;
 
 public class UIController extends JFrame implements LibWindow {
     public final static UIController INSTANCE = new UIController();
-    String[] links;
     public JList<ListItem> linkList;
     JPanel cards;
     public static List<String> items = new ArrayList<>();
@@ -21,8 +20,7 @@ public class UIController extends JFrame implements LibWindow {
     int height = 480;
     int width = 500;
 
-    private UIController() {
-    }
+    private UIController() {}
 
     public void init() {
 
@@ -64,38 +62,46 @@ public class UIController extends JFrame implements LibWindow {
 
         cards = new JPanel(new CardLayout());
         for (String i : items) {
-            System.out.println(i);
-            //{ "Add member", "Add book", "Add book copy", "Search member", "All book ids", "All member ids" };
             if (i == Util.ALL_MENU[0]) {
                 cards.add(createNewMemberPanel(), i);
             } else if (i == Util.ALL_MENU[1]) {
                 cards.add(createAddBookPanel(), i);
             } else if (i == Util.ALL_MENU[2]) {
                 cards.add(createAddBookCopyPanel(), i);
+            } else if (i == Util.ALL_MENU[3]) {
+                cards.add(createSearchPanel(), i);
             } else if (i == Util.ALL_MENU[4]) {
                 cards.add(createViewBooksPanel(), i);
             } else if (i == Util.ALL_MENU[5]) {
                 cards.add(createViewMemberIdsPanel(), i);
+            } else if (i == Util.ALL_MENU[6]) {
+                cards.add(createCheckoutBookPanel(), i);
+            } else if (i == Util.ALL_MENU[7]) {
+                cards.add(createCheckoutStatusPanel(), i);
+            } else if (i == Util.ALL_MENU[8]) {
+                cards.add(createSearchBookPanel(), i);
+            } else if (i == Util.ALL_MENU[9]) {
+                cards.add(createLogoutPanel(), i);
             }
         }
 
         createListenersToSideBar();
     }
 
-    private JPanel createLoginPanel() {
+    private JPanel createLogoutPanel() {
 
-        JPanel loginPanel = new JPanel(new BorderLayout());
+        JPanel logoutPanel = new JPanel(new BorderLayout());
         JPanel loginLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
 
-        JLabel loginLabel = new JLabel("Login");
+        JLabel loginLabel = new JLabel("Logout");
         loginLabel.setForeground(Color.BLUE);
         loginLabelPanel.add(loginLabel);
 
-        loginPanel.add(loginLabelPanel, BorderLayout.PAGE_START);
-        LoginPanel login = new LoginPanel();
-        loginPanel.add(login);
+        logoutPanel.add(loginLabelPanel, BorderLayout.PAGE_START);
+        LogoutPanel logout = new LogoutPanel();
+        logoutPanel.add(logout);
 
-        return loginPanel;
+        return logoutPanel;
     }
 
     private JPanel createViewBooksPanel() {
@@ -128,6 +134,73 @@ public class UIController extends JFrame implements LibWindow {
         ViewMemberIds viewMemberIds = ViewMemberIds.INSTANCE;
         viewMemberIds.init();
         container.add(viewMemberIds);
+
+        return container;
+    }
+
+    private JPanel createCheckoutBookPanel() {
+
+        JPanel container = new JPanel(new BorderLayout());
+        JLabel containerLabel = new JLabel("Checkout book");
+        containerLabel.setForeground(Color.BLUE);
+
+        JPanel containerLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
+        containerLabelPanel.add(containerLabel);
+
+        container.add(containerLabelPanel, BorderLayout.PAGE_START);
+        CheckoutBook checkoutBook = new CheckoutBook();
+        container.add(checkoutBook);
+
+        return container;
+    }
+
+    private JPanel createCheckoutStatusPanel() {
+
+        JPanel container = new JPanel(new BorderLayout());
+        JLabel containerLabel = new JLabel("Checkout status");
+        containerLabel.setForeground(Color.BLUE);
+
+        JPanel containerLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
+        containerLabelPanel.add(containerLabel);
+
+        container.add(containerLabelPanel, BorderLayout.PAGE_START);
+        CheckoutStatus checkoutStatus = CheckoutStatus.INSTANCE;
+        checkoutStatus.init();
+        container.add(checkoutStatus);
+
+        return container;
+    }
+
+    private JPanel createSearchPanel() {
+
+        JPanel container = new JPanel(new BorderLayout());
+        JLabel containerLabel = new JLabel("Search by member id");
+        containerLabel.setForeground(Color.BLUE);
+
+        JPanel containerLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
+        containerLabelPanel.add(containerLabel);
+
+        container.add(containerLabelPanel, BorderLayout.PAGE_START);
+        SearchPanel searchPanel = SearchPanel.INSTANCE;
+        searchPanel.init();
+        container.add(searchPanel);
+
+        return container;
+    }
+
+    private JPanel createSearchBookPanel() {
+
+        JPanel container = new JPanel(new BorderLayout());
+        JLabel containerLabel = new JLabel("Search by isbn");
+        containerLabel.setForeground(Color.BLUE);
+
+        JPanel containerLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
+        containerLabelPanel.add(containerLabel);
+
+        container.add(containerLabelPanel, BorderLayout.PAGE_START);
+        SearchBookPanel searchBookPanel = SearchBookPanel.INSTANCE;
+        searchBookPanel.init();
+        container.add(searchBookPanel);
 
         return container;
     }
@@ -187,8 +260,8 @@ public class UIController extends JFrame implements LibWindow {
 
         NotificationBar nBar = new NotificationBar();
 
-        nBar.setStatusbar("Welcome!");
-        nBar.getStatusbar().setForeground(Color.BLUE);
+        nBar.setStatusBar("Welcome!");
+        nBar.getStatusBar().setForeground(Color.BLUE);
 
         return nBar;
     }
@@ -250,6 +323,7 @@ public class UIController extends JFrame implements LibWindow {
                         setForeground(Color.BLACK);
                         setBackground(new Color(236, 243, 245));
                     }
+
                 } else {
                     setText("illegal item");
                 }

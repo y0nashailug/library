@@ -1,7 +1,7 @@
 package ui.panels;
 
-import business.Exceptions.LibrarySystemException;
-import business.LibraryMember;
+import business.Book;
+import business.Exceptions.BookException;
 import business.SystemController;
 import ui.BtnEventListener;
 import ui.Util;
@@ -10,9 +10,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class SearchPanel extends JPanel implements MessageableWindow, BtnEventListener {
+public class SearchBookPanel extends JPanel implements MessageableWindow, BtnEventListener {
 
-    public static SearchPanel INSTANCE = new SearchPanel();
+    public static SearchBookPanel INSTANCE = new SearchBookPanel();
     private JComponent[] jComponents = {
             new JTextField(15),
     };
@@ -20,13 +20,13 @@ public class SearchPanel extends JPanel implements MessageableWindow, BtnEventLi
     private JScrollPane scrollPane;
     private DefaultTableModel model;
     private Component[] components;
-    private final String[] DEFAULT_COLUMN_HEADERS = { "Member Id", "First name", "Last name" };
+    private final String[] DEFAULT_COLUMN_HEADERS = { "Isbn", "Title", "Avail", "Next avail" };
     private static final int SCREEN_WIDTH = 420;
     private static final int SCREEN_HEIGHT = 420;
     private static final int TABLE_WIDTH = (int) (0.75 * SCREEN_WIDTH);
     private static final int DEFAULT_TABLE_HEIGHT = (int) (0.75 * SCREEN_HEIGHT);
 
-    private SearchPanel() {}
+    private SearchBookPanel() {}
 
     public void init() {
         paintScreen();
@@ -51,7 +51,7 @@ public class SearchPanel extends JPanel implements MessageableWindow, BtnEventLi
         JButton addBookCopy = new JButton("Search");
         addEventListener(addBookCopy);
 
-        String[] labels = { "Member id" };
+        String[] labels = { "ISBN" };
 
         JComponent labelsAndFields = Util.getTwoColumnLayout(labels, jComponents);
         components = labelsAndFields.getComponents();
@@ -73,8 +73,13 @@ public class SearchPanel extends JPanel implements MessageableWindow, BtnEventLi
         model.setColumnIdentifiers(DEFAULT_COLUMN_HEADERS);
     }
 
-    private void loadData(LibraryMember member) {
-        model.addRow(new String[] { member.getMemberId(), member.getFirstName(), member.getLastName() });
+    private void loadData(Book book) {
+        model.addRow(new String[] {
+                book.getIsbn(),
+                book.getTitle(),
+                book.isAvailable() ? "Yes": "No",
+                String.valueOf(book.getNextAvailableCopy().getCopyNum()),
+        });
     }
 
     @Override
@@ -90,16 +95,16 @@ public class SearchPanel extends JPanel implements MessageableWindow, BtnEventLi
                 }
 
                 if (values[0] == null || values[0].equals("")) {
-                    displayError("Please enter member id.");
+                    displayError("Please enter isbn.");
                     return;
                 }
 
                 SystemController systemController = new SystemController();
-                LibraryMember libraryMember = systemController.getMember(values[0].trim());
-                loadData(libraryMember);
+                Book book = systemController.getBook(values[0].trim());
+                loadData(book);
 
-                displayInfo("Member found.");
-            } catch(LibrarySystemException e) {
+                displayInfo("Book found.");
+            } catch(BookException e) {
                 displayError(e.getMessage());
             }
         });

@@ -15,7 +15,7 @@ public class ViewMemberIds extends JPanel {
 
     ControllerInterface ci = new SystemController();
     public static ViewMemberIds INSTANCE = new ViewMemberIds();
-    public JTable table;
+    private JTable table;
     private JScrollPane scrollPane;
     public LTableModel model;
 
@@ -38,19 +38,15 @@ public class ViewMemberIds extends JPanel {
     private void createTableAndTablePane() {
         updateModel();
         table = new JTable(model);
-        createCustomColumns(table, TABLE_WIDTH,
-                COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
+        createCustomColumns(table, TABLE_WIDTH, COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
         scrollPane = new JScrollPane();
-        scrollPane.setPreferredSize(
-                new Dimension(TABLE_WIDTH, DEFAULT_TABLE_HEIGHT));
+        scrollPane.setPreferredSize(new Dimension(TABLE_WIDTH, DEFAULT_TABLE_HEIGHT));
         scrollPane.getViewport().add(table);
     }
 
-    private void createCustomColumns(JTable table, int width,
-                                     float[] proportions, String[] headers) {
+    private void createCustomColumns(JTable table, int width, float[] proportions, String[] headers) {
         table.setAutoCreateColumnsFromModel(false);
-        int num = headers.length;
-        for(int i = 0; i < num; ++i) {
+        for(int i = 0; i < headers.length; ++i) {
             TableColumn column = new TableColumn(i);
             column.setHeaderValue(headers[i]);
             column.setMinWidth(Math.round(proportions[i]*width));
@@ -59,15 +55,14 @@ public class ViewMemberIds extends JPanel {
     }
 
     private void setValues() {
-
         List<String[]> data = new ArrayList<>();
-
         List<String> ids = ci.allMemberIds();
         Collections.sort(ids);
 
         for (String id: ids) {
             data.add(new String[] { id });
         }
+
         model.setTableValues(data);
     }
 
@@ -84,8 +79,6 @@ public class ViewMemberIds extends JPanel {
     }
 
     public void revalidateTable(String id) {
-        //model = new LTableModel();
-        //setValues();
         model.addRow(new String[] { id});
         model.fireTableDataChanged();
     }

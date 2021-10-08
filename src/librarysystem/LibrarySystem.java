@@ -29,11 +29,8 @@ public class LibrarySystem extends JFrame implements LibWindow {
     String pathToImage;
     private boolean isInitialized = false;
     
-    private static LibWindow[] allWindows = { 
-    	//LibrarySystem.INSTANCE,
+    private static LibWindow[] allWindows = {
 		LoginWindow.INSTANCE, UIController.INSTANCE,
-		//AllMemberIdsWindow.INSTANCE,
-		//AllBookIdsWindow.INSTANCE
 	};
     	
 	public static void hideAllWindows() {

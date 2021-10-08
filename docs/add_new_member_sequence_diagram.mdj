@@ -863,7 +863,6 @@
 													"model": {
 														"$ref": "AAAAAAF8XFDs9MFqzn4="
 													},
-													"fillColor": "#d8e5ff",
 													"font": "Arial;13;0",
 													"left": 221,
 													"top": 112,
@@ -975,7 +974,6 @@
 													"model": {
 														"$ref": "AAAAAAF8XFf/n8GI28I="
 													},
-													"fillColor": "#d8e5ff",
 													"font": "Arial;13;0",
 													"left": 228,
 													"top": 140,
@@ -1087,7 +1085,6 @@
 													"model": {
 														"$ref": "AAAAAAF8XFoBZ8GgDQI="
 													},
-													"fillColor": "#d8e5ff",
 													"font": "Arial;13;0",
 													"left": 363,
 													"top": 168,
@@ -1199,7 +1196,6 @@
 													"model": {
 														"$ref": "AAAAAAF8XFstVcG5vGE="
 													},
-													"fillColor": "#d8e5ff",
 													"font": "Arial;13;0",
 													"left": 235,
 													"top": 192,
@@ -1311,7 +1307,6 @@
 													"model": {
 														"$ref": "AAAAAAF8XFyYIsHSRR0="
 													},
-													"fillColor": "#d8e5ff",
 													"font": "Arial;13;0",
 													"left": 235,
 													"top": 232,
@@ -1423,7 +1418,6 @@
 													"model": {
 														"$ref": "AAAAAAF8XF5QA8Hq5W8="
 													},
-													"fillColor": "#d8e5ff",
 													"font": "Arial;13;0",
 													"left": 511,
 													"top": 256,
@@ -1535,7 +1529,6 @@
 													"model": {
 														"$ref": "AAAAAAF8XF/YUsIDQmo="
 													},
-													"fillColor": "#d8e5ff",
 													"font": "Arial;13;0",
 													"left": 668,
 													"top": 312,
@@ -1647,7 +1640,6 @@
 													"model": {
 														"$ref": "AAAAAAF8XGHug8IaRRA="
 													},
-													"fillColor": "#d8e5ff",
 													"font": "Arial;13;0",
 													"left": 818,
 													"top": 360,

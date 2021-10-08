@@ -25,7 +25,8 @@ public class Util {
 			"All book ids",
 			"All member ids",
 			"Checkout book",
-			"Checkout status"
+			"Checkout status",
+			"Search book",
 	};
 	//rgb(18, 75, 14)
 	

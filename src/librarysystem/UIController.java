@@ -80,6 +80,8 @@ public class UIController extends JFrame implements LibWindow {
                 cards.add(createCheckoutBookPanel(), i);
             } else if (i == Util.ALL_MENU[7]) {
                 cards.add(createCheckoutStatusPanel(), i);
+            } else if (i == Util.ALL_MENU[8]) {
+                cards.add(createSearchBookPanel(), i);
             }
         }
 
@@ -182,6 +184,23 @@ public class UIController extends JFrame implements LibWindow {
         SearchPanel searchPanel = SearchPanel.INSTANCE;
         searchPanel.init();
         container.add(searchPanel);
+
+        return container;
+    }
+
+    private JPanel createSearchBookPanel() {
+
+        JPanel container = new JPanel(new BorderLayout());
+        JLabel containerLabel = new JLabel("Search by isbn");
+        containerLabel.setForeground(Color.BLUE);
+
+        JPanel containerLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
+        containerLabelPanel.add(containerLabel);
+
+        container.add(containerLabelPanel, BorderLayout.PAGE_START);
+        SearchBookPanel searchBookPanel = SearchBookPanel.INSTANCE;
+        searchBookPanel.init();
+        container.add(searchBookPanel);
 
         return container;
     }

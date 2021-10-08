@@ -87,15 +87,31 @@ public class SystemController implements ControllerInterface {
 		dataAccess.saveBook(book);
 	}
 
-	public void addCheckoutRecord(String memberId, BookCopy bookCopy, LocalDate checkoutDate, LocalDate dueDate) throws CheckoutRecordException {
+	public CheckoutRecord addCheckoutRecord(LibraryMember libraryMember, Book book, LocalDate checkoutDate, LocalDate dueDate) throws CheckoutRecordException, LibrarySystemException, BookException {
 		CheckoutController checkoutController = new CheckoutController();
-		if (checkoutController.checkoutRecordExists(memberId, allCheckoutRecordIds())) {
-			throw new CheckoutRecordException("Checkout record already existed.");
+//		if (checkoutController.checkoutRecordExists(libraryMember.getMemberId(), allCheckoutRecordIds())) {
+//			throw new CheckoutRecordException("Checkout record already existed.");
+//		}
+
+		if (book.getNextAvailableCopy() == null) {
+			throw new BookException("Book is not available.");
 		}
 
-		CheckoutRecord checkoutRecord = new CheckoutRecord(memberId, bookCopy, checkoutDate, dueDate);
-		DataAccess dataAccess = new DataAccessFacade();
-		dataAccess.saveCheckoutRecord(checkoutRecord);
+		CheckoutRecord checkoutRecord = new CheckoutRecord(libraryMember);
+		CheckoutRecordEntry checkoutRecordEntry = new CheckoutRecordEntry(book.getNextAvailableCopy(), checkoutDate, dueDate.plusDays(book.getMaxCheckoutLength()));
+		checkoutRecord.addCheckoutRecordEntry(checkoutRecordEntry);
+
+		DataAccess da = new DataAccessFacade();
+		da.saveCheckoutRecord(checkoutRecord);
+
+		libraryMember.setCheckoutRecord(checkoutRecord);
+
+		updateMember(libraryMember);
+
+		book.getNextAvailableCopy().changeAvailability();
+		updateBook(book);
+
+		return checkoutRecord;
 	}
 
 	public Book getBook(String isbn) throws BookException {

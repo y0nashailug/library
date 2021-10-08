@@ -1,35 +1,30 @@
 package business;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CheckoutRecord implements Serializable {
 
     private static final long serialVersionUID = 1825622724051957822L;
-    private String memberId;
-    private BookCopy bookCopy;
-    private LocalDate checkoutDate;
-    private LocalDate dueDate;
+    private LibraryMember libraryMember;
+    private List<CheckoutRecordEntry> checkoutRecordEntries;
 
-    public CheckoutRecord(String memberId, BookCopy bookCopy, LocalDate checkoutDate, LocalDate dueDate) {
-        this.memberId = memberId;
-        this.bookCopy = bookCopy;
-        this.checkoutDate = checkoutDate;
-        this.dueDate = dueDate;
+    public CheckoutRecord(LibraryMember libraryMember) {
+        this.libraryMember = libraryMember;
+        checkoutRecordEntries = new ArrayList<>();
     }
 
-    public String getMemberId() {
-        return memberId;
-    }
-    public BookCopy getBookCopy() {
-        return bookCopy;
+    public void addCheckoutRecordEntry(CheckoutRecordEntry checkoutRecordEntry) {
+        checkoutRecordEntries.add(checkoutRecordEntry);
     }
 
-    public LocalDate getCheckoutDate() {
-        return checkoutDate;
+    public LibraryMember getLibraryMember() {
+        return libraryMember;
     }
 
-    public LocalDate getDueDate() {
-        return dueDate;
+    public List<CheckoutRecordEntry> getCheckoutRecordEntries() {
+        return checkoutRecordEntries;
     }
+
 }

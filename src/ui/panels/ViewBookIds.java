@@ -18,7 +18,7 @@ public class ViewBookIds extends JPanel {
     private JTable table;
     private JScrollPane scrollPane;
     private LTableModel model;
-    private final String[] DEFAULT_COLUMN_HEADERS = {"Ids"};
+    private final String[] DEFAULT_COLUMN_HEADERS = { "Ids" };
     private static final int SCREEN_WIDTH = 320;
     private static final int SCREEN_HEIGHT = 320;
     private static final int TABLE_WIDTH = (int) (0.75 * SCREEN_WIDTH);

@@ -114,7 +114,12 @@ public class TestData {
 		Book book = new Book("48-56882", "Jimmy's First Day of School", 7, Arrays.asList(allAuthors.get(4)));
 		book.addCopy();
 		book.getCopy(1).changeAvailability();
-		CheckoutRecord checkoutRecord = new CheckoutRecord("1004", book.getCopy(0), LocalDate.now(), LocalDate.now());
+		LibraryMember libraryMember = new LibraryMember("1004", "Ricardo", "Montalbahn", "641-472-2871", addresses.get(7));
+
+		CheckoutRecord checkoutRecord = new CheckoutRecord(libraryMember);
+		CheckoutRecordEntry checkoutRecordEntry = new CheckoutRecordEntry(book.getNextAvailableCopy(), LocalDate.now(), LocalDate.now().plusDays(7));
+
+		checkoutRecord.addCheckoutRecordEntry(checkoutRecordEntry);
 		List<CheckoutRecord> checkoutRecordList = new ArrayList<>();
 		checkoutRecordList.add(checkoutRecord);
 		DataAccessFacade.loadCheckoutRecordMap(checkoutRecordList);

@@ -14,7 +14,7 @@ import java.util.List;
 public class CheckoutStatus extends JPanel {
 
     ControllerInterface ci = new SystemController();
-    public static CheckoutStatus INSTANCE = new CheckoutStatus();
+    public final static CheckoutStatus INSTANCE = new CheckoutStatus();
     private JTable table;
     private JScrollPane scrollPane;
     private DefaultTableModel model;
@@ -48,18 +48,17 @@ public class CheckoutStatus extends JPanel {
 
     private void loadData() {
         HashMap<String, CheckoutRecord> checkoutRecords = ci.allCheckoutRecords();
-        HashMap<String, LibraryMember> members = ci.getMembers();
         String[][] checkoutData = new String[checkoutRecords.size()][DEFAULT_COLUMN_HEADERS.length];
         List<String> checkoutRecordIds = ci.allCheckoutRecordIds();
 
         for(int i = 0 ; i < checkoutRecords.size(); i++) {
             CheckoutRecord checkoutRecord = checkoutRecords.get(checkoutRecordIds.get(i));
-            checkoutData[i][0] = checkoutRecord.getMemberId();
-            checkoutData[i][1] = checkoutRecord.getBookCopy().getBook().getTitle();
-            checkoutData[i][2] = checkoutRecord.getBookCopy().getBook().getIsbn();
-            checkoutData[i][3] = checkoutRecord.getCheckoutDate().toString();
-            checkoutData[i][4] = checkoutRecord.getDueDate().toString();
-            checkoutData[i][5] = members.get(checkoutRecord.getMemberId()).getFirstName();
+            checkoutData[i][0] = checkoutRecord.getLibraryMember().getMemberId();
+            checkoutData[i][1] = checkoutRecord.getCheckoutRecordEntries().get(0).getBookCopy().getBook().getTitle();
+            checkoutData[i][2] = checkoutRecord.getCheckoutRecordEntries().get(0).getBookCopy().getBook().getIsbn();
+            checkoutData[i][3] = checkoutRecord.getCheckoutRecordEntries().get(0).getCheckoutDate().toString();
+            checkoutData[i][4] = checkoutRecord.getCheckoutRecordEntries().get(0).getDueDate().toString();
+            checkoutData[i][5] = checkoutRecord.getLibraryMember().getFirstName();
             model.addRow(checkoutData[i]);
         }
 
@@ -68,11 +67,12 @@ public class CheckoutStatus extends JPanel {
 
     public void revalidateTable(CheckoutRecord checkoutRecord) {
         model.addRow(new String[] {
-                checkoutRecord.getMemberId(),
-                checkoutRecord.getBookCopy().getBook().getTitle(),
-                checkoutRecord.getBookCopy().getBook().getIsbn(),
-                checkoutRecord.getCheckoutDate().toString(),
-                checkoutRecord.getDueDate().toString()
+                checkoutRecord.getLibraryMember().getMemberId(),
+                checkoutRecord.getCheckoutRecordEntries().get(0).getBookCopy().getBook().getTitle(),
+                checkoutRecord.getCheckoutRecordEntries().get(0).getBookCopy().getBook().getIsbn(),
+                checkoutRecord.getCheckoutRecordEntries().get(0).getCheckoutDate().toString(),
+                checkoutRecord.getCheckoutRecordEntries().get(0).getDueDate().toString(),
+                checkoutRecord.getLibraryMember().getFirstName()
         });
 
         model.fireTableDataChanged();

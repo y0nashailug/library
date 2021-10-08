@@ -36,7 +36,7 @@ public class DataAccessFacade implements DataAccess {
 
 	public void saveCheckoutRecord(CheckoutRecord checkoutRecord) {
 		HashMap<String, CheckoutRecord> checkoutRecords = readCheckoutRecordMap();
-		String memberId = checkoutRecord.getMemberId();
+		String memberId = checkoutRecord.getLibraryMember().getMemberId();
 		checkoutRecords.put(memberId, checkoutRecord);
 		saveToStorage(StorageType.CHECKOUTS, checkoutRecords);
 	}
@@ -50,9 +50,7 @@ public class DataAccessFacade implements DataAccess {
 
 	public Book getBook(String isbn) {
 		HashMap<String, Book> books = readBookMap();
-		System.out.println("isbn: " + isbn);
 		Book book = books.get(isbn);
-		System.out.println("book: " + book);
 		return book;
 	}
 
@@ -123,7 +121,7 @@ public class DataAccessFacade implements DataAccess {
 
 	static void loadCheckoutRecordMap(List<CheckoutRecord> checkoutRecordList) {
 		HashMap<String, CheckoutRecord> checkoutRecords = new HashMap<>();
-		checkoutRecordList.forEach(checkoutRecord -> checkoutRecords.put(checkoutRecord.getMemberId(), checkoutRecord));
+		checkoutRecordList.forEach(checkoutRecord -> checkoutRecords.put(checkoutRecord.getLibraryMember().getMemberId(), checkoutRecord));
 		saveToStorage(StorageType.CHECKOUTS, checkoutRecords);
 	}
 	

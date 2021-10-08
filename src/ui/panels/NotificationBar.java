@@ -31,11 +31,11 @@ public class NotificationBar extends JPanel implements MessageableWindow {
         this.setForeground(Color.WHITE);
     }
 
-    public JTextArea getStatusbar() {
+    public JTextArea getStatusBar() {
         return statusBar;
     }
 
-    public void setStatusbar(String s) {
+    public void setStatusBar(String s) {
         statusBar.setVisible(true);
         statusBar.setText(s);
     }

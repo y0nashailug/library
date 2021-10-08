@@ -18,8 +18,7 @@ public class ViewBookIds extends JPanel {
     private JTable table;
     private JScrollPane scrollPane;
     private LTableModel model;
-    private final String[] DEFAULT_COLUMN_HEADERS
-            = {"Ids"};
+    private final String[] DEFAULT_COLUMN_HEADERS = {"Ids"};
     private static final int SCREEN_WIDTH = 320;
     private static final int SCREEN_HEIGHT = 320;
     private static final int TABLE_WIDTH = (int) (0.75 * SCREEN_WIDTH);
@@ -39,19 +38,15 @@ public class ViewBookIds extends JPanel {
     private void createTableAndTablePane() {
         updateModel();
         table = new JTable(model);
-        createCustomColumns(table, TABLE_WIDTH,
-                COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
+        createCustomColumns(table, TABLE_WIDTH, COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
         scrollPane = new JScrollPane();
-        scrollPane.setPreferredSize(
-                new Dimension(TABLE_WIDTH, DEFAULT_TABLE_HEIGHT));
+        scrollPane.setPreferredSize(new Dimension(TABLE_WIDTH, DEFAULT_TABLE_HEIGHT));
         scrollPane.getViewport().add(table);
     }
 
-    private void createCustomColumns(JTable table, int width,
-                                     float[] proportions, String[] headers) {
+    private void createCustomColumns(JTable table, int width, float[] proportions, String[] headers) {
         table.setAutoCreateColumnsFromModel(false);
-        int num = headers.length;
-        for(int i = 0; i < num; ++i) {
+        for(int i = 0; i < headers.length; ++i) {
             TableColumn column = new TableColumn(i);
             column.setHeaderValue(headers[i]);
             column.setMinWidth(Math.round(proportions[i]*width));
@@ -60,9 +55,7 @@ public class ViewBookIds extends JPanel {
     }
 
     private void setValues() {
-
         List<String[]> data = new ArrayList<>();
-
         List<String> ids = ci.allBookIds();
         Collections.sort(ids);
 

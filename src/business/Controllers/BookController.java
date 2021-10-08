@@ -1,7 +1,6 @@
 package business.Controllers;
 
 import business.Book;
-import business.BookCopy;
 import dataaccess.DataAccessFacade;
 
 import java.util.List;

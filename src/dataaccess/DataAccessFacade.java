@@ -34,6 +34,13 @@ public class DataAccessFacade implements DataAccess {
 		saveToStorage(StorageType.MEMBERS, mems);	
 	}
 
+	public void saveCheckoutRecord(CheckoutRecord checkoutRecord) {
+		HashMap<String, CheckoutRecord> checkoutRecords = readCheckoutRecordMap();
+		String memberId = checkoutRecord.getMemberId();
+		checkoutRecords.put(memberId, checkoutRecord);
+		saveToStorage(StorageType.CHECKOUTS, checkoutRecords);
+	}
+
 	public void saveBook(Book book) {
 		HashMap<String, Book> books = readBookMap();
 		String isbn = book.getIsbn();
@@ -47,6 +54,12 @@ public class DataAccessFacade implements DataAccess {
 		Book book = books.get(isbn);
 		System.out.println("book: " + book);
 		return book;
+	}
+
+	public CheckoutRecord getCheckoutRecord(String memberId) {
+		HashMap<String, CheckoutRecord> checkoutRecordHashMap = readCheckoutRecordMap();
+		CheckoutRecord checkoutRecord = checkoutRecordHashMap.get(memberId);
+		return checkoutRecord;
 	}
 
 	public LibraryMember getMember(String memberId) {
@@ -81,6 +94,10 @@ public class DataAccessFacade implements DataAccess {
 	@SuppressWarnings("unchecked")
 	public HashMap<String, Book> readBookMap() {
 		return (HashMap<String, Book>)readFromStorage(StorageType.BOOKS);
+	}
+
+	public HashMap<String, CheckoutRecord> readCheckoutRecordMap() {
+		return (HashMap<String, CheckoutRecord>)readFromStorage(StorageType.CHECKOUTS);
 	}
 	
 	/////load methods - these place test data into the storage area

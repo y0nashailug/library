@@ -1,7 +1,9 @@
 package ui.panels;
 
 import business.Book;
+import business.CheckoutRecord;
 import business.Exceptions.BookException;
+import business.Exceptions.CheckoutRecordException;
 import business.Exceptions.LibrarySystemException;
 import business.LibraryMember;
 import business.SystemController;
@@ -10,10 +12,12 @@ import ui.Util;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
 
 public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventListener {
 
     private JComponent[] jComponents = {
+            new JTextField(15),
             new JTextField(15),
     };
 
@@ -33,7 +37,7 @@ public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventL
         components = labelsAndFields.getComponents();
         form.add(labelsAndFields, BorderLayout.CENTER);
 
-        bottom.add(addBookCopy);
+        bottom.add(addBookCopy, BorderLayout.SOUTH);
 
         this.add(form);
         this.add(bottom);
@@ -67,11 +71,22 @@ public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventL
                 //TODO:
                 // 1. add record on Checkout collection
                 // 2. add record to member and update Member collection
-                // 3. update book copy and set available to true on Book collection
+                // 3. update book copy and set available to [false] on Book collection
 
+                systemController.addCheckoutRecord(member.getMemberId(), book.getNextAvailableCopy(), LocalDate.now(), LocalDate.now().plusDays(1));
+                CheckoutRecord checkoutRecord = systemController.getCheckoutRecord(member.getMemberId());
+                member.setCheckoutRecord(checkoutRecord);
 
-                displayInfo("Book copy added successfully. Book copy now " + book.getNumCopies());
-            } catch(BookException | LibrarySystemException e) {
+                System.out.println(member);
+
+                systemController.updateMember(member);
+                book.getNextAvailableCopy().changeAvailability();
+                systemController.updateBook(book);
+
+                CheckoutStatus.INSTANCE.revalidateTable(checkoutRecord);
+
+                displayInfo("Checkout successfully");
+            } catch(BookException | LibrarySystemException | CheckoutRecordException e) {
                 displayError(e.getMessage());
             }
         });

@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AddBookCopyPanel extends JPanel implements MessageableWindow, BtnEventListener {
+
     private JComponent[] jComponents = {
             new JTextField(15),
     };

@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class LoginPanel extends JPanel implements MessageableWindow, BtnEventListener {
+
     private JTextField username;
     private JPasswordField password;
 
@@ -30,7 +31,7 @@ public class LoginPanel extends JPanel implements MessageableWindow, BtnEventLis
         username = new JTextField(11);
         password = new JPasswordField(11);
 
-        JButton signin = new JButton("Login");
+        JButton signIn = new JButton("Login");
 
         upper.add(usernameLabel);
         upper.add(username);
@@ -38,9 +39,8 @@ public class LoginPanel extends JPanel implements MessageableWindow, BtnEventLis
         lower.add(passwordLabel);
         lower.add(password);
 
-        //Add event listener
-        addEventListener(signin);
-        bottom.add(signin);
+        addEventListener(signIn);
+        bottom.add(signIn);
 
         panel.add(upper, BorderLayout.NORTH);
         panel.add(lower, BorderLayout.CENTER);

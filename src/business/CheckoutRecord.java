@@ -1,9 +1,11 @@
 package business;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class CheckoutRecord {
+public class CheckoutRecord implements Serializable {
 
+    private static final long serialVersionUID = 1825622724051957822L;
     private String memberId;
     private BookCopy bookCopy;
     private LocalDate checkoutDate;

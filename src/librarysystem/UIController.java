@@ -64,7 +64,6 @@ public class UIController extends JFrame implements LibWindow {
 
         cards = new JPanel(new CardLayout());
         for (String i : items) {
-            System.out.println(i);
             //{ "Add member", "Add book", "Add book copy", "Search member", "All book ids", "All member ids" };
             if (i == Util.ALL_MENU[0]) {
                 cards.add(createNewMemberPanel(), i);
@@ -76,6 +75,10 @@ public class UIController extends JFrame implements LibWindow {
                 cards.add(createViewBooksPanel(), i);
             } else if (i == Util.ALL_MENU[5]) {
                 cards.add(createViewMemberIdsPanel(), i);
+            } else if (i == Util.ALL_MENU[6]) {
+                cards.add(createCheckoutBookPanel(), i);
+            } else if (i == Util.ALL_MENU[7]) {
+                cards.add(createCheckoutStatusPanel(), i);
             }
         }
 
@@ -128,6 +131,39 @@ public class UIController extends JFrame implements LibWindow {
         ViewMemberIds viewMemberIds = ViewMemberIds.INSTANCE;
         viewMemberIds.init();
         container.add(viewMemberIds);
+
+        return container;
+    }
+
+    private JPanel createCheckoutBookPanel() {
+
+        JPanel container = new JPanel(new BorderLayout());
+        JLabel containerLabel = new JLabel("Checkout book");
+        containerLabel.setForeground(Color.BLUE);
+
+        JPanel containerLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
+        containerLabelPanel.add(containerLabel);
+
+        container.add(containerLabelPanel, BorderLayout.PAGE_START);
+        CheckoutBook checkoutBook = new CheckoutBook();
+        container.add(checkoutBook);
+
+        return container;
+    }
+
+    private JPanel createCheckoutStatusPanel() {
+
+        JPanel container = new JPanel(new BorderLayout());
+        JLabel containerLabel = new JLabel("Checkout status");
+        containerLabel.setForeground(Color.BLUE);
+
+        JPanel containerLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
+        containerLabelPanel.add(containerLabel);
+
+        container.add(containerLabelPanel, BorderLayout.PAGE_START);
+        CheckoutStatus checkoutStatus = CheckoutStatus.INSTANCE;
+        checkoutStatus.init();
+        container.add(checkoutStatus);
 
         return container;
     }
@@ -187,8 +223,8 @@ public class UIController extends JFrame implements LibWindow {
 
         NotificationBar nBar = new NotificationBar();
 
-        nBar.setStatusbar("Welcome!");
-        nBar.getStatusbar().setForeground(Color.BLUE);
+        nBar.setStatusBar("Welcome!");
+        nBar.getStatusBar().setForeground(Color.BLUE);
 
         return nBar;
     }

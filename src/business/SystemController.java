@@ -1,13 +1,16 @@
 package business;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import business.Controllers.BookController;
+import business.Controllers.CheckoutController;
 import business.Controllers.MemberController;
 import business.Exceptions.BookException;
+import business.Exceptions.CheckoutRecordException;
 import business.Exceptions.LibrarySystemException;
 import dataaccess.Auth;
 import dataaccess.DataAccess;
@@ -75,6 +78,18 @@ public class SystemController implements ControllerInterface {
 		dataAccess.saveBook(book);
 	}
 
+	public void addCheckoutRecord(String memberId, BookCopy bookCopy, LocalDate checkoutDate, LocalDate dueDate) throws CheckoutRecordException {
+
+		CheckoutController checkoutController = new CheckoutController();
+		if (checkoutController.checkoutRecordExists(memberId, allBookIds())) {
+			throw new CheckoutRecordException("Record already existed.");
+		}
+
+		CheckoutRecord checkoutRecord = new CheckoutRecord(memberId, bookCopy, checkoutDate, dueDate);
+		DataAccess dataAccess = new DataAccessFacade();
+		dataAccess.saveCheckoutRecord(checkoutRecord);
+	}
+
 	public Book getBook(String isbn) throws BookException {
 		BookController bookController = new BookController();
 		if (!bookController.bookExists(isbn, allBookIds())) {
@@ -83,6 +98,7 @@ public class SystemController implements ControllerInterface {
 
 		return bookController.getBook(isbn);
 	}
+
 	public LibraryMember getMember(String memberId) throws LibrarySystemException {
 		MemberController memberController = new MemberController();
 		if (!memberController.memberExists(memberId, allMemberIds())) {
@@ -90,6 +106,15 @@ public class SystemController implements ControllerInterface {
 		}
 
 		return memberController.getMember(memberId);
+	}
+
+	public CheckoutRecord getCheckoutRecord(String memberId) throws CheckoutRecordException {
+		CheckoutController checkoutController = new CheckoutController();
+		if (!checkoutController.checkoutRecordExists(memberId, allMemberIds())) {
+			throw new CheckoutRecordException("Checkout record not found.");
+		}
+
+		return checkoutController.getCheckoutRecord(memberId);
 	}
 
 	public void updateBook(Book book) throws BookException {
@@ -103,11 +128,16 @@ public class SystemController implements ControllerInterface {
 
 	public void updateMember(LibraryMember libraryMember) throws LibrarySystemException {
 		MemberController memberController = new MemberController();
-		if (!memberController.memberExists(libraryMember.getMemberId(), allBookIds())) {
-			throw new LibrarySystemException("Member not found.");
+		if (!memberController.memberExists(libraryMember.getMemberId(), allMemberIds())) {
+			throw new LibrarySystemException("Member was not updated.");
 		}
 
 		memberController.updateMember(libraryMember);
+	}
+
+	public List checkoutRecordsForTable() {
+
+		return null;
 	}
 
 	@Override
@@ -117,6 +147,14 @@ public class SystemController implements ControllerInterface {
 		retval.addAll(da.readMemberMap().keySet());
 		return retval;
 	}
+
+	@Override
+	public List<String> allCheckoutRecordIds() {
+		DataAccess da = new DataAccessFacade();
+		List<String> retval = new ArrayList<>();
+		retval.addAll(da.readCheckoutRecordMap().keySet());
+		return retval;
+	}
 	
 	@Override
 	public List<String> allBookIds() {
@@ -124,5 +162,17 @@ public class SystemController implements ControllerInterface {
 		List<String> retval = new ArrayList<>();
 		retval.addAll(da.readBooksMap().keySet());
 		return retval;
+	}
+
+	@Override
+	public HashMap<String, CheckoutRecord> allCheckoutRecords() {
+		DataAccess da = new DataAccessFacade();
+		return da.readCheckoutRecordMap();
+	}
+
+	@Override
+	public HashMap<String, LibraryMember> getMembers() {
+		DataAccess da = new DataAccessFacade();
+		return da.readMemberMap();
 	}
 }

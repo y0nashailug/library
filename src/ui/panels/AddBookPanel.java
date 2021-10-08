@@ -1,7 +1,5 @@
 package ui.panels;
 
-import business.Address;
-import business.Author;
 import business.Exceptions.BookException;
 import business.SystemController;
 import ui.BtnEventListener;
@@ -9,8 +7,6 @@ import ui.Util;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventListener {
 

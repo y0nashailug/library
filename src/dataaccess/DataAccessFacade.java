@@ -32,6 +32,12 @@ public class DataAccessFacade implements DataAccess {
 		saveToStorage(StorageType.MEMBERS, mems);	
 	}
 
+	public void deleteMember(String memberId) {
+		HashMap<String, LibraryMember> members = readMemberMap();
+		members.remove(memberId);
+		saveToStorage(StorageType.MEMBERS, members);
+	}
+
 	public void saveCheckoutRecord(CheckoutRecord checkoutRecord) {
 		HashMap<String, CheckoutRecord> checkoutRecords = readCheckoutRecordMap();
 		String memberId = checkoutRecord.getLibraryMember().getMemberId();

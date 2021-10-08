@@ -83,6 +83,8 @@ public class UIController extends JFrame implements LibWindow {
             } else if (i == Util.ALL_MENU[9]) {
                 cards.add(createSearchMemberPanel(), i);
             } else if (i == Util.ALL_MENU[10]) {
+                cards.add(createUpdateMemberPanel(), i);
+            } else if (i == Util.ALL_MENU[11]) {
                 cards.add(createLogoutPanel(), i);
             }
         }
@@ -227,7 +229,7 @@ public class UIController extends JFrame implements LibWindow {
     private JPanel createNewMemberPanel() {
 
         JPanel titlePanel = new JPanel(new BorderLayout());
-        JLabel titleLabel = new JLabel("View titles");
+        JLabel titleLabel = new JLabel("Add new member");
         titleLabel.setForeground(Color.BLUE);
 
         JPanel titleLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
@@ -245,7 +247,7 @@ public class UIController extends JFrame implements LibWindow {
 
         JPanel bookPanel = new JPanel(new BorderLayout());
 
-        JLabel bookLabel = new JLabel("Add book");
+        JLabel bookLabel = new JLabel("Add new book");
         bookLabel.setForeground(Color.BLUE);
 
         JPanel addBookPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
@@ -258,11 +260,28 @@ public class UIController extends JFrame implements LibWindow {
         return bookPanel;
     }
 
+    private JPanel createUpdateMemberPanel() {
+
+        JPanel bookPanel = new JPanel(new BorderLayout());
+
+        JLabel bookLabel = new JLabel("Update member");
+        bookLabel.setForeground(Color.BLUE);
+
+        JPanel addBookPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
+        addBookPanel.add(bookLabel);
+
+        bookPanel.add(addBookPanel, BorderLayout.PAGE_START);
+        UpdateMemberPanel updateMemberPanel = new UpdateMemberPanel();
+        bookPanel.add(updateMemberPanel);
+
+        return bookPanel;
+    }
+
     private JPanel createAddBookCopyPanel() {
 
         JPanel bookPanel = new JPanel(new BorderLayout());
 
-        JLabel bookLabel = new JLabel("Add book copy");
+        JLabel bookLabel = new JLabel("Add copy to a book");
         bookLabel.setForeground(Color.BLUE);
 
         JPanel addBookPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));

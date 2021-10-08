@@ -28,6 +28,7 @@ public class Util {
 			"Checkout status",
 			"Search book",
 			"Search member checkouts",
+			"Update/Delete member",
 			"Logout",
 	};
 	//rgb(18, 75, 14)

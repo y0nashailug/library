@@ -60,27 +60,23 @@ public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventL
                     return;
                 }
                 if (values[1] == null || values[1].equals("")) {
-                    displayError("Please enter isbn of the book.");
+                    displayError("Please enter isbn.");
                     return;
                 }
 
+                String memberId = values[0].trim();
+                String isbn = values[1].trim();
+
                 SystemController systemController = new SystemController();
-                Book book = systemController.getBook(values[1].trim());
-                LibraryMember member = systemController.getMember(values[0].trim());
+                Book book = systemController.getBook(isbn);
+                LibraryMember member = systemController.getMember(memberId);
 
                 //TODO:
-                // 1. add record on Checkout collection
+                // 1. add record to CheckoutRecord collection
                 // 2. add record to member and update Member collection
                 // 3. update book copy and set available to [false] on Book collection
 
-                systemController.addCheckoutRecord(member.getMemberId(), book.getNextAvailableCopy(), LocalDate.now(), LocalDate.now().plusDays(1));
-                CheckoutRecord checkoutRecord = systemController.getCheckoutRecord(member.getMemberId());
-                member.setCheckoutRecord(checkoutRecord);
-
-                systemController.updateMember(member);
-                book.getNextAvailableCopy().changeAvailability();
-                systemController.updateBook(book);
-
+                CheckoutRecord checkoutRecord  = systemController.addCheckoutRecord(member, book, LocalDate.now(), LocalDate.now());
                 CheckoutStatus.INSTANCE.revalidateTable(checkoutRecord);
 
                 displayInfo("Checkout successfully");

@@ -31,6 +31,26 @@ public class Util {
 			"Update/Delete member",
 			"Logout",
 	};
+	public static final String[] LIBRARIAN_MENU = {
+			"Search member",
+			"All book ids",
+			"All member ids",
+			"Checkout book",
+			"Checkout status",
+			"Search book",
+			"Search member checkouts",
+			"Logout",
+	};
+	public static final String[] ADMIN_MENU = {
+			"Add member",
+			"Add book",
+			"Add book copy",
+			"Search member",
+			"All member ids",
+			"Search book",
+			"Update/Delete member",
+			"Logout",
+	};
 	//rgb(18, 75, 14)
 	
 	public static Font makeSmallFont(Font f) {

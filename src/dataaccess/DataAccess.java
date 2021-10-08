@@ -8,13 +8,13 @@ import business.LibraryMember;
 import dataaccess.DataAccessFacade.StorageType;
 
 public interface DataAccess { 
-	public HashMap<String,Book> readBooksMap();
-	public HashMap<String,User> readUserMap();
-	public HashMap<String, LibraryMember> readMemberMap();
-	public HashMap<String, CheckoutRecord> readCheckoutRecordMap();
-	public void saveMember(LibraryMember member);
-	public void saveBook(Book book);
-	public void saveCheckoutRecord(CheckoutRecord checkoutRecord);
-	public Book getBook(String isbn);
-	public LibraryMember getMember(String member);
+	HashMap<String,Book> readBooksMap();
+	HashMap<String,User> readUserMap();
+	HashMap<String, LibraryMember> readMemberMap();
+	HashMap<String, CheckoutRecord> readCheckoutRecordMap();
+	void saveMember(LibraryMember member);
+	void saveBook(Book book);
+	void saveCheckoutRecord(CheckoutRecord checkoutRecord);
+	Book getBook(String isbn);
+	LibraryMember getMember(String member);
 }

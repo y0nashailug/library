@@ -1,18 +1,18 @@
 package ui.panels;
 
-import business.Exceptions.LibrarySystemException;
-import business.LibraryMember;
-import business.SystemController;
+import business.*;
+import business.Exceptions.CheckoutRecordException;
 import ui.BtnEventListener;
 import ui.Util;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.print.PrinterException;
 
-public class SearchPanel extends JPanel implements MessageableWindow, BtnEventListener {
+public class SearchMemberForCheckoutPanel extends JPanel implements MessageableWindow, BtnEventListener {
 
-    public static SearchPanel INSTANCE = new SearchPanel();
+    public static SearchMemberForCheckoutPanel INSTANCE = new SearchMemberForCheckoutPanel();
     private JComponent[] jComponents = {
             new JTextField(15),
     };
@@ -20,13 +20,13 @@ public class SearchPanel extends JPanel implements MessageableWindow, BtnEventLi
     private JScrollPane scrollPane;
     private DefaultTableModel model;
     private Component[] components;
-    private final String[] DEFAULT_COLUMN_HEADERS = { "Member Id", "First name", "Last name" };
+    private final String[] DEFAULT_COLUMN_HEADERS = { "Member Id", "Title", "ISBN", "Checkout date", "Due date", "Librarian" };
     private static final int SCREEN_WIDTH = 420;
     private static final int SCREEN_HEIGHT = 420;
     private static final int TABLE_WIDTH = (int) (0.75 * SCREEN_WIDTH);
     private static final int DEFAULT_TABLE_HEIGHT = (int) (0.75 * SCREEN_HEIGHT);
 
-    private SearchPanel() {}
+    private SearchMemberForCheckoutPanel() {}
 
     public void init() {
         paintScreen();
@@ -73,8 +73,19 @@ public class SearchPanel extends JPanel implements MessageableWindow, BtnEventLi
         model.setColumnIdentifiers(DEFAULT_COLUMN_HEADERS);
     }
 
-    private void loadData(LibraryMember member) {
-        model.addRow(new String[] { member.getMemberId(), member.getFirstName(), member.getLastName() });
+    private void loadData(CheckoutRecord checkoutRecord) {
+
+        for (int j = 0; j < checkoutRecord.getCheckoutRecordEntries().size(); j++) {
+            String memberId = checkoutRecord.getLibraryMember().getMemberId();
+            String title = checkoutRecord.getCheckoutRecordEntries().get(j).getBookCopy().getBook().getTitle();
+            String isbn = checkoutRecord.getCheckoutRecordEntries().get(j).getBookCopy().getBook().getIsbn();
+            String checkoutDate = checkoutRecord.getCheckoutRecordEntries().get(j).getCheckoutDate().toString();
+            String dueDate = checkoutRecord.getCheckoutRecordEntries().get(j).getDueDate().toString();
+            String firstName = checkoutRecord.getLibraryMember().getFirstName();
+            model.addRow(new String[] { memberId, title, isbn, checkoutDate, dueDate, firstName });
+        }
+
+        model.fireTableDataChanged();
     }
 
     @Override
@@ -95,11 +106,13 @@ public class SearchPanel extends JPanel implements MessageableWindow, BtnEventLi
                 }
 
                 SystemController systemController = new SystemController();
-                LibraryMember libraryMember = systemController.getMember(values[0].trim());
-                loadData(libraryMember);
+                String memberId = values[0].trim();
+                CheckoutRecord checkoutRecord = systemController.getCheckoutRecord(memberId);
+                loadData(checkoutRecord);
+                table.print();
 
                 displayInfo("Member found.");
-            } catch(LibrarySystemException e) {
+            } catch(CheckoutRecordException | PrinterException e) {
                 displayError(e.getMessage());
             }
         });

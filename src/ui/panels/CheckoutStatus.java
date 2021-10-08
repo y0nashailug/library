@@ -2,7 +2,6 @@ package ui.panels;
 
 import business.CheckoutRecord;
 import business.ControllerInterface;
-import business.LibraryMember;
 import business.SystemController;
 
 import javax.swing.*;

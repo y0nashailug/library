@@ -81,6 +81,8 @@ public class UIController extends JFrame implements LibWindow {
             } else if (i == Util.ALL_MENU[8]) {
                 cards.add(createSearchBookPanel(), i);
             } else if (i == Util.ALL_MENU[9]) {
+                cards.add(createSearchMemberPanel(), i);
+            } else if (i == Util.ALL_MENU[10]) {
                 cards.add(createLogoutPanel(), i);
             }
         }
@@ -174,14 +176,14 @@ public class UIController extends JFrame implements LibWindow {
     private JPanel createSearchPanel() {
 
         JPanel container = new JPanel(new BorderLayout());
-        JLabel containerLabel = new JLabel("Search by member id");
+        JLabel containerLabel = new JLabel("Search member by member id");
         containerLabel.setForeground(Color.BLUE);
 
         JPanel containerLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
         containerLabelPanel.add(containerLabel);
 
         container.add(containerLabelPanel, BorderLayout.PAGE_START);
-        SearchPanel searchPanel = SearchPanel.INSTANCE;
+        SearchMemberPanel searchPanel = SearchMemberPanel.INSTANCE;
         searchPanel.init();
         container.add(searchPanel);
 
@@ -191,7 +193,7 @@ public class UIController extends JFrame implements LibWindow {
     private JPanel createSearchBookPanel() {
 
         JPanel container = new JPanel(new BorderLayout());
-        JLabel containerLabel = new JLabel("Search by isbn");
+        JLabel containerLabel = new JLabel("Search book by isbn");
         containerLabel.setForeground(Color.BLUE);
 
         JPanel containerLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
@@ -201,6 +203,23 @@ public class UIController extends JFrame implements LibWindow {
         SearchBookPanel searchBookPanel = SearchBookPanel.INSTANCE;
         searchBookPanel.init();
         container.add(searchBookPanel);
+
+        return container;
+    }
+
+    private JPanel createSearchMemberPanel() {
+
+        JPanel container = new JPanel(new BorderLayout());
+        JLabel containerLabel = new JLabel("Search checkouts by member id");
+        containerLabel.setForeground(Color.BLUE);
+
+        JPanel containerLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
+        containerLabelPanel.add(containerLabel);
+
+        container.add(containerLabelPanel, BorderLayout.PAGE_START);
+        SearchMemberForCheckoutPanel searchMemberPanel = SearchMemberForCheckoutPanel.INSTANCE;
+        searchMemberPanel.init();
+        container.add(searchMemberPanel);
 
         return container;
     }

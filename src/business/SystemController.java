@@ -90,7 +90,7 @@ public class SystemController implements ControllerInterface {
 
 	public CheckoutRecord addCheckoutRecord(LibraryMember libraryMember, Book book, LocalDate checkoutDate, LocalDate dueDate) throws CheckoutRecordException, LibrarySystemException, BookException {
 
-		if (book.getNextAvailableCopy() == null) {
+		if (!book.isAvailable() || book.getNextAvailableCopy() == null) {
 			throw new BookException("Book is not available.");
 		}
 
@@ -229,7 +229,8 @@ public class SystemController implements ControllerInterface {
 			for (int j = 0; j < checkoutRecord.getCheckoutRecordEntries().size(); j++) {
 				LocalDate today = LocalDate.now();
 				CheckoutRecordEntry checkoutRecordEntry = checkoutRecord.getCheckoutRecordEntries().get(j);
-				if (checkoutRecordEntry.getBookCopy().getBook().getIsbn().equals(isbn) && checkoutRecordEntry.getDueDate().compareTo(today) < -1) {
+				if (checkoutRecordEntry.getBookCopy().getBook().getIsbn().equals(isbn)
+						&& checkoutRecordEntry.getDueDate().compareTo(today) > 1) {
 					checkoutRecordList.add(checkoutRecord);
 				}
 			}

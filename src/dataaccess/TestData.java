@@ -117,7 +117,7 @@ public class TestData {
 		LibraryMember libraryMember = new LibraryMember("1004", "Ricardo", "Montalbahn", "641-472-2871", addresses.get(7));
 
 		CheckoutRecord checkoutRecord = new CheckoutRecord(libraryMember);
-		CheckoutRecordEntry checkoutRecordEntry = new CheckoutRecordEntry(book.getNextAvailableCopy(), LocalDate.now(), LocalDate.now().plusDays(7));
+		CheckoutRecordEntry checkoutRecordEntry = new CheckoutRecordEntry(book.getNextAvailableCopy(), LocalDate.now(), LocalDate.now().plusDays(1));
 
 		checkoutRecord.addCheckoutRecordEntry(checkoutRecordEntry);
 		List<CheckoutRecord> checkoutRecordList = new ArrayList<>();

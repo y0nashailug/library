@@ -1,6 +1,7 @@
 package ui.panels;
 
 import business.*;
+import business.Exceptions.CheckoutRecordException;
 import ui.BtnEventListener;
 import ui.Util;
 
@@ -78,6 +79,8 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
 
                 String isbn = values[0].trim();
                 List<CheckoutRecord> checkoutRecordList = ci.allCheckoutRecordsByIsbn(isbn);
+                System.out.println(checkoutRecordList);
+                if (checkoutRecordList.isEmpty()) throw new CheckoutRecordException("Data not found.");
                 loadData(checkoutRecordList);
                 displayInfo("Data retrieved successfully");
             } catch(Exception e) {

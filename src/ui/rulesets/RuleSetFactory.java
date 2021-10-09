@@ -1,6 +1,7 @@
 package ui.rulesets;
 
 import ui.panels.AddBookPanel;
+import ui.panels.CheckoutBook;
 import ui.panels.LoginPanel;
 import ui.panels.NewMemberPanel;
 
@@ -14,6 +15,7 @@ final public class RuleSetFactory {
         map.put(LoginPanel.class, new LoginRuleSet());
         map.put(AddBookPanel.class, new AddBookRuleSet());
         map.put(NewMemberPanel.class, new AddMemberRuleSet());
+        map.put(CheckoutBook.class, new CheckoutBookRuleSet());
     }
     public static RuleSet getRuleSet(Component c) {
         Class<? extends Component> cl = c.getClass();

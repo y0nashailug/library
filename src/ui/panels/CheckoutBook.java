@@ -9,6 +9,9 @@ import business.LibraryMember;
 import business.SystemController;
 import ui.BtnEventListener;
 import ui.Util;
+import ui.rulesets.RuleException;
+import ui.rulesets.RuleSet;
+import ui.rulesets.RuleSetFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,8 +23,9 @@ public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventL
             new JTextField(15),
             new JTextField(15),
     };
-
     private Component[] components;
+    private String memberId;
+    private String isbn;
 
     public CheckoutBook() {
 
@@ -55,21 +59,15 @@ public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventL
                     }
                 }
 
-                if (values[0] == null || values[0].equals("")) {
-                    displayError("Please enter member id.");
-                    return;
-                }
-                if (values[1] == null || values[1].equals("")) {
-                    displayError("Please enter isbn.");
-                    return;
-                }
+                RuleSet checkoutBook = RuleSetFactory.getRuleSet(this);
+                checkoutBook.applyRules(this);
 
-                String memberId = values[0].trim();
-                String isbn = values[1].trim();
+                memberId = values[0].trim();
+                isbn = values[1].trim();
 
                 SystemController systemController = new SystemController();
-                Book book = systemController.getBook(isbn);
                 LibraryMember member = systemController.getMember(memberId);
+                Book book = systemController.getBook(isbn);
 
                 //TODO:
                 // 1. add record to CheckoutRecord collection
@@ -80,7 +78,7 @@ public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventL
                 CheckoutStatus.INSTANCE.revalidateTable(checkoutRecord);
 
                 displayInfo("Checkout successfully");
-            } catch(BookException | LibrarySystemException | CheckoutRecordException e) {
+            } catch(BookException | LibrarySystemException | CheckoutRecordException | RuleException e) {
                 displayError(e.getMessage());
             }
         });
@@ -90,6 +88,8 @@ public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventL
         return components;
     }
 
+    public String getIsbn() { return isbn; }
+    public String getMemberId() { return memberId; }
     @Override
     public void updateData() {
 

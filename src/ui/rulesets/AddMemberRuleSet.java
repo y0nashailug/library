@@ -1,6 +1,5 @@
 package ui.rulesets;
 
-import ui.panels.AddBookPanel;
 import ui.panels.NewMemberPanel;
 
 import java.awt.*;

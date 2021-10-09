@@ -29,6 +29,7 @@ public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventL
 
     private Component[] components;
     private String isbn;
+    private String maxCheckoutLength;
 
     public AddBookPanel() {
 
@@ -76,6 +77,7 @@ public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventL
                 }
 
                 isbn = values[0];
+                maxCheckoutLength = values[2];
 
                 RuleSet addBookPanel = RuleSetFactory.getRuleSet(this);
                 addBookPanel.applyRules(this);
@@ -98,6 +100,7 @@ public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventL
     }
 
     public String getIsbn() { return isbn; }
+    public String getMaxCheckoutLength() { return maxCheckoutLength; }
 
     @Override
     public void updateData() {

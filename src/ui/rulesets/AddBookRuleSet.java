@@ -4,6 +4,9 @@ import librarysystem.Util;
 import ui.panels.AddBookPanel;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class AddBookRuleSet implements RuleSet {
     private AddBookPanel addBookPanel;
@@ -30,7 +33,9 @@ public class AddBookRuleSet implements RuleSet {
     }
 
     private void maxCheckoutLengthValid() throws RuleException {
-        if(Integer.parseInt(addBookPanel.getMaxCheckoutLength()) != 7 || Integer.parseInt(addBookPanel.getMaxCheckoutLength()) != 21)
+        List<Integer> nums = Arrays.asList(7, 21);
+        if (!nums.contains(Integer.parseInt(addBookPanel.getMaxCheckoutLength()))) {
             throw new RuleException("Max checkout length must be 7 or 21");
+        }
     }
 }

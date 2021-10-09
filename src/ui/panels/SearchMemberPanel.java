@@ -3,8 +3,11 @@ package ui.panels;
 import business.Exceptions.LibrarySystemException;
 import business.LibraryMember;
 import business.SystemController;
+import librarysystem.Config;
 import ui.BtnEventListener;
 import ui.Util;
+import ui.elements.LJButton;
+import ui.elements.LJTextField;
 import ui.rulesets.RuleException;
 import ui.rulesets.RuleSet;
 import ui.rulesets.RuleSetFactory;
@@ -17,7 +20,7 @@ public class SearchMemberPanel extends JPanel implements MessageableWindow, BtnE
 
     public static SearchMemberPanel INSTANCE = new SearchMemberPanel();
     private JComponent[] jComponents = {
-            new JTextField(15),
+            new LJTextField(),
     };
     private String memberId;
     private JTable table;
@@ -25,8 +28,8 @@ public class SearchMemberPanel extends JPanel implements MessageableWindow, BtnE
     private DefaultTableModel model;
     private Component[] components;
     private final String[] DEFAULT_COLUMN_HEADERS = { "Member Id", "First name", "Last name" };
-    private static final int SCREEN_WIDTH = 420;
-    private static final int SCREEN_HEIGHT = 420;
+    private static final int SCREEN_WIDTH = Config.APP_WIDTH - Config.DIVIDER;
+    private static final int SCREEN_HEIGHT = Config.APP_HEIGHT;
     private static final int TABLE_WIDTH = (int) (0.75 * SCREEN_WIDTH);
     private static final int DEFAULT_TABLE_HEIGHT = (int) (0.75 * SCREEN_HEIGHT);
 
@@ -52,7 +55,7 @@ public class SearchMemberPanel extends JPanel implements MessageableWindow, BtnE
         JComponent form = new JPanel(new BorderLayout(5,5));
         JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 4));
 
-        JButton addBookCopy = new JButton("Search");
+        JButton addBookCopy = new LJButton("Search");
         addEventListener(addBookCopy);
 
         String[] labels = { "Member id" };
@@ -78,6 +81,7 @@ public class SearchMemberPanel extends JPanel implements MessageableWindow, BtnE
     }
 
     private void loadData(LibraryMember member) {
+        model.setRowCount(0);
         model.addRow(new String[] { member.getMemberId(), member.getFirstName(), member.getLastName() });
     }
 
@@ -88,8 +92,8 @@ public class SearchMemberPanel extends JPanel implements MessageableWindow, BtnE
                 String[] values = new String[components.length / 2];
                 int i = 0;
                 for (Component c: components) {
-                    if (c.getClass().equals(JTextField.class)) {
-                        values[i++] = ((JTextField) c).getText();
+                    if (c.getClass().equals(LJTextField.class)) {
+                        values[i++] = ((LJTextField) c).getText();
                     }
                 }
 
@@ -99,9 +103,10 @@ public class SearchMemberPanel extends JPanel implements MessageableWindow, BtnE
 
                 SystemController systemController = new SystemController();
                 LibraryMember libraryMember = systemController.getMember(memberId);
+                if (libraryMember == null) throw new LibrarySystemException("Member was not found with id: " + memberId);
                 loadData(libraryMember);
 
-                displayInfo("Member found.");
+                displayInfo("Member found with id: " + memberId);
             } catch(LibrarySystemException | RuleException e) {
                 displayError(e.getMessage());
             }
@@ -113,6 +118,7 @@ public class SearchMemberPanel extends JPanel implements MessageableWindow, BtnE
     }
 
     public String getMemberId() { return memberId; }
+
     @Override
     public void updateData() {
 

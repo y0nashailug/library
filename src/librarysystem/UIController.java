@@ -349,6 +349,7 @@ public class UIController extends JFrame implements LibWindow {
             @Override
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
                 if (value instanceof ListItem) {
                     ListItem nextItem = (ListItem) value;
                     setText(nextItem.getItemName());
@@ -365,6 +366,8 @@ public class UIController extends JFrame implements LibWindow {
                 } else {
                     setText("illegal item");
                 }
+
+                this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
                 return c;
             }
         });

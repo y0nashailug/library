@@ -5,6 +5,8 @@ import business.LibraryMember;
 import business.SystemController;
 import ui.BtnEventListener;
 import ui.Util;
+import ui.elements.LJButton;
+import ui.elements.LJTextField;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,13 +15,13 @@ public class UpdateMemberPanel extends JPanel implements MessageableWindow, BtnE
 
     private String memberId;
     private JComponent[] jComponent = {
-            new JTextField(15),
+            new LJTextField(),
     };
 
     public JComponent[] jComponents = {
-            new JTextField(15),
-            new JTextField(15),
-            new JTextField(15),
+            new LJTextField(),
+            new LJTextField(),
+            new LJTextField(),
     };
 
     private Component[] components;
@@ -33,13 +35,13 @@ public class UpdateMemberPanel extends JPanel implements MessageableWindow, BtnE
         JComponent updateFormCenterSouth = new JPanel(new BorderLayout(5,5));
         JComponent bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 4));
 
-        JButton searchBtn = new JButton("Search");
+        JButton searchBtn = new LJButton("Search");
         addEventListener(searchBtn);
 
-        JButton updateBtn = new JButton("Update");
+        JButton updateBtn = new LJButton("Update");
         addUpdateEventListener(updateBtn);
 
-        JButton deleteBtn = new JButton("Delete");
+        JButton deleteBtn = new LJButton("Delete");
         deleteEventListener(deleteBtn);
 
         String[] labels = { "Member id" };
@@ -71,8 +73,8 @@ public class UpdateMemberPanel extends JPanel implements MessageableWindow, BtnE
                 String[] values = new String[component.length / 2];
                 int i = 0;
                 for (Component c: component) {
-                    if (c.getClass().equals(JTextField.class)) {
-                        values[i++] = ((JTextField) c).getText();
+                    if (c.getClass().equals(LJTextField.class)) {
+                        values[i++] = ((LJTextField) c).getText();
                     }
                 }
 
@@ -83,8 +85,8 @@ public class UpdateMemberPanel extends JPanel implements MessageableWindow, BtnE
 
                 int j = 0;
                 for (Component c: components) {
-                    if (c.getClass().equals(JTextField.class)) {
-                        ((JTextField) c).setText(list[j++]);
+                    if (c.getClass().equals(LJTextField.class)) {
+                        ((LJTextField) c).setText(list[j++]);
                     }
                 }
 
@@ -105,8 +107,8 @@ public class UpdateMemberPanel extends JPanel implements MessageableWindow, BtnE
                 String[] values = new String[components.length / 2];
                 int i = 0;
                 for (Component c: components) {
-                    if (c.getClass().equals(JTextField.class)) {
-                        values[i++] = ((JTextField) c).getText();
+                    if (c.getClass().equals(LJTextField.class)) {
+                        values[i++] = ((LJTextField) c).getText();
                     }
                 }
 

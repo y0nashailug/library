@@ -61,13 +61,21 @@ public class SystemController implements ControllerInterface {
 		LoginWindow.INSTANCE.setVisible(true);
 	}
 
-	public void addMember(String memberId, String fname, String lname, String tel, Address addr) throws LibrarySystemException {
+	public void addMember(String memberId,
+						  String fname,
+						  String lname,
+						  String tel,
+						  String street,
+						  String city,
+						  String state,
+						  String zip) throws LibrarySystemException {
 		MemberController memberController = new MemberController();
 		if (memberController.memberExists(memberId, allMemberIds())) {
 			throw new LibrarySystemException("Member already existed.");
 		}
 
-		LibraryMember libraryMember = new LibraryMember(memberId, fname, lname, tel, addr);
+		Address address = new Address(street, city, state, zip);
+		LibraryMember libraryMember = new LibraryMember(memberId, fname, lname, tel, address);
 		DataAccess dataAccess = new DataAccessFacade();
 		dataAccess.saveMember(libraryMember);
 	}

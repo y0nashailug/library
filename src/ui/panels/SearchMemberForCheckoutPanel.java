@@ -2,8 +2,11 @@ package ui.panels;
 
 import business.*;
 import business.Exceptions.CheckoutRecordException;
+import librarysystem.Config;
 import ui.BtnEventListener;
 import ui.Util;
+import ui.elements.LJButton;
+import ui.elements.LJTextField;
 import ui.rulesets.RuleException;
 import ui.rulesets.RuleSet;
 import ui.rulesets.RuleSetFactory;
@@ -17,7 +20,7 @@ public class SearchMemberForCheckoutPanel extends JPanel implements MessageableW
 
     public static SearchMemberForCheckoutPanel INSTANCE = new SearchMemberForCheckoutPanel();
     private JComponent[] jComponents = {
-            new JTextField(15),
+            new LJTextField(),
     };
     private JTable table;
     private JScrollPane scrollPane;
@@ -25,8 +28,8 @@ public class SearchMemberForCheckoutPanel extends JPanel implements MessageableW
     private Component[] components;
     private String memberId;
     private final String[] DEFAULT_COLUMN_HEADERS = { "Member Id", "Title", "ISBN", "Checkout date", "Due date", "Librarian" };
-    private static final int SCREEN_WIDTH = 420;
-    private static final int SCREEN_HEIGHT = 420;
+    private static final int SCREEN_WIDTH = Config.APP_WIDTH - Config.DIVIDER;
+    private static final int SCREEN_HEIGHT = Config.APP_HEIGHT;
     private static final int TABLE_WIDTH = (int) (0.75 * SCREEN_WIDTH);
     private static final int DEFAULT_TABLE_HEIGHT = (int) (0.75 * SCREEN_HEIGHT);
 
@@ -52,8 +55,8 @@ public class SearchMemberForCheckoutPanel extends JPanel implements MessageableW
         JComponent form = new JPanel(new BorderLayout(5,5));
         JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 4));
 
-        JButton addBookCopy = new JButton("Search");
-        addEventListener(addBookCopy);
+        JButton searchMemberBtn = new LJButton("Search");
+        addEventListener(searchMemberBtn);
 
         String[] labels = { "Member id" };
 
@@ -61,7 +64,7 @@ public class SearchMemberForCheckoutPanel extends JPanel implements MessageableW
         components = labelsAndFields.getComponents();
         form.add(labelsAndFields, BorderLayout.CENTER);
 
-        bottom.add(addBookCopy, BorderLayout.SOUTH);
+        bottom.add(searchMemberBtn, BorderLayout.SOUTH);
 
         this.add(form);
         this.add(bottom);
@@ -99,8 +102,8 @@ public class SearchMemberForCheckoutPanel extends JPanel implements MessageableW
                 String[] values = new String[components.length / 2];
                 int i = 0;
                 for (Component c: components) {
-                    if (c.getClass().equals(JTextField.class)) {
-                        values[i++] = ((JTextField) c).getText();
+                    if (c.getClass().equals(LJTextField.class)) {
+                        values[i++] = ((LJTextField) c).getText();
                     }
                 }
 

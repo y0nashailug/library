@@ -5,6 +5,7 @@ import business.Exceptions.LogoutException;
 import business.LoginException;
 import business.SystemController;
 import ui.BtnEventListener;
+import ui.elements.LJButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +20,7 @@ public class LogoutPanel extends JPanel implements MessageableWindow, BtnEventLi
 
         upper.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 4));
 
-        JButton logout = new JButton("Logout");
+        JButton logout = new LJButton("Logout");
 
         addEventListener(logout);
         upper.add(logout);

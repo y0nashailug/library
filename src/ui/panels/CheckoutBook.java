@@ -9,6 +9,8 @@ import business.LibraryMember;
 import business.SystemController;
 import ui.BtnEventListener;
 import ui.Util;
+import ui.elements.LJButton;
+import ui.elements.LJTextField;
 import ui.rulesets.RuleException;
 import ui.rulesets.RuleSet;
 import ui.rulesets.RuleSetFactory;
@@ -20,8 +22,8 @@ import java.time.LocalDate;
 public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventListener {
 
     private JComponent[] jComponents = {
-            new JTextField(15),
-            new JTextField(15),
+            new LJTextField(),
+            new LJTextField(),
     };
     private Component[] components;
     private String memberId;
@@ -29,10 +31,11 @@ public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventL
 
     public CheckoutBook() {
 
+        JComponent container = new JPanel(new BorderLayout(5, 5));
         JComponent form = new JPanel(new BorderLayout(5,5));
         JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 4));
 
-        JButton addBookCopy = new JButton("Checkout");
+        JButton addBookCopy = new LJButton("Checkout");
         addEventListener(addBookCopy);
 
         String[] labels = { "Member id", "Book isbn" };
@@ -40,11 +43,12 @@ public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventL
         JComponent labelsAndFields = Util.getTwoColumnLayout(labels, jComponents);
         components = labelsAndFields.getComponents();
         form.add(labelsAndFields, BorderLayout.CENTER);
-
         bottom.add(addBookCopy, BorderLayout.SOUTH);
 
-        this.add(form);
-        this.add(bottom);
+        container.add(form, BorderLayout.NORTH);
+        container.add(bottom, BorderLayout.SOUTH);
+
+        this.add(container);
     }
 
     @Override
@@ -54,8 +58,8 @@ public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventL
                 String[] values = new String[components.length / 2];
                 int i = 0;
                 for (Component c: components) {
-                    if (c.getClass().equals(JTextField.class)) {
-                        values[i++] = ((JTextField) c).getText();
+                    if (c.getClass().equals(LJTextField.class)) {
+                        values[i++] = ((LJTextField) c).getText();
                     }
                 }
 
@@ -75,8 +79,9 @@ public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventL
                 // 3. update book copy and set available to [false] on Book collection
 
                 CheckoutRecord checkoutRecord  = systemController.addCheckoutRecord(member, book, LocalDate.now(), LocalDate.now());
-                CheckoutStatus.INSTANCE.revalidateTable(checkoutRecord);
+                if (checkoutRecord == null) throw new CheckoutRecordException("Checkout record was not found.");
 
+                CheckoutStatus.INSTANCE.revalidateTable(checkoutRecord);
                 displayInfo("Checkout successfully");
             } catch(BookException | LibrarySystemException | CheckoutRecordException | RuleException e) {
                 displayError(e.getMessage());

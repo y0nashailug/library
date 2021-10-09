@@ -1,5 +1,7 @@
 package ui.panels;
 
+import librarysystem.Config;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -15,21 +17,23 @@ public class NotificationBar extends JPanel implements MessageableWindow {
 
         JComponent container = new JPanel(new BorderLayout());
         JPanel upper = new JPanel(new BorderLayout());
+        JPanel bottom = new JPanel(new BorderLayout());
 
         statusBar.setBackground(Color.white);
+        statusBar.setPreferredSize(new Dimension(Config.APP_WIDTH - 20, 24));
         upper.add(statusBar);
 
-        JScrollPane scroll = new JScrollPane(statusBar);
         statusBar.setEditable(false);
         statusBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        scroll.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        upper.add(statusBar);
+        upper.add(statusBar, BorderLayout.NORTH);
 
         container.add(upper, BorderLayout.NORTH);
+        container.add(bottom, BorderLayout.SOUTH);
 
         this.add(container);
         this.setForeground(Color.WHITE);
+        this.setBackground(Color.WHITE);
     }
 
     public JTextArea getStatusBar() {

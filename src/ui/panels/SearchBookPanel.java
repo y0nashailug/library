@@ -3,8 +3,11 @@ package ui.panels;
 import business.Book;
 import business.Exceptions.BookException;
 import business.SystemController;
+import librarysystem.Config;
 import ui.BtnEventListener;
 import ui.Util;
+import ui.elements.LJButton;
+import ui.elements.LJTextField;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -14,7 +17,7 @@ public class SearchBookPanel extends JPanel implements MessageableWindow, BtnEve
 
     public static SearchBookPanel INSTANCE = new SearchBookPanel();
     private JComponent[] jComponents = {
-            new JTextField(15),
+            new LJTextField(),
     };
     private String isbn;
     private JTable table;
@@ -22,8 +25,8 @@ public class SearchBookPanel extends JPanel implements MessageableWindow, BtnEve
     private DefaultTableModel model;
     private Component[] components;
     private final String[] DEFAULT_COLUMN_HEADERS = { "Isbn", "Title", "Avail", "Next avail" };
-    private static final int SCREEN_WIDTH = 420;
-    private static final int SCREEN_HEIGHT = 420;
+    private static final int SCREEN_WIDTH = Config.APP_WIDTH - Config.DIVIDER;
+    private static final int SCREEN_HEIGHT = Config.APP_HEIGHT;
     private static final int TABLE_WIDTH = (int) (0.75 * SCREEN_WIDTH);
     private static final int DEFAULT_TABLE_HEIGHT = (int) (0.75 * SCREEN_HEIGHT);
 
@@ -49,10 +52,10 @@ public class SearchBookPanel extends JPanel implements MessageableWindow, BtnEve
         JComponent form = new JPanel(new BorderLayout(5,5));
         JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 4));
 
-        JButton addBookCopy = new JButton("Search");
+        JButton addBookCopy = new LJButton("Search");
         addEventListener(addBookCopy);
 
-        String[] labels = { "ISBN" };
+        String[] labels = { "Isbn" };
 
         JComponent labelsAndFields = Util.getTwoColumnLayout(labels, jComponents);
         components = labelsAndFields.getComponents();
@@ -75,7 +78,7 @@ public class SearchBookPanel extends JPanel implements MessageableWindow, BtnEve
     }
 
     private void loadData(Book book) {
-        if (model.getRowCount() >= 1) model.removeRow(0);
+        model.setRowCount(0);
         model.addRow(new String[] {
                 book.getIsbn(),
                 book.getTitle(),
@@ -91,8 +94,8 @@ public class SearchBookPanel extends JPanel implements MessageableWindow, BtnEve
                 String[] values = new String[components.length / 2];
                 int i = 0;
                 for (Component c: components) {
-                    if (c.getClass().equals(JTextField.class)) {
-                        values[i++] = ((JTextField) c).getText();
+                    if (c.getClass().equals(LJTextField.class)) {
+                        values[i++] = ((LJTextField) c).getText();
                     }
                 }
 
@@ -100,7 +103,7 @@ public class SearchBookPanel extends JPanel implements MessageableWindow, BtnEve
 
                 SystemController systemController = new SystemController();
                 Book book = systemController.getBook(isbn);
-                if (book == null) throw new BookException("Book was not found.");
+                if (book == null) throw new BookException("Book was not found with isbn: " + isbn);
 
                 loadData(book);
 

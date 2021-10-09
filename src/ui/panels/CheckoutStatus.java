@@ -48,29 +48,37 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
 
         table = new JTable();
         createHeaders();
-        //loadData();
         createTableAndTablePane();
         this.add(scrollPane);
     }
 
     public void uiInit() {
-        JComponent form = new JPanel(new BorderLayout(5,5));
+        JComponent container = new JPanel(new BorderLayout(5, 5));
+        JComponent form = new JPanel(new BorderLayout());
         JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 4));
 
         LJButton searchBookBtn = new LJButton("Search");
-        searchBookBtn.setWidth(100);
+        LJButton showAllBtn = new LJButton("Show all");
+        showAllBtn.setWidth(64);
+        showAllBtn.setBackground(Color.LIGHT_GRAY);
+        searchBookBtn.setWidth(82);
+
+        showALlEventListener(showAllBtn);
         addEventListener(searchBookBtn);
 
         String[] labels = { "Book isbn" };
 
         JComponent labelsAndFields = Util.getTwoColumnLayout(labels, jComponents);
         components = labelsAndFields.getComponents();
-        form.add(labelsAndFields, BorderLayout.CENTER);
 
-        bottom.add(searchBookBtn, BorderLayout.SOUTH);
+        form.add(labelsAndFields, BorderLayout.WEST);
+        form.add(searchBookBtn, BorderLayout.CENTER);
+        form.add(showAllBtn, BorderLayout.EAST);
 
-        this.add(form);
-        this.add(bottom);
+        container.add(form, BorderLayout.NORTH);
+        container.add(bottom, BorderLayout.SOUTH);
+
+        this.add(container);
     }
 
     @Override
@@ -99,6 +107,17 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
         });
     }
 
+    public void showALlEventListener(JButton btn) {
+        btn.addActionListener(evt -> {
+            try {
+                loadData(ci.allCheckoutRecords(), ci.allCheckoutRecordIds());
+                displayInfo("Data retrieved successfully");
+            } catch(Exception e) {
+                displayError(e.getMessage());
+            }
+        });
+    }
+
     private void createTableAndTablePane() {
         scrollPane = new JScrollPane();
         scrollPane.setPreferredSize(new Dimension(TABLE_WIDTH, DEFAULT_TABLE_HEIGHT));
@@ -110,6 +129,8 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
     }
 
     private void loadData(List<CheckoutRecord> checkoutRecords) {
+
+        model.setRowCount(0);
 
         String[][] checkoutData = new String[checkoutRecords.size()][DEFAULT_COLUMN_HEADERS.length];
         int index = 0;
@@ -131,11 +152,10 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
         table.setModel(model);
     }
 
-    private void loadData() {
+    private void loadData(HashMap<String, CheckoutRecord> checkoutRecords, List<String> checkoutRecordIds) {
 
-        HashMap<String, CheckoutRecord> checkoutRecords = ci.allCheckoutRecords();
+        model.setRowCount(0);
         String[][] checkoutData = new String[checkoutRecords.size()][DEFAULT_COLUMN_HEADERS.length];
-        List<String> checkoutRecordIds = ci.allCheckoutRecordIds();
 
         int index = 0;
         for(int i = 0 ; i < checkoutRecords.size(); i++) {
@@ -146,7 +166,8 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
                 checkoutData[index][2] = checkoutRecord.getCheckoutRecordEntries().get(j).getBookCopy().getBook().getIsbn();
                 checkoutData[index][3] = checkoutRecord.getCheckoutRecordEntries().get(j).getCheckoutDate().toString();
                 checkoutData[index][4] = checkoutRecord.getCheckoutRecordEntries().get(j).getDueDate().toString();
-                checkoutData[index][5] = checkoutRecord.getLibraryMember().getFirstName();
+                checkoutData[index][5] = "-";
+                checkoutData[index][6] = checkoutRecord.getLibraryMember().getFirstName();
                 model.addRow(checkoutData[i]);
                 index++;
             }

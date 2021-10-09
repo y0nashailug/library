@@ -44,7 +44,9 @@ public class Util {
     public static JComponent getTwoColumnLayout(String[] labelStrings, JComponent[] fields) {
         JLabel[] labels = new JLabel[labelStrings.length];
         for (int ii = 0; ii < labels.length; ii++) {
-            labels[ii] = new JLabel(labelStrings[ii]);
+            JLabel jLabel = new JLabel(labelStrings[ii]);
+            //jLabel.setFont(librarysystem.Util.makeSmallFont(jLabel.getFont()));
+            labels[ii] = jLabel;
         }
 
         return getTwoColumnLayout(labels, fields);

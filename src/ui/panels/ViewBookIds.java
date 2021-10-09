@@ -2,6 +2,7 @@ package ui.panels;
 
 import business.ControllerInterface;
 import business.SystemController;
+import librarysystem.Config;
 import ui.LTableModel;
 
 import javax.swing.*;
@@ -19,8 +20,8 @@ public class ViewBookIds extends JPanel {
     private JScrollPane scrollPane;
     private LTableModel model;
     private final String[] DEFAULT_COLUMN_HEADERS = { "Ids" };
-    private static final int SCREEN_WIDTH = 320;
-    private static final int SCREEN_HEIGHT = 320;
+    private static final int SCREEN_WIDTH = Config.APP_WIDTH - Config.DIVIDER;
+    private static final int SCREEN_HEIGHT = Config.APP_HEIGHT;
     private static final int TABLE_WIDTH = (int) (0.75 * SCREEN_WIDTH);
     private static final int DEFAULT_TABLE_HEIGHT = (int) (0.75 * SCREEN_HEIGHT);
     private final float [] COL_WIDTH_PROPORTIONS =

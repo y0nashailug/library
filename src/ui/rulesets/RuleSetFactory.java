@@ -17,6 +17,7 @@ final public class RuleSetFactory {
         map.put(SearchMemberForCheckoutPanel.class, new SearchMemberForCheckoutPanelRuleSet());
         map.put(SearchBookPanel.class, new SearchBookPanelRuleSet());
         map.put(SearchMemberPanel.class, new SearchMemberPanelRuleSet());
+        map.put(AddBookCopyPanel.class, new AddBookCopyRuleSet());
     }
     public static RuleSet getRuleSet(Component c) {
         Class<? extends Component> cl = c.getClass();

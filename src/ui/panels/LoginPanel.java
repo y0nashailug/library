@@ -75,10 +75,21 @@ public class LoginPanel extends JPanel implements BtnEventListener {
 
                 SystemController systemController = new SystemController();
                 systemController.login(username, password);
+                clearForm();
             } catch(LoginException | RuleException e) {
                 new MessageModal.InnerMessageModalFrame().showMessage(e.getMessage(), "Error");
             }
         });
+    }
+
+    public void clearForm() {
+        for (Component c: components) {
+            if (c.getClass().equals(LJTextField.class)) {
+                ((LJTextField) c).setText(null);
+            } else if (c.getClass().equals(LJPasswordField.class)) {
+                ((LJPasswordField) c).setText(null);
+            }
+        }
     }
 
     public String getUserName() {

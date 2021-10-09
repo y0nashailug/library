@@ -4,6 +4,9 @@ import business.Exceptions.BookException;
 import business.SystemController;
 import ui.BtnEventListener;
 import ui.Util;
+import ui.elements.LJButton;
+import ui.elements.LJPasswordField;
+import ui.elements.LJTextField;
 import ui.rulesets.RuleException;
 import ui.rulesets.RuleSet;
 import ui.rulesets.RuleSetFactory;
@@ -14,17 +17,17 @@ import java.awt.*;
 public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventListener {
 
     private JComponent[] jComponents = {
-            new JTextField(15),
-            new JTextField(15),
-            new JTextField(15),
-            new JTextField(15),
-            new JTextField(15),
-            new JTextField(15),
-            new JTextField(15),
-            new JTextField(15),
-            new JTextField(15),
-            new JTextField(15),
-            new JTextField(15),
+            new LJTextField(),
+            new LJTextField(),
+            new LJTextField(),
+            new LJTextField(),
+            new LJTextField(),
+            new LJTextField(),
+            new LJTextField(),
+            new LJTextField(),
+            new LJTextField(),
+            new LJTextField(),
+            new LJTextField(),
     };
 
     private Component[] components;
@@ -37,7 +40,7 @@ public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventL
         JComponent form = new JPanel(new BorderLayout(5,5));
         JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 4));
 
-        JButton addBookBtn = new JButton("Add book");
+        JButton addBookBtn = new LJButton("Add book");
         addEventListener(addBookBtn);
 
         String[] labels = {
@@ -46,7 +49,7 @@ public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventL
                 "Max checkout length",
                 "First name",
                 "Last name",
-                "Cell",
+                "Phone",
                 "Bio",
                 "Street",
                 "City",
@@ -73,8 +76,8 @@ public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventL
                 String[] values = new String[components.length / 2];
                 int i = 0;
                 for (Component c: components) {
-                    if (c.getClass().equals(JTextField.class)) {
-                        values[i++] = ((JTextField) c).getText();
+                    if (c.getClass().equals(LJTextField.class)) {
+                        values[i++] = ((LJTextField) c).getText();
                     }
                 }
 
@@ -91,6 +94,7 @@ public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventL
 
                 ViewBookIds.INSTANCE.revalidateTable(isbn);
                 displayInfo("Book added successfully");
+                clearForm();
             } catch(BookException | RuleException e) {
                 displayError(e.getMessage());
             }
@@ -103,6 +107,14 @@ public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventL
 
     public String getIsbn() { return isbn; }
     public String getMaxCheckoutLength() { return maxCheckoutLength; }
+
+    public void clearForm() {
+        for (Component c: components) {
+            if (c.getClass().equals(LJTextField.class)) {
+                ((LJTextField) c).setText(null);
+            }
+        }
+    }
 
     @Override
     public void updateData() {

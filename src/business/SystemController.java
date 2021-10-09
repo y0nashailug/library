@@ -35,14 +35,15 @@ public class SystemController implements ControllerInterface {
 		currentAuth = map.get(id).getAuthorization();
 		System.out.println(currentAuth.name());
 
+		String[] menu;
 		if(currentAuth.name().equals(Auth.LIBRARIAN.toString())) {
-			String[] menu = Util.LIBRARIAN_MENU;
+			menu = Util.LIBRARIAN_MENU;
 			UIController.INSTANCE.setItems(new ArrayList<>(Arrays.asList(menu)));
 		} else if(currentAuth.name().equals(Auth.ADMIN.toString())) {
-			String[] menu = Util.ADMIN_MENU;
+			menu = Util.ADMIN_MENU;
 			UIController.INSTANCE.setItems(new ArrayList<>(Arrays.asList(menu)));
 		} else if(currentAuth.name().equals(Auth.BOTH.toString())) {
-			String[] menu = Util.ALL_MENU;
+			menu = Util.ALL_MENU;
 			UIController.INSTANCE.setItems(new ArrayList<>(Arrays.asList(menu)));
 		} else {
 			throw new LoginException("Cannot Authorize");
@@ -214,6 +215,27 @@ public class SystemController implements ControllerInterface {
 	public HashMap<String, CheckoutRecord> allCheckoutRecords() {
 		DataAccess da = new DataAccessFacade();
 		return da.readCheckoutRecordMap();
+	}
+
+	@Override
+	public List<CheckoutRecord> allCheckoutRecordsByIsbn(String isbn) {
+		DataAccess da = new DataAccessFacade();
+		HashMap<String, CheckoutRecord> records = da.readCheckoutRecordMap();
+		List<CheckoutRecord> checkoutRecordList = new ArrayList<>();
+		List<String> checkoutRecordIds = allCheckoutRecordIds();
+
+		for (int i = 0; i < records.size(); i++) {
+			CheckoutRecord checkoutRecord = records.get(checkoutRecordIds.get(i));
+			for (int j = 0; j < checkoutRecord.getCheckoutRecordEntries().size(); j++) {
+				LocalDate today = LocalDate.now();
+				CheckoutRecordEntry checkoutRecordEntry = checkoutRecord.getCheckoutRecordEntries().get(j);
+				if (checkoutRecordEntry.getBookCopy().getBook().getIsbn().equals(isbn) && checkoutRecordEntry.getDueDate().compareTo(today) < -1) {
+					checkoutRecordList.add(checkoutRecord);
+				}
+			}
+		}
+
+		return checkoutRecordList;
 	}
 
 	@Override

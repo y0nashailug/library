@@ -3,11 +3,15 @@ package ui.panels;
 import business.LoginException;
 import business.SystemController;
 import ui.BtnEventListener;
+import ui.MessageModal;
+import ui.rulesets.RuleException;
+import ui.rulesets.RuleSet;
+import ui.rulesets.RuleSetFactory;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class LoginPanel extends JPanel implements MessageableWindow, BtnEventListener {
+public class LoginPanel extends JPanel implements BtnEventListener {
 
     private JTextField username;
     private JPasswordField password;
@@ -53,10 +57,13 @@ public class LoginPanel extends JPanel implements MessageableWindow, BtnEventLis
     public void addEventListener(JButton btn) {
         btn.addActionListener(evt -> {
             try {
+                RuleSet loginRules = RuleSetFactory.getRuleSet(this);
+                loginRules.applyRules(this);
+
                 SystemController systemController = new SystemController();
                 systemController.login(getUserName(), getPassword());
-            } catch(LoginException e) {
-                displayError(e.getMessage());
+            } catch(LoginException | RuleException e) {
+                new MessageModal.InnerMessageModalFrame().showMessage(e.getMessage(), "Error");
             }
         });
     }
@@ -67,10 +74,5 @@ public class LoginPanel extends JPanel implements MessageableWindow, BtnEventLis
 
     public String getPassword() {
         return String.valueOf(password.getPassword());
-    }
-
-    @Override
-    public void updateData() {
-
     }
 }

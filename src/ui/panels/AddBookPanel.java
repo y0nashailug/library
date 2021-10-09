@@ -4,6 +4,9 @@ import business.Exceptions.BookException;
 import business.SystemController;
 import ui.BtnEventListener;
 import ui.Util;
+import ui.rulesets.RuleException;
+import ui.rulesets.RuleSet;
+import ui.rulesets.RuleSetFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +28,7 @@ public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventL
     };
 
     private Component[] components;
+    private String isbn;
 
     public AddBookPanel() {
 
@@ -71,6 +75,11 @@ public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventL
                     }
                 }
 
+                isbn = values[0];
+
+                RuleSet addBookPanel = RuleSetFactory.getRuleSet(this);
+                addBookPanel.applyRules(this);
+
                 String[] address = { values[7], values[8], values[9], values[10] };
                 String[] author = { values[3], values[4], values[5], values[6] };
 
@@ -78,7 +87,7 @@ public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventL
 
                 ViewBookIds.INSTANCE.revalidateTable(values[0]);
                 displayInfo("Book added successfully");
-            } catch(BookException e) {
+            } catch(BookException | RuleException e) {
                 displayError(e.getMessage());
             }
         });
@@ -87,6 +96,8 @@ public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventL
     public Component[] getComponents() {
         return components;
     }
+
+    public String getIsbn() { return isbn; }
 
     @Override
     public void updateData() {

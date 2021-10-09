@@ -44,6 +44,7 @@ public class LoginWindow extends JFrame implements LibWindow {
     private LoginWindow () {}
 
 	public void init() {
+		System.out.println("Login: " + isInitialized);
 		mainPanel = new JPanel();
 		BorderLayout bl = new BorderLayout();
 		bl.setVgap(30);

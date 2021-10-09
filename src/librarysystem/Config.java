@@ -4,6 +4,7 @@ import java.awt.*;
 
 public class Config {
     public static final String APP_NAME = "Library application";
+    public static final String APP_INTRO_TEXT = "Welcome to library";
     public static final int APP_WIDTH = 900;
     public static final int APP_HEIGHT = 600;
     public static final int DIVIDER = 200;

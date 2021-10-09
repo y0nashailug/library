@@ -16,4 +16,5 @@ public interface ControllerInterface {
 	List<String> allCheckoutRecordIds();
 	HashMap<String, LibraryMember> getMembers();
 	HashMap<String, CheckoutRecord> allCheckoutRecords();
+	List<CheckoutRecord> allCheckoutRecordsByIsbn(String isbn);
 }

@@ -5,6 +5,9 @@ import business.Exceptions.LibrarySystemException;
 import business.SystemController;
 import ui.BtnEventListener;
 import ui.Util;
+import ui.rulesets.RuleException;
+import ui.rulesets.RuleSet;
+import ui.rulesets.RuleSetFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +25,7 @@ public class NewMemberPanel extends JPanel implements MessageableWindow, BtnEven
             new JTextField(15),
     };
     private Component[] components;
+    private String memberId;
 
     public NewMemberPanel() {
         JPanel container = new JPanel(new BorderLayout());
@@ -67,6 +71,10 @@ public class NewMemberPanel extends JPanel implements MessageableWindow, BtnEven
                     }
                 }
 
+                memberId = values[0];
+                RuleSet memberPanel = RuleSetFactory.getRuleSet(this);
+                memberPanel.applyRules(this);
+
                 systemController.addMember(values[0],
                         values[1],
                         values[2],
@@ -77,7 +85,7 @@ public class NewMemberPanel extends JPanel implements MessageableWindow, BtnEven
                                 values[7]));
                 displayInfo("Member added successfully");
                 ViewMemberIds.INSTANCE.revalidateTable(values[0]);
-            } catch(LibrarySystemException e) {
+            } catch(LibrarySystemException | RuleException e) {
                 displayError(e.getMessage());
             }
         });
@@ -86,6 +94,8 @@ public class NewMemberPanel extends JPanel implements MessageableWindow, BtnEven
     public Component[] getComponents() {
         return components;
     }
+
+    public String getMemberId() { return memberId; }
 
     @Override
     public void updateData() {

@@ -23,7 +23,12 @@ public class UIController extends JFrame implements LibWindow {
     private UIController() {}
 
     public void init() {
+        if (!isInitialized) {
+            uiInit();
+        }
+    }
 
+    public void uiInit() {
         setSize(width, height);
 
         linkList = new JList<ListItem>();
@@ -161,7 +166,7 @@ public class UIController extends JFrame implements LibWindow {
     private JPanel createCheckoutStatusPanel() {
 
         JPanel container = new JPanel(new BorderLayout());
-        JLabel containerLabel = new JLabel("Checkout status");
+        JLabel containerLabel = new JLabel("Overdue publications");
         containerLabel.setForeground(Color.BLUE);
 
         JPanel containerLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 4));
@@ -298,7 +303,7 @@ public class UIController extends JFrame implements LibWindow {
 
         NotificationBar nBar = new NotificationBar();
 
-        nBar.setStatusBar("Welcome!");
+        nBar.setStatusBar(Config.APP_INTRO_TEXT);
         nBar.getStatusBar().setForeground(Color.BLUE);
 
         return nBar;
@@ -308,7 +313,7 @@ public class UIController extends JFrame implements LibWindow {
         DefaultListModel<ListItem> model = (DefaultListModel) linkList.getModel();
         int size = model.getSize();
         if (items != null) {
-            java.util.List<Integer> indices = new ArrayList<>();
+            List<Integer> indices = new ArrayList<>();
             for (ListItem item : items) {
                 int index = model.indexOf(item);
                 indices.add(index);

@@ -17,9 +17,6 @@ public class UIController extends JFrame implements LibWindow {
 
     private boolean isInitialized = false;
 
-    int height = 480;
-    int width = 500;
-
     private UIController() {}
 
     public void init() {
@@ -29,7 +26,7 @@ public class UIController extends JFrame implements LibWindow {
     }
 
     public void uiInit() {
-        setSize(width, height);
+        setSize(Config.APP_WIDTH, Config.APP_HEIGHT);
 
         linkList = new JList<ListItem>();
 
@@ -37,11 +34,11 @@ public class UIController extends JFrame implements LibWindow {
         createPanels();
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, linkList, cards);
-        splitPane.setDividerLocation(100);
+        splitPane.setDividerLocation(Config.DIVIDER);
 
         JSplitPane bottomSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, splitPane, createNotificationBarPanel());
         bottomSplitPane.setBackground(Color.WHITE);
-        bottomSplitPane.setDividerLocation(height - 100);
+        bottomSplitPane.setDividerLocation(Config.APP_HEIGHT - (Config.DIVIDER - 20));
 
         add(bottomSplitPane, BorderLayout.CENTER);
         Util.centerFrameOnDesktop(this);
@@ -302,10 +299,8 @@ public class UIController extends JFrame implements LibWindow {
     private NotificationBar createNotificationBarPanel() {
 
         NotificationBar nBar = new NotificationBar();
-
         nBar.setStatusBar(Config.APP_INTRO_TEXT);
         nBar.getStatusBar().setForeground(Color.BLUE);
-
         return nBar;
     }
 

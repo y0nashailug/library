@@ -2,8 +2,11 @@ package ui.panels;
 
 import business.*;
 import business.Exceptions.CheckoutRecordException;
+import librarysystem.Config;
 import ui.BtnEventListener;
 import ui.Util;
+import ui.elements.LJButton;
+import ui.elements.LJTextField;
 import ui.rulesets.RuleSet;
 import ui.rulesets.RuleSetFactory;
 
@@ -18,7 +21,7 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
     ControllerInterface ci = new SystemController();
     public final static CheckoutStatus INSTANCE = new CheckoutStatus();
     private JComponent[] jComponents = {
-            new JTextField(15),
+            new LJTextField(),
     };
     private Component[] components;
     private JTable table;
@@ -26,9 +29,9 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
     private DefaultTableModel model;
     private String isbn;
 
-    private final String[] DEFAULT_COLUMN_HEADERS = { "Member Id", "Title", "ISBN", "Checkout date", "Due date", "Member" };
-    private static final int SCREEN_WIDTH = 420;
-    private static final int SCREEN_HEIGHT = 420;
+    private final String[] DEFAULT_COLUMN_HEADERS = { "Member Id", "Title", "ISBN", "Checkout date", "Due date", "Cpy no.", "Member" };
+    private static final int SCREEN_WIDTH = Config.APP_WIDTH - Config.DIVIDER;
+    private static final int SCREEN_HEIGHT = Config.APP_HEIGHT;
     private static final int TABLE_WIDTH = (int) (0.75 * SCREEN_WIDTH);
     private static final int DEFAULT_TABLE_HEIGHT = (int) (0.75 * SCREEN_HEIGHT);
 
@@ -54,8 +57,9 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
         JComponent form = new JPanel(new BorderLayout(5,5));
         JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 4));
 
-        JButton addBookCopy = new JButton("Search");
-        addEventListener(addBookCopy);
+        LJButton searchBookBtn = new LJButton("Search");
+        searchBookBtn.setWidth(100);
+        addEventListener(searchBookBtn);
 
         String[] labels = { "Book isbn" };
 
@@ -63,7 +67,7 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
         components = labelsAndFields.getComponents();
         form.add(labelsAndFields, BorderLayout.CENTER);
 
-        bottom.add(addBookCopy, BorderLayout.SOUTH);
+        bottom.add(searchBookBtn, BorderLayout.SOUTH);
 
         this.add(form);
         this.add(bottom);
@@ -76,8 +80,8 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
                 String[] values = new String[components.length / 2];
                 int i = 0;
                 for (Component c: components) {
-                    if (c.getClass().equals(JTextField.class)) {
-                        values[i++] = ((JTextField) c).getText();
+                    if (c.getClass().equals(LJTextField.class)) {
+                        values[i++] = ((LJTextField) c).getText();
                     }
                 }
 
@@ -117,7 +121,8 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
                 checkoutData[index][2] = checkoutRecord.getCheckoutRecordEntries().get(j).getBookCopy().getBook().getIsbn();
                 checkoutData[index][3] = checkoutRecord.getCheckoutRecordEntries().get(j).getCheckoutDate().toString();
                 checkoutData[index][4] = checkoutRecord.getCheckoutRecordEntries().get(j).getDueDate().toString();
-                checkoutData[index][5] = checkoutRecord.getLibraryMember().getFirstName();
+                checkoutData[index][5] = String.valueOf(checkoutRecord.getCheckoutRecordEntries().get(j).getBookCopy().getCopyNum());
+                checkoutData[index][6] = checkoutRecord.getLibraryMember().getFirstName();
                 model.addRow(checkoutData[i]);
                 index++;
             }

@@ -33,6 +33,7 @@ public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventL
 
     public AddBookPanel() {
 
+        JComponent container = new JPanel(new BorderLayout(5, 5));
         JComponent form = new JPanel(new BorderLayout(5,5));
         JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 4));
 
@@ -59,8 +60,9 @@ public class AddBookPanel extends JPanel implements MessageableWindow, BtnEventL
 
         bottom.add(addBookBtn);
 
-        this.add(form);
-        this.add(bottom);
+        container.add(form, BorderLayout.NORTH);
+        container.add(bottom, BorderLayout.SOUTH);
+        this.add(container);
     }
 
     @Override

@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class NotificationBar extends JPanel implements MessageableWindow {
 
-    public static JTextArea statusBar = new JTextArea(4, 45);
+    public static JTextArea statusBar = new JTextArea();
 
     public NotificationBar() {
         init();
@@ -13,21 +13,22 @@ public class NotificationBar extends JPanel implements MessageableWindow {
 
     public void init() {
 
-        JPanel panel = new JPanel(new BorderLayout());
-        JPanel upper = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 4));
+        JComponent container = new JPanel(new BorderLayout());
+        JPanel upper = new JPanel(new BorderLayout());
 
         statusBar.setBackground(Color.white);
         upper.add(statusBar);
 
         JScrollPane scroll = new JScrollPane(statusBar);
         statusBar.setEditable(false);
-        statusBar.setBorder(null);
-        scroll.setBorder(null);
+        statusBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        scroll.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        upper.add(scroll);
-        panel.add(upper, BorderLayout.NORTH);
+        upper.add(statusBar);
 
-        this.add(panel);
+        container.add(upper, BorderLayout.NORTH);
+
+        this.add(container);
         this.setForeground(Color.WHITE);
     }
 

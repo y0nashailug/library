@@ -36,7 +36,13 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
 
     public void init() {
         uiInit();
-        model = new DefaultTableModel();
+        model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
         table = new JTable();
         createHeaders();
         //loadData();

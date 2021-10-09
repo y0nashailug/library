@@ -36,20 +36,22 @@ public class SystemController implements ControllerInterface {
 		System.out.println(currentAuth.name());
 
 		if(currentAuth.name().equals(Auth.LIBRARIAN.toString())) {
-			LibrarySystem.hideAllWindows();
-			String[] menu = Util.ALL_MENU;
-			UIController.INSTANCE.setTitle(Config.APP_NAME);
+			String[] menu = Util.LIBRARIAN_MENU;
 			UIController.INSTANCE.setItems(new ArrayList<>(Arrays.asList(menu)));
-			UIController.INSTANCE.init();
-			UIController.INSTANCE.setVisible(true);
 		} else if(currentAuth.name().equals(Auth.ADMIN.toString())) {
-			LibrarySystem.hideAllWindows();
-			UIController.INSTANCE.init();
+			String[] menu = Util.ADMIN_MENU;
+			UIController.INSTANCE.setItems(new ArrayList<>(Arrays.asList(menu)));
 		} else if(currentAuth.name().equals(Auth.BOTH.toString())) {
-
+			String[] menu = Util.ALL_MENU;
+			UIController.INSTANCE.setItems(new ArrayList<>(Arrays.asList(menu)));
 		} else {
 			throw new LoginException("Cannot Authorize");
 		}
+
+		LibrarySystem.hideAllWindows();
+		UIController.INSTANCE.setTitle(Config.APP_NAME);
+		UIController.INSTANCE.init();
+		UIController.INSTANCE.setVisible(true);
 	}
 
 	public void logout() throws LogoutException {

@@ -110,6 +110,7 @@ public class SearchMemberForCheckoutPanel extends JPanel implements MessageableW
 
                 SystemController systemController = new SystemController();
                 CheckoutRecord checkoutRecord = systemController.getCheckoutRecord(memberId);
+                if (checkoutRecord == null) throw new CheckoutRecordException("Checkout record was not found.");
                 loadData(checkoutRecord);
                 table.print();
 

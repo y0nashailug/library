@@ -18,6 +18,5 @@ public class AddBookCopyRuleSet implements RuleSet {
     private void nonemptyRule() throws RuleException {
         if(addBookCopyPanel.getIsbn() == null || addBookCopyPanel.getIsbn().isEmpty())
             throw new RuleException("Isbn must be non-empty");
-
     }
 }

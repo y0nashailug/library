@@ -16,6 +16,7 @@ public class SearchBookPanel extends JPanel implements MessageableWindow, BtnEve
     private JComponent[] jComponents = {
             new JTextField(15),
     };
+    private String isbn;
     private JTable table;
     private JScrollPane scrollPane;
     private DefaultTableModel model;
@@ -74,6 +75,7 @@ public class SearchBookPanel extends JPanel implements MessageableWindow, BtnEve
     }
 
     private void loadData(Book book) {
+        if (model.getRowCount() >= 1) model.removeRow(0);
         model.addRow(new String[] {
                 book.getIsbn(),
                 book.getTitle(),
@@ -94,16 +96,15 @@ public class SearchBookPanel extends JPanel implements MessageableWindow, BtnEve
                     }
                 }
 
-                if (values[0] == null || values[0].equals("")) {
-                    displayError("Please enter isbn.");
-                    return;
-                }
+                isbn = values[0].trim();
 
                 SystemController systemController = new SystemController();
-                Book book = systemController.getBook(values[0].trim());
+                Book book = systemController.getBook(isbn);
+                if (book == null) throw new BookException("Book was not found.");
+
                 loadData(book);
 
-                displayInfo("Book found.");
+                displayInfo("Book found with isbn: " + isbn);
             } catch(BookException e) {
                 displayError(e.getMessage());
             }
@@ -114,6 +115,7 @@ public class SearchBookPanel extends JPanel implements MessageableWindow, BtnEve
         return components;
     }
 
+    public String getIsbn() { return isbn; }
     @Override
     public void updateData() {
 

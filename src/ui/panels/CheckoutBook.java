@@ -59,11 +59,11 @@ public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventL
                     }
                 }
 
-                RuleSet checkoutBook = RuleSetFactory.getRuleSet(this);
-                checkoutBook.applyRules(this);
-
                 memberId = values[0].trim();
                 isbn = values[1].trim();
+
+                RuleSet checkoutBook = RuleSetFactory.getRuleSet(this);
+                checkoutBook.applyRules(this);
 
                 SystemController systemController = new SystemController();
                 LibraryMember member = systemController.getMember(memberId);

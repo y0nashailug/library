@@ -12,17 +12,17 @@ public class AddBookRuleSet implements RuleSet {
     public void applyRules(Component ob) throws RuleException {
         addBookPanel = (AddBookPanel) ob;
         nonemptyRule();
-        maxCheckoutLengthError();
         isNumeric();
+        maxCheckoutLengthError();
     }
 
     private void nonemptyRule() throws RuleException {
-        if(addBookPanel.getIsbn().isEmpty())
+        if(addBookPanel.getIsbn() == null || addBookPanel.getIsbn().isEmpty())
             throw new RuleException("Isbn must be non-empty");
-        if(addBookPanel.getMaxCheckoutLength() == null)
+        if(addBookPanel.getMaxCheckoutLength() == null || addBookPanel.getMaxCheckoutLength().isEmpty())
             throw new RuleException("Max checkout length must be non-empty");
     }
-    
+
     private void isNumeric() throws RuleException {
         if(!Util.isNumeric(addBookPanel.getMaxCheckoutLength()))
             throw new RuleException("Max checkout length must be numeric");

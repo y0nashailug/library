@@ -4,6 +4,9 @@ import business.*;
 import business.Exceptions.CheckoutRecordException;
 import ui.BtnEventListener;
 import ui.Util;
+import ui.rulesets.RuleException;
+import ui.rulesets.RuleSet;
+import ui.rulesets.RuleSetFactory;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -20,6 +23,7 @@ public class SearchMemberForCheckoutPanel extends JPanel implements MessageableW
     private JScrollPane scrollPane;
     private DefaultTableModel model;
     private Component[] components;
+    private String memberId;
     private final String[] DEFAULT_COLUMN_HEADERS = { "Member Id", "Title", "ISBN", "Checkout date", "Due date", "Librarian" };
     private static final int SCREEN_WIDTH = 420;
     private static final int SCREEN_HEIGHT = 420;
@@ -100,19 +104,17 @@ public class SearchMemberForCheckoutPanel extends JPanel implements MessageableW
                     }
                 }
 
-                if (values[0] == null || values[0].equals("")) {
-                    displayError("Please enter member id.");
-                    return;
-                }
+                memberId = values[0];
+                RuleSet searchMemberForCheckoutPanel = RuleSetFactory.getRuleSet(this);
+                searchMemberForCheckoutPanel.applyRules(this);
 
                 SystemController systemController = new SystemController();
-                String memberId = values[0].trim();
                 CheckoutRecord checkoutRecord = systemController.getCheckoutRecord(memberId);
                 loadData(checkoutRecord);
                 table.print();
 
                 displayInfo("Member found.");
-            } catch(CheckoutRecordException | PrinterException e) {
+            } catch(CheckoutRecordException | PrinterException | RuleException e) {
                 displayError(e.getMessage());
             }
         });
@@ -122,6 +124,7 @@ public class SearchMemberForCheckoutPanel extends JPanel implements MessageableW
         return components;
     }
 
+    public String getMemberId() { return memberId; }
     @Override
     public void updateData() {
 

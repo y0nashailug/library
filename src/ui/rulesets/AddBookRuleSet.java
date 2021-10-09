@@ -13,12 +13,13 @@ public class AddBookRuleSet implements RuleSet {
         addBookPanel = (AddBookPanel) ob;
         nonemptyRule();
         isNumeric();
-        maxCheckoutLengthError();
+        maxCheckoutLengthValid();
     }
 
     private void nonemptyRule() throws RuleException {
         if(addBookPanel.getIsbn() == null || addBookPanel.getIsbn().isEmpty())
             throw new RuleException("Isbn must be non-empty");
+
         if(addBookPanel.getMaxCheckoutLength() == null || addBookPanel.getMaxCheckoutLength().isEmpty())
             throw new RuleException("Max checkout length must be non-empty");
     }
@@ -28,7 +29,7 @@ public class AddBookRuleSet implements RuleSet {
             throw new RuleException("Max checkout length must be numeric");
     }
 
-    private void maxCheckoutLengthError() throws RuleException {
+    private void maxCheckoutLengthValid() throws RuleException {
         if(Integer.parseInt(addBookPanel.getMaxCheckoutLength()) != 7 || Integer.parseInt(addBookPanel.getMaxCheckoutLength()) != 21)
             throw new RuleException("Max checkout length must be 7 or 21");
     }

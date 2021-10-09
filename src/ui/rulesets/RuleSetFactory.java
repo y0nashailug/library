@@ -1,9 +1,6 @@
 package ui.rulesets;
 
-import ui.panels.AddBookPanel;
-import ui.panels.CheckoutBook;
-import ui.panels.LoginPanel;
-import ui.panels.NewMemberPanel;
+import ui.panels.*;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -16,6 +13,8 @@ final public class RuleSetFactory {
         map.put(AddBookPanel.class, new AddBookRuleSet());
         map.put(NewMemberPanel.class, new AddMemberRuleSet());
         map.put(CheckoutBook.class, new CheckoutBookRuleSet());
+        map.put(CheckoutStatus.class, new CheckoutStatusRuleSet());
+        map.put(SearchMemberForCheckoutPanel.class, new SearchMemberForCheckoutPanelRuleSet());
     }
     public static RuleSet getRuleSet(Component c) {
         Class<? extends Component> cl = c.getClass();

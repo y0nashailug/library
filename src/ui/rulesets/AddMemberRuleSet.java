@@ -14,7 +14,7 @@ public class AddMemberRuleSet implements RuleSet {
     }
 
     private void nonemptyRule() throws RuleException {
-        if(newMemberPanel.getMemberId().isEmpty())
+        if(newMemberPanel.getMemberId() == null || newMemberPanel.getMemberId().isEmpty())
             throw new RuleException("Member id must be non-empty");
     }
 }

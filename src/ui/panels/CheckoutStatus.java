@@ -4,6 +4,8 @@ import business.*;
 import business.Exceptions.CheckoutRecordException;
 import ui.BtnEventListener;
 import ui.Util;
+import ui.rulesets.RuleSet;
+import ui.rulesets.RuleSetFactory;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -22,6 +24,7 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
     private JTable table;
     private JScrollPane scrollPane;
     private DefaultTableModel model;
+    private String isbn;
 
     private final String[] DEFAULT_COLUMN_HEADERS = { "Member Id", "Title", "ISBN", "Checkout date", "Due date", "Member" };
     private static final int SCREEN_WIDTH = 420;
@@ -72,10 +75,9 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
                     }
                 }
 
-                if (values[0] == null || values[0].equals("")) {
-                    displayError("Please enter isbn.");
-                    return;
-                }
+                isbn = values[0].trim();
+                RuleSet checkoutStatus = RuleSetFactory.getRuleSet(this);
+                checkoutStatus.applyRules(this);
 
                 String isbn = values[0].trim();
                 List<CheckoutRecord> checkoutRecordList = ci.allCheckoutRecordsByIsbn(isbn);
@@ -156,6 +158,8 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
 
         model.fireTableDataChanged();
     }
+
+    public String getIsbn() { return isbn; }
 
     @Override
     public void updateData() {

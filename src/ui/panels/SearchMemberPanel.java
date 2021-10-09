@@ -5,6 +5,9 @@ import business.LibraryMember;
 import business.SystemController;
 import ui.BtnEventListener;
 import ui.Util;
+import ui.rulesets.RuleException;
+import ui.rulesets.RuleSet;
+import ui.rulesets.RuleSetFactory;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,6 +19,7 @@ public class SearchMemberPanel extends JPanel implements MessageableWindow, BtnE
     private JComponent[] jComponents = {
             new JTextField(15),
     };
+    private String memberId;
     private JTable table;
     private JScrollPane scrollPane;
     private DefaultTableModel model;
@@ -89,17 +93,16 @@ public class SearchMemberPanel extends JPanel implements MessageableWindow, BtnE
                     }
                 }
 
-                if (values[0] == null || values[0].equals("")) {
-                    displayError("Please enter member id.");
-                    return;
-                }
+                memberId = values[0].trim();
+                RuleSet searchMemberPanel = RuleSetFactory.getRuleSet(this);
+                searchMemberPanel.applyRules(this);
 
                 SystemController systemController = new SystemController();
-                LibraryMember libraryMember = systemController.getMember(values[0].trim());
+                LibraryMember libraryMember = systemController.getMember(memberId);
                 loadData(libraryMember);
 
                 displayInfo("Member found.");
-            } catch(LibrarySystemException e) {
+            } catch(LibrarySystemException | RuleException e) {
                 displayError(e.getMessage());
             }
         });
@@ -109,6 +112,7 @@ public class SearchMemberPanel extends JPanel implements MessageableWindow, BtnE
         return components;
     }
 
+    public String getMemberId() { return memberId; }
     @Override
     public void updateData() {
 

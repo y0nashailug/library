@@ -79,9 +79,7 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
                 RuleSet checkoutStatus = RuleSetFactory.getRuleSet(this);
                 checkoutStatus.applyRules(this);
 
-                String isbn = values[0].trim();
                 List<CheckoutRecord> checkoutRecordList = ci.allCheckoutRecordsByIsbn(isbn);
-                System.out.println(checkoutRecordList);
                 if (checkoutRecordList.isEmpty()) throw new CheckoutRecordException("Data not found.");
                 loadData(checkoutRecordList);
                 displayInfo("Data retrieved successfully");

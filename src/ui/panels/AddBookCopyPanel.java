@@ -16,6 +16,7 @@ public class AddBookCopyPanel extends JPanel implements MessageableWindow, BtnEv
     };
 
     private Component[] components;
+    private String isbn;
 
     public AddBookCopyPanel() {
 
@@ -49,10 +50,7 @@ public class AddBookCopyPanel extends JPanel implements MessageableWindow, BtnEv
                     }
                 }
 
-                if (values[0] == null || values[0].equals("")) {
-                    displayError("Please enter isbn of the book.");
-                    return;
-                }
+                isbn = values[0];
 
                 SystemController systemController = new SystemController();
                 Book book = systemController.getBook(values[0].trim());
@@ -68,6 +66,7 @@ public class AddBookCopyPanel extends JPanel implements MessageableWindow, BtnEv
         return components;
     }
 
+    public String getIsbn() { return isbn; }
     @Override
     public void updateData() {
 

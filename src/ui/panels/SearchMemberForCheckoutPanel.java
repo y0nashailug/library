@@ -15,6 +15,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.print.PrinterException;
+import java.time.format.DateTimeFormatter;
 
 public class SearchMemberForCheckoutPanel extends JPanel implements MessageableWindow, BtnEventListener {
 
@@ -27,7 +28,7 @@ public class SearchMemberForCheckoutPanel extends JPanel implements MessageableW
     private DefaultTableModel model;
     private Component[] components;
     private String memberId;
-    private final String[] DEFAULT_COLUMN_HEADERS = { "Member Id", "Title", "ISBN", "Checkout date", "Due date", "Librarian" };
+    private final String[] DEFAULT_COLUMN_HEADERS = { "Member Id", "Title", "ISBN", "Checkout date", "Due date" };
     private static final int SCREEN_WIDTH = Config.APP_WIDTH - Config.DIVIDER;
     private static final int SCREEN_HEIGHT = Config.APP_HEIGHT;
     private static final int TABLE_WIDTH = (int) (0.75 * SCREEN_WIDTH);
@@ -83,13 +84,12 @@ public class SearchMemberForCheckoutPanel extends JPanel implements MessageableW
     private void loadData(CheckoutRecord checkoutRecord) {
 
         for (int j = 0; j < checkoutRecord.getCheckoutRecordEntries().size(); j++) {
-            String memberId = "-"; // checkoutRecord.getLibraryMember().getMemberId();
             String title = checkoutRecord.getCheckoutRecordEntries().get(j).getBookCopy().getBook().getTitle();
             String isbn = checkoutRecord.getCheckoutRecordEntries().get(j).getBookCopy().getBook().getIsbn();
-            String checkoutDate = checkoutRecord.getCheckoutRecordEntries().get(j).getCheckoutDate().toString();
-            String dueDate = checkoutRecord.getCheckoutRecordEntries().get(j).getDueDate().toString();
-            String firstName = ""; // checkoutRecord.getLibraryMember().getFirstName();
-            model.addRow(new String[] { memberId, title, isbn, checkoutDate, dueDate, firstName });
+            String checkoutDate = checkoutRecord.getCheckoutRecordEntries().get(j).getCheckoutDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+            String dueDate = checkoutRecord.getCheckoutRecordEntries().get(j).getDueDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+            System.out.println(checkoutRecord.getCheckoutRecordEntries().get(j).toString());
+            model.addRow(new String[] { memberId, title, isbn, checkoutDate, dueDate });
         }
 
         model.fireTableDataChanged();

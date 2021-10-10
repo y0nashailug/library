@@ -1,7 +1,6 @@
 package ui.panels;
 
 import business.*;
-import business.Exceptions.CheckoutRecordException;
 import librarysystem.Config;
 import ui.BtnEventListener;
 import ui.Util;
@@ -14,9 +13,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.List;
 
 public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEventListener {
 
@@ -141,8 +139,8 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
                     model.addRow(new String[] {
                             checkoutRecordEntry.getBookCopy().getBook().getTitle(),
                             checkoutRecordEntry.getBookCopy().getBook().getIsbn(),
-                            checkoutRecordEntry.getCheckoutDate().toString(),
-                            checkoutRecordEntry.getDueDate().toString(),
+                            checkoutRecordEntry.getCheckoutDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
+                            checkoutRecordEntry.getDueDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
                             String.valueOf(checkoutRecordEntry.getBookCopy().getCopyNum()),
                             libraryMember.getFirstName()
                     });
@@ -165,8 +163,8 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
                 model.addRow(new String[] {
                     checkoutRecordEntry.getBookCopy().getBook().getTitle(),
                     checkoutRecordEntry.getBookCopy().getBook().getIsbn(),
-                    checkoutRecordEntry.getCheckoutDate().toString(),
-                    checkoutRecordEntry.getDueDate().toString(),
+                    checkoutRecordEntry.getCheckoutDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
+                    checkoutRecordEntry.getDueDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
                     String.valueOf(checkoutRecordEntry.getBookCopy().getCopyNum()),
                     libraryMember.getFirstName()
                 });

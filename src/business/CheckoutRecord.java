@@ -21,5 +21,4 @@ public class CheckoutRecord implements Serializable {
         return checkoutRecordEntries;
     }
 
-
 }

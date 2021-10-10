@@ -83,7 +83,7 @@ public class SearchBookPanel extends JPanel implements MessageableWindow, BtnEve
                 book.getIsbn(),
                 book.getTitle(),
                 book.isAvailable() ? "Yes": "No",
-                String.valueOf(book.getNextAvailableCopy().getCopyNum()),
+                String.valueOf(book.getNextAvailableCopy() != null ? book.getNextAvailableCopy().getCopyNum(): "Not avail"),
         });
     }
 

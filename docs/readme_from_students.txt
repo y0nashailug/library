@@ -14,6 +14,9 @@ We have modularized the Library System Project and introduced our own business c
 	- CheckoutController
 	- MemberController
 
+The SystemController makes requests to the controllers of the models and gets a response and send it back to
+the UIController and the UIController updates the panels.
+
 Exception has been added for each the controllers mentioned above
  - BookException
  - CheckoutRecordException

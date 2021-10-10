@@ -2,39 +2,60 @@ INSTRUCTIONS
 ============
 The Library System starts from a separate login page.
 
-STEP1: Login
-	Case: Admin
-		If an admin is logged in, he/she will be provided with the following features:
-			- Add Member
-			- Edit Member
-			- Search member
-			- Add New Book
-			- Add New Book Copy
-			- Search Book
-			- Logout (Returns back to login)
-			
-	Case: Librarian
-		If a Librarian is logged in, he / she will be provided with these functionalities:
-			- Search Member
-			- Checkout Book
-			- Check Book Copy Status
-			- All Members Id
-			- All Book Id
-			- Print Checkout Record
-			- Logout
-			
-	Case: Both
-		If a user that has got both authorizations is logged in, he / she can do all the things a Librarian and an Admin can do.
-			- Add Member
-			- Edit Member
-			- Search member
-			- Add New Book
-			- Add New Book Copy
-			- Search Book
-			- Search Member
-			- Checkout Book
-			- Check Book Copy Status
-			- All Members Id
-			- All Book Id
-			- Print Checkout Record
-			- Logout
+There is a folder/package in src called librarysystem which contains
+a start-up code of the system and the Main class is the starting point of the application.
+
+But we need to run the test data first as new data has been added to support the new
+requirements.
+
+So the steps will be as follows
+
+1. Run the test data in the DAO
+2. Run the Main java class in the librarysystem package
+
+Login screen will show up and need to type username and password.
+
+Librarian role
+	username: 101 password: xyz
+Admin
+	username: 102 password: abc
+Both
+	username: 103 password: 111
+
+After successful login we will be able to see screen based on the role.
+
+Case: Admin
+    If an admin is logged in, he/she will be provided with the following features:
+        - Add Member
+        - Edit Member
+        - Search member
+        - Add New Book
+        - Add New Book Copy
+        - Search Book
+        - Logout (Returns back to login)
+
+Case: Librarian
+    If a Librarian is logged in, he / she will be provided with these functionalities:
+        - Search Member
+        - Checkout Book
+        - Check Book Copy Status
+        - All Members Id
+        - All Book Id
+        - Print Checkout Record
+        - Logout
+
+Case: Both
+    If a user that has got both authorizations is logged in, he / she can do all the things a Librarian and an Admin can do.
+        - Add Member
+        - Edit Member
+        - Search member
+        - Add New Book
+        - Add New Book Copy
+        - Search Book
+        - Search Member
+        - Checkout Book
+        - Check Book Copy Status
+        - All Members Id
+        - All Book Id
+        - Print Checkout Record
+        - Logout

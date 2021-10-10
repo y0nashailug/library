@@ -64,7 +64,7 @@ public class NewMemberPanel extends JPanel implements MessageableWindow, BtnEven
     public void addEventListener(JButton btn) {
         btn.addActionListener(evt -> {
             try {
-                SystemController systemController = new SystemController();
+
                 String[] values = new String[components.length / 2];
                 int i = 0;
                 for (Component c: components) {
@@ -77,14 +77,10 @@ public class NewMemberPanel extends JPanel implements MessageableWindow, BtnEven
                 RuleSet memberPanel = RuleSetFactory.getRuleSet(this);
                 memberPanel.applyRules(this);
 
-                systemController.addMember(values[0],
-                        values[1],
-                        values[2],
-                        values[3],
-                        values[4],
-                        values[5],
-                        values[6],
-                        values[7]);
+                SystemController systemController = new SystemController();
+                systemController.addMember(values[0],values[1],values[2],
+                        values[3],values[4],values[5],values[6],values[7]);
+
                 displayInfo("Member added successfully");
                 ViewMemberIds.INSTANCE.revalidateTable(values[0]);
                 clearForm();

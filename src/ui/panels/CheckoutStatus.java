@@ -18,7 +18,6 @@ import java.util.HashMap;
 
 public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEventListener {
 
-    ControllerInterface ci = new SystemController();
     public final static CheckoutStatus INSTANCE = new CheckoutStatus();
     private JComponent[] jComponents = {
             new LJTextField(),
@@ -140,6 +139,7 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
 
     private int loadData() {
         model.setRowCount(0);
+        ControllerInterface ci = new SystemController();
         HashMap<String, LibraryMember> members = ci.getMembers();
         String currDirectory = System.getProperty("user.dir");
         ImageIcon icon = new ImageIcon(currDirectory+"\\src\\ui\\panels\\rec.png");
@@ -150,13 +150,13 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
                 Book book = checkoutRecordEntry.getBookCopy().getBook();
                 if (book.getIsbn().equals(isbn) && checkoutRecordEntry.getDueDate().isBefore(LocalDate.now())) {
                     model.addRow(new Object[] {
-                            checkoutRecordEntry.getBookCopy().getBook().getTitle(),
-                            checkoutRecordEntry.getBookCopy().getBook().getIsbn(),
-                            checkoutRecordEntry.getCheckoutDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
-                            checkoutRecordEntry.getDueDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
-                            String.valueOf(checkoutRecordEntry.getBookCopy().getCopyNum()),
-                            libraryMember.getFirstName(),
-                            icon,
+                        checkoutRecordEntry.getBookCopy().getBook().getTitle(),
+                        checkoutRecordEntry.getBookCopy().getBook().getIsbn(),
+                        checkoutRecordEntry.getCheckoutDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
+                        checkoutRecordEntry.getDueDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
+                        String.valueOf(checkoutRecordEntry.getBookCopy().getCopyNum()),
+                        libraryMember.getFirstName(),
+                        icon,
                     });
                 }
             }
@@ -169,6 +169,7 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
 
     private int loadAllData() {
         model.setRowCount(0);
+        ControllerInterface ci = new SystemController();
         HashMap<String, LibraryMember> members = ci.getMembers();
 
         for (String key: members.keySet()) {

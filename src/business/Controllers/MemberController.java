@@ -12,7 +12,6 @@ import java.util.List;
 
 public class MemberController {
     public boolean memberExists(String memberId, List<String> memberIds) {
-        DataAccessFacade da = new DataAccessFacade();
         return memberIds.contains(memberId);
     }
     public LibraryMember getMember(String memberId) {

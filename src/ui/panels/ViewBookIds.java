@@ -15,7 +15,6 @@ import java.util.List;
 public class ViewBookIds extends JPanel {
 
     public static ViewBookIds INSTANCE = new ViewBookIds();
-    ControllerInterface ci = new SystemController();
     private JTable table;
     private JScrollPane scrollPane;
     private LTableModel model;
@@ -58,6 +57,7 @@ public class ViewBookIds extends JPanel {
 
     private void setValues() {
         List<String[]> data = new ArrayList<>();
+        ControllerInterface ci = new SystemController();
         List<String> ids = ci.allBookIds();
         Collections.sort(ids);
 

@@ -34,6 +34,7 @@ public class ViewMemberIds extends JPanel {
         this.add(scrollPane);
         setValues();
         table.updateUI();
+        table.setRowHeight(24);
     }
 
     private void createTableAndTablePane() {

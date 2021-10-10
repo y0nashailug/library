@@ -57,6 +57,7 @@ public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventL
 
         table = new JTable();
         table.setModel(model);
+        table.setRowHeight(24);
         createHeaders();
         createTableAndTablePane();
         this.add(scrollPane);

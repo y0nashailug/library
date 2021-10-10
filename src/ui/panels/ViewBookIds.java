@@ -39,6 +39,7 @@ public class ViewBookIds extends JPanel {
     private void createTableAndTablePane() {
         updateModel();
         table = new JTable(model);
+        table.setRowHeight(24);
         createCustomColumns(table, TABLE_WIDTH, COL_WIDTH_PROPORTIONS, DEFAULT_COLUMN_HEADERS);
         scrollPane = new JScrollPane();
         scrollPane.setPreferredSize(new Dimension(TABLE_WIDTH, DEFAULT_TABLE_HEIGHT));

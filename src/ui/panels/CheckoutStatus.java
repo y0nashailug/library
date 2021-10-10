@@ -29,7 +29,7 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
     private DefaultTableModel model;
     private String isbn;
 
-    private final String[] DEFAULT_COLUMN_HEADERS = { "Title", "ISBN", "Checkout date", "Due date", "Cpy no.", "Member" };
+    private final String[] DEFAULT_COLUMN_HEADERS = { "Title", "ISBN", "Checkout date", "Due date", "Cpy", "Member", "Status" };
     private static final int SCREEN_WIDTH = Config.APP_WIDTH - Config.DIVIDER;
     private static final int SCREEN_HEIGHT = Config.APP_HEIGHT;
     private static final int TABLE_WIDTH = (int) (0.75 * SCREEN_WIDTH);
@@ -44,9 +44,21 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
+            @Override
+            public Class<?> getColumnClass(int column) {
+                if (getRowCount() > 0) {
+                    Object value = getValueAt(0, column);
+                    if (value != null) {
+                        return getValueAt(0, column).getClass();
+                    }
+                }
+
+                return super.getColumnClass(column);
+            }
         };
 
         table = new JTable();
+        table.setRowHeight(24);
         createHeaders();
         createTableAndTablePane();
         this.add(scrollPane);
@@ -129,20 +141,22 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
     private int loadData() {
         model.setRowCount(0);
         HashMap<String, LibraryMember> members = ci.getMembers();
+        String currDirectory = System.getProperty("user.dir");
+        ImageIcon icon = new ImageIcon(currDirectory+"\\src\\ui\\panels\\rec.png");
 
         for (String key: members.keySet()) {
             LibraryMember libraryMember = members.get(key);
             for (CheckoutRecordEntry checkoutRecordEntry: libraryMember.getCheckoutRecord().getCheckoutRecordEntries()) {
                 Book book = checkoutRecordEntry.getBookCopy().getBook();
                 if (book.getIsbn().equals(isbn) && checkoutRecordEntry.getDueDate().isBefore(LocalDate.now())) {
-                    System.out.println(book.getIsbn() + " " + libraryMember.getFirstName());
-                    model.addRow(new String[] {
+                    model.addRow(new Object[] {
                             checkoutRecordEntry.getBookCopy().getBook().getTitle(),
                             checkoutRecordEntry.getBookCopy().getBook().getIsbn(),
                             checkoutRecordEntry.getCheckoutDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
                             checkoutRecordEntry.getDueDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
                             String.valueOf(checkoutRecordEntry.getBookCopy().getCopyNum()),
-                            libraryMember.getFirstName()
+                            libraryMember.getFirstName(),
+                            icon,
                     });
                 }
             }

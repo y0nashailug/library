@@ -46,6 +46,7 @@ public class SearchBookPanel extends JPanel implements MessageableWindow, BtnEve
         this.add(scrollPane);
         this.repaint();
         table.repaint();
+        table.setRowHeight(24);
     }
 
     public void paintScreen() {

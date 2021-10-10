@@ -39,7 +39,7 @@ public class UIController extends JFrame implements LibWindow {
 
         JSplitPane bottomSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, splitPane, createNotificationBarPanel());
         bottomSplitPane.setBackground(Color.WHITE);
-        bottomSplitPane.setDividerLocation(Config.APP_HEIGHT - (Config.DIVIDER - 20));
+        bottomSplitPane.setDividerLocation(Config.APP_HEIGHT - (Config.LOWER_DIVIDER));
 
         add(bottomSplitPane, BorderLayout.CENTER);
         Util.centerFrameOnDesktop(this);

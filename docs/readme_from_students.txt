@@ -13,5 +13,16 @@ We have modularized the Library System Project and introduced our own business c
 	- BookController
 	- CheckoutController
 	- MemberController
-	
+
+Exception has been added for each the controllers mentioned above
+ - BookException
+ - CheckoutRecordException
+ - LibrarySystemException
+ - LogoutException
+
+Rule sets has been added for each UI panels
+
+Custom JButton, JTextField and JPasswordField has been implemented to have a good look to the UI
+and to have control for all the elements in one place.
+
 	

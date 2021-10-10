@@ -4,6 +4,7 @@ import ui.ListItem;
 import ui.panels.*;
 
 import javax.swing.*;
+import javax.swing.JList;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,7 @@ public class UIController extends JFrame implements LibWindow {
 
     public void setItems(List<String> items) {
         this.items = items;
+
     }
 
     public void createPanels() {
@@ -304,7 +306,7 @@ public class UIController extends JFrame implements LibWindow {
     }
 
     public void updateList(ListItem[] items) {
-        DefaultListModel<ListItem> model = (DefaultListModel) linkList.getModel();
+
         int size = model.getSize();
         if (items != null) {
             List<Integer> indices = new ArrayList<>();

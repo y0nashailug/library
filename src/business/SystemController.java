@@ -15,6 +15,7 @@ import dataaccess.DataAccess;
 import dataaccess.DataAccessFacade;
 import dataaccess.User;
 import librarysystem.*;
+import ui.ListItem;
 
 public class SystemController implements ControllerInterface {
 	public static Auth currentAuth = null;
@@ -35,20 +36,37 @@ public class SystemController implements ControllerInterface {
 		String[] menu;
 		if(currentAuth.name().equals(Auth.LIBRARIAN.toString())) {
 			menu = Util.LIBRARIAN_MENU;
+			ListItem[] items = new ListItem[menu.length];
+			for (int i = 0; i < menu.length; i++) {
+				items[i] = new ListItem(menu[i], true);
+			}
 			UIController.INSTANCE.setItems(new ArrayList<>(Arrays.asList(menu)));
+			UIController.INSTANCE.init();
+			UIController.INSTANCE.updateList(items);
 		} else if(currentAuth.name().equals(Auth.ADMIN.toString())) {
 			menu = Util.ADMIN_MENU;
+			ListItem[] items = new ListItem[menu.length];
+			for (int i = 0; i < menu.length; i++) {
+				items[i] = new ListItem(menu[i], true);
+			}
 			UIController.INSTANCE.setItems(new ArrayList<>(Arrays.asList(menu)));
+			UIController.INSTANCE.init();
+			UIController.INSTANCE.updateList(items);
 		} else if(currentAuth.name().equals(Auth.BOTH.toString())) {
 			menu = Util.ALL_MENU;
+			ListItem[] items = new ListItem[menu.length];
+			for (int i = 0; i < menu.length; i++) {
+				items[i] = new ListItem(menu[i], true);
+			}
 			UIController.INSTANCE.setItems(new ArrayList<>(Arrays.asList(menu)));
+			UIController.INSTANCE.init();
+			UIController.INSTANCE.updateList(items);
 		} else {
 			throw new LoginException("Cannot Authorize");
 		}
 
 		LibrarySystem.hideAllWindows();
 		UIController.INSTANCE.setTitle(Config.APP_NAME);
-		UIController.INSTANCE.init();
 		UIController.INSTANCE.setVisible(true);
 	}
 

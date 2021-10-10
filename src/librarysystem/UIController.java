@@ -239,7 +239,6 @@ public class UIController extends JFrame implements LibWindow {
 
         titlePanel.add(titleLabelPanel, BorderLayout.PAGE_START);
         NewMemberPanel newMemberPanel = new NewMemberPanel();
-        //Control.INSTANCE.bookView = bookView;
         titlePanel.add(newMemberPanel);
 
         return titlePanel;

@@ -83,6 +83,7 @@ public class SearchMemberForCheckoutPanel extends JPanel implements MessageableW
 
     private void loadData(CheckoutRecord checkoutRecord) {
 
+        model.setRowCount(0);
         for (int j = 0; j < checkoutRecord.getCheckoutRecordEntries().size(); j++) {
             String title = checkoutRecord.getCheckoutRecordEntries().get(j).getBookCopy().getBook().getTitle();
             String isbn = checkoutRecord.getCheckoutRecordEntries().get(j).getBookCopy().getBook().getIsbn();

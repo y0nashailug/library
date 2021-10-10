@@ -13,6 +13,8 @@ import ui.rulesets.RuleSetFactory;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
     private DefaultTableModel model;
     private String isbn;
 
-    private final String[] DEFAULT_COLUMN_HEADERS = { "Member Id", "Title", "ISBN", "Checkout date", "Due date", "Cpy no.", "Member" };
+    private final String[] DEFAULT_COLUMN_HEADERS = { "Title", "ISBN", "Checkout date", "Due date", "Cpy no.", "Member" };
     private static final int SCREEN_WIDTH = Config.APP_WIDTH - Config.DIVIDER;
     private static final int SCREEN_HEIGHT = Config.APP_HEIGHT;
     private static final int TABLE_WIDTH = (int) (0.75 * SCREEN_WIDTH);
@@ -97,9 +99,7 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
                 RuleSet checkoutStatus = RuleSetFactory.getRuleSet(this);
                 checkoutStatus.applyRules(this);
 
-                List<CheckoutRecord> checkoutRecordList = ci.allCheckoutRecordsByIsbn(isbn);
-                if (checkoutRecordList.isEmpty()) throw new CheckoutRecordException("Data not found.");
-                loadData(checkoutRecordList);
+                if (loadData() == 0) throw new Exception("No data to show.");
                 displayInfo("Data retrieved successfully");
             } catch(Exception e) {
                 displayError(e.getMessage());
@@ -110,7 +110,7 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
     public void showALlEventListener(JButton btn) {
         btn.addActionListener(evt -> {
             try {
-                loadData(ci.allCheckoutRecords(), ci.allCheckoutRecordIds());
+                if (loadAllData() == 0) throw new Exception("No data to show.");
                 displayInfo("Data retrieved successfully");
             } catch(Exception e) {
                 displayError(e.getMessage());
@@ -128,62 +128,63 @@ public class CheckoutStatus extends JPanel implements MessageableWindow, BtnEven
         model.setColumnIdentifiers(DEFAULT_COLUMN_HEADERS);
     }
 
-    private void loadData(List<CheckoutRecord> checkoutRecords) {
-
+    private int loadData() {
         model.setRowCount(0);
+        HashMap<String, LibraryMember> members = ci.getMembers();
 
-        String[][] checkoutData = new String[checkoutRecords.size()][DEFAULT_COLUMN_HEADERS.length];
-        int index = 0;
-        for(int i = 0 ; i < checkoutRecords.size(); i++) {
-            CheckoutRecord checkoutRecord = checkoutRecords.get(i);
-            for (int j = 0; j < checkoutRecord.getCheckoutRecordEntries().size(); j++) {
-                checkoutData[index][0] = checkoutRecord.getLibraryMember().getMemberId();
-                checkoutData[index][1] = checkoutRecord.getCheckoutRecordEntries().get(j).getBookCopy().getBook().getTitle();
-                checkoutData[index][2] = checkoutRecord.getCheckoutRecordEntries().get(j).getBookCopy().getBook().getIsbn();
-                checkoutData[index][3] = checkoutRecord.getCheckoutRecordEntries().get(j).getCheckoutDate().toString();
-                checkoutData[index][4] = checkoutRecord.getCheckoutRecordEntries().get(j).getDueDate().toString();
-                checkoutData[index][5] = String.valueOf(checkoutRecord.getCheckoutRecordEntries().get(j).getBookCopy().getCopyNum());
-                checkoutData[index][6] = checkoutRecord.getLibraryMember().getFirstName();
-                model.addRow(checkoutData[i]);
-                index++;
+        for (String key: members.keySet()) {
+            LibraryMember libraryMember = members.get(key);
+            for (CheckoutRecordEntry checkoutRecordEntry: libraryMember.getCheckoutRecord().getCheckoutRecordEntries()) {
+                Book book = checkoutRecordEntry.getBookCopy().getBook();
+                if (book.getIsbn().equals(isbn) && checkoutRecordEntry.getDueDate().isBefore(LocalDate.now())) {
+                    System.out.println(book.getIsbn() + " " + libraryMember.getFirstName());
+                    model.addRow(new String[] {
+                            checkoutRecordEntry.getBookCopy().getBook().getTitle(),
+                            checkoutRecordEntry.getBookCopy().getBook().getIsbn(),
+                            checkoutRecordEntry.getCheckoutDate().toString(),
+                            checkoutRecordEntry.getDueDate().toString(),
+                            String.valueOf(checkoutRecordEntry.getBookCopy().getCopyNum()),
+                            libraryMember.getFirstName()
+                    });
+                }
             }
         }
 
         table.setModel(model);
+
+        return table.getRowCount();
     }
 
-    private void loadData(HashMap<String, CheckoutRecord> checkoutRecords, List<String> checkoutRecordIds) {
-
+    private int loadAllData() {
         model.setRowCount(0);
-        String[][] checkoutData = new String[checkoutRecords.size()][DEFAULT_COLUMN_HEADERS.length];
+        HashMap<String, LibraryMember> members = ci.getMembers();
 
-        int index = 0;
-        for(int i = 0 ; i < checkoutRecords.size(); i++) {
-            CheckoutRecord checkoutRecord = checkoutRecords.get(checkoutRecordIds.get(i));
-            for (int j = 0; j < checkoutRecord.getCheckoutRecordEntries().size(); j++) {
-                checkoutData[index][0] = checkoutRecord.getLibraryMember().getMemberId();
-                checkoutData[index][1] = checkoutRecord.getCheckoutRecordEntries().get(j).getBookCopy().getBook().getTitle();
-                checkoutData[index][2] = checkoutRecord.getCheckoutRecordEntries().get(j).getBookCopy().getBook().getIsbn();
-                checkoutData[index][3] = checkoutRecord.getCheckoutRecordEntries().get(j).getCheckoutDate().toString();
-                checkoutData[index][4] = checkoutRecord.getCheckoutRecordEntries().get(j).getDueDate().toString();
-                checkoutData[index][5] = "-";
-                checkoutData[index][6] = checkoutRecord.getLibraryMember().getFirstName();
-                model.addRow(checkoutData[i]);
-                index++;
+        for (String key: members.keySet()) {
+            LibraryMember libraryMember = members.get(key);
+            for (CheckoutRecordEntry checkoutRecordEntry: libraryMember.getCheckoutRecord().getCheckoutRecordEntries()) {
+                model.addRow(new String[] {
+                    checkoutRecordEntry.getBookCopy().getBook().getTitle(),
+                    checkoutRecordEntry.getBookCopy().getBook().getIsbn(),
+                    checkoutRecordEntry.getCheckoutDate().toString(),
+                    checkoutRecordEntry.getDueDate().toString(),
+                    String.valueOf(checkoutRecordEntry.getBookCopy().getCopyNum()),
+                    libraryMember.getFirstName()
+                });
             }
         }
 
         table.setModel(model);
+
+        return table.getRowCount();
     }
 
     public void revalidateTable(CheckoutRecord checkoutRecord) {
         model.addRow(new String[] {
-                checkoutRecord.getLibraryMember().getMemberId(),
                 checkoutRecord.getCheckoutRecordEntries().get(0).getBookCopy().getBook().getTitle(),
                 checkoutRecord.getCheckoutRecordEntries().get(0).getBookCopy().getBook().getIsbn(),
                 checkoutRecord.getCheckoutRecordEntries().get(0).getCheckoutDate().toString(),
                 checkoutRecord.getCheckoutRecordEntries().get(0).getDueDate().toString(),
-                checkoutRecord.getLibraryMember().getFirstName()
+                "-"
         });
 
         model.fireTableDataChanged();

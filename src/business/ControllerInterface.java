@@ -13,8 +13,5 @@ public interface ControllerInterface {
 	void logout() throws LogoutException;
 	List<String> allMemberIds();
 	List<String> allBookIds();
-	List<String> allCheckoutRecordIds();
 	HashMap<String, LibraryMember> getMembers();
-	HashMap<String, CheckoutRecord> allCheckoutRecords();
-	List<CheckoutRecord> allCheckoutRecordsByIsbn(String isbn);
 }

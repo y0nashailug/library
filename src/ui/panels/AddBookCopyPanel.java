@@ -55,13 +55,13 @@ public class AddBookCopyPanel extends JPanel implements MessageableWindow, BtnEv
                     }
                 }
 
-                isbn = values[0];
+                isbn = values[0].trim();
                 RuleSet addBookCopyPanel = RuleSetFactory.getRuleSet(this);
                 addBookCopyPanel.applyRules(this);
 
                 SystemController systemController = new SystemController();
-                Book book = systemController.getBook(values[0].trim());
-                systemController.updateBook(book);
+                Book book = systemController.getBook(isbn);
+                systemController.addBookCopy(book);
                 displayInfo("Book copy added successfully. Book copy now " + book.getNumCopies());
             } catch(BookException | RuleException e) {
                 displayError(e.getMessage());

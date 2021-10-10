@@ -13,10 +13,10 @@ public class CheckoutRecordEntry implements Serializable {
     private LocalDate finePaidDate;
     private List<String> penalities;
 
-    public CheckoutRecordEntry(BookCopy bookCopy, LocalDate checkoutDate, LocalDate dueDate) {
+    public CheckoutRecordEntry(BookCopy bookCopy) {
         this.bookCopy = bookCopy;
-        this.checkoutDate = checkoutDate;
-        this.dueDate = dueDate;
+        this.checkoutDate = LocalDate.now();
+        this.dueDate = LocalDate.now().plusDays(bookCopy.getBook().getMaxCheckoutLength());
     }
 
     public BookCopy getBookCopy() {

@@ -4,6 +4,7 @@ import business.Book;
 import business.CheckoutRecord;
 import dataaccess.DataAccessFacade;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class CheckoutController {
@@ -13,7 +14,8 @@ public class CheckoutController {
 
     public CheckoutRecord getCheckoutRecord(String memberId) {
         DataAccessFacade da = new DataAccessFacade();
-        return da.getCheckoutRecord(memberId);
+		HashMap<String, CheckoutRecord> checkoutRecordHashMap = da.readCheckoutRecordMap();
+		CheckoutRecord checkoutRecord = checkoutRecordHashMap.get(memberId);
+		return checkoutRecord;
     }
-
 }

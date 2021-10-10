@@ -78,10 +78,10 @@ public class CheckoutBook extends JPanel implements MessageableWindow, BtnEventL
                 // 2. add record to member and update Member collection
                 // 3. update book copy and set available to [false] on Book collection
 
-                CheckoutRecord checkoutRecord  = systemController.addCheckoutRecord(member, book, LocalDate.now(), LocalDate.now());
+                CheckoutRecord checkoutRecord  = systemController.addCheckoutRecord(member, book);
                 if (checkoutRecord == null) throw new CheckoutRecordException("Checkout record was not found.");
 
-                CheckoutStatus.INSTANCE.revalidateTable(checkoutRecord);
+                //CheckoutStatus.INSTANCE.revalidateTable(checkoutRecord);
                 displayInfo("Checkout successfully");
             } catch(BookException | LibrarySystemException | CheckoutRecordException | RuleException e) {
                 displayError(e.getMessage());

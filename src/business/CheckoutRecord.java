@@ -7,11 +7,9 @@ import java.util.List;
 public class CheckoutRecord implements Serializable {
 
     private static final long serialVersionUID = 1825622724051957822L;
-    private LibraryMember libraryMember;
     private List<CheckoutRecordEntry> checkoutRecordEntries;
 
-    public CheckoutRecord(LibraryMember libraryMember) {
-        this.libraryMember = libraryMember;
+    public CheckoutRecord() {
         checkoutRecordEntries = new ArrayList<>();
     }
 
@@ -19,12 +17,9 @@ public class CheckoutRecord implements Serializable {
         checkoutRecordEntries.add(checkoutRecordEntry);
     }
 
-    public LibraryMember getLibraryMember() {
-        return libraryMember;
-    }
-
     public List<CheckoutRecordEntry> getCheckoutRecordEntries() {
         return checkoutRecordEntries;
     }
+
 
 }

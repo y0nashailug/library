@@ -1,13 +1,10 @@
 package business;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import business.Controllers.BookController;
 import business.Controllers.CheckoutController;
+import business.Controllers.CheckoutRecordController;
 import business.Controllers.MemberController;
 import business.Exceptions.BookException;
 import business.Exceptions.CheckoutRecordException;
@@ -74,10 +71,7 @@ public class SystemController implements ControllerInterface {
 			throw new LibrarySystemException("Member already existed.");
 		}
 
-		Address address = new Address(street, city, state, zip);
-		LibraryMember libraryMember = new LibraryMember(memberId, fname, lname, tel, address);
-		DataAccess dataAccess = new DataAccessFacade();
-		dataAccess.saveMember(libraryMember);
+		memberController.addMember(memberId, fname, lname, tel, street, city, state, zip);
 	}
 
 	public void addBook(String isbn, String title, int maxCheckoutLength, String[] autr, String[] addr) throws BookException {
@@ -86,42 +80,42 @@ public class SystemController implements ControllerInterface {
 			throw new BookException("Book already existed.");
 		}
 
-		Address address = new Address(addr[0], addr[1], addr[2], addr[3]);
-		Author author = new Author(autr[0], autr[1], autr[2], address, autr[3]);
-		List<Author> authors = new ArrayList<>();
-		authors.add(author);
-
-		Book book = new Book(isbn, title, maxCheckoutLength, authors);
-		DataAccess dataAccess = new DataAccessFacade();
-		dataAccess.saveBook(book);
+		bookController.saveBook(isbn, title, maxCheckoutLength, autr, addr);
 	}
 
-	public CheckoutRecord addCheckoutRecord(LibraryMember libraryMember, Book book, LocalDate checkoutDate, LocalDate dueDate) throws CheckoutRecordException, LibrarySystemException, BookException {
+	public CheckoutRecord addCheckoutRecord(LibraryMember libraryMember, Book book) throws CheckoutRecordException, LibrarySystemException, BookException {
 
 		if (!book.isAvailable() || book.getNextAvailableCopy() == null) {
 			throw new BookException("Book is not available.");
 		}
 
-		CheckoutRecord checkoutRecord;
-
-		if (libraryMember.getCheckoutRecord() != null) {
-			checkoutRecord = libraryMember.getCheckoutRecord();
-		} else {
-			checkoutRecord = new CheckoutRecord(libraryMember);
+		MemberController memberController = new MemberController();
+		if (!memberController.memberExists(libraryMember.getMemberId(), allMemberIds())) {
+			throw new LibrarySystemException("Member was not updated.");
 		}
 
-		CheckoutRecordEntry checkoutRecordEntry = new CheckoutRecordEntry(book.getNextAvailableCopy(), checkoutDate, dueDate.plusDays(book.getMaxCheckoutLength()));
+		BookController bookController = new BookController();
+		if (!bookController.bookExists(book.getIsbn(), allBookIds())) {
+			throw new BookException("Book not found.");
+		}
+
+		CheckoutRecord checkoutRecord = libraryMember.getCheckoutRecord();
+
+		BookCopy bookCopy = book.getNextAvailableCopy();
+		CheckoutRecordEntry checkoutRecordEntry = new CheckoutRecordEntry(bookCopy);
 		checkoutRecord.addCheckoutRecordEntry(checkoutRecordEntry);
 
-		DataAccess da = new DataAccessFacade();
-		da.saveCheckoutRecord(checkoutRecord);
+		// Save checkout record
+		CheckoutRecordController checkoutRecordController = new CheckoutRecordController();
+		checkoutRecordController.addCheckout(libraryMember.getMemberId(), checkoutRecord);
 
+		// Update member
 		libraryMember.setCheckoutRecord(checkoutRecord);
+		memberController.updateMember(libraryMember);
 
-		updateMember(libraryMember);
-
+		// Update book
 		book.getNextAvailableCopy().changeAvailability();
-		updateBook(book);
+		bookController.updateBook(book);
 
 		return checkoutRecord;
 	}
@@ -153,7 +147,7 @@ public class SystemController implements ControllerInterface {
 		return checkoutController.getCheckoutRecord(memberId);
 	}
 
-	public void updateBook(Book book) throws BookException {
+	public void addBookCopy(Book book) throws BookException {
 		BookController bookController = new BookController();
 		if (!bookController.bookExists(book.getIsbn(), allBookIds())) {
 			throw new BookException("Book not found.");
@@ -161,15 +155,6 @@ public class SystemController implements ControllerInterface {
 
 		book.addCopy();
 		bookController.updateBook(book);
-	}
-
-	public void updateMember(LibraryMember libraryMember) throws LibrarySystemException {
-		MemberController memberController = new MemberController();
-		if (!memberController.memberExists(libraryMember.getMemberId(), allMemberIds())) {
-			throw new LibrarySystemException("Member was not updated.");
-		}
-
-		memberController.updateMember(libraryMember);
 	}
 
 	public void deleteMember(String memberId) throws LibrarySystemException {
@@ -184,7 +169,7 @@ public class SystemController implements ControllerInterface {
 	public void getAndUpdateMember(String memberId, String fname, String lname, String tel) throws LibrarySystemException {
 		MemberController memberController = new MemberController();
 		if (!memberController.memberExists(memberId, allMemberIds())) {
-			throw new LibrarySystemException("Member was not updated.");
+			throw new LibrarySystemException("Member not found.");
 		}
 
 		LibraryMember libraryMember = getMember(memberId);
@@ -202,14 +187,6 @@ public class SystemController implements ControllerInterface {
 		retval.addAll(da.readMemberMap().keySet());
 		return retval;
 	}
-
-	@Override
-	public List<String> allCheckoutRecordIds() {
-		DataAccess da = new DataAccessFacade();
-		List<String> retval = new ArrayList<>();
-		retval.addAll(da.readCheckoutRecordMap().keySet());
-		return retval;
-	}
 	
 	@Override
 	public List<String> allBookIds() {
@@ -217,34 +194,6 @@ public class SystemController implements ControllerInterface {
 		List<String> retval = new ArrayList<>();
 		retval.addAll(da.readBooksMap().keySet());
 		return retval;
-	}
-
-	@Override
-	public HashMap<String, CheckoutRecord> allCheckoutRecords() {
-		DataAccess da = new DataAccessFacade();
-		return da.readCheckoutRecordMap();
-	}
-
-	@Override
-	public List<CheckoutRecord> allCheckoutRecordsByIsbn(String isbn) {
-		DataAccess da = new DataAccessFacade();
-		HashMap<String, CheckoutRecord> records = da.readCheckoutRecordMap();
-		List<CheckoutRecord> checkoutRecordList = new ArrayList<>();
-		List<String> checkoutRecordIds = allCheckoutRecordIds();
-
-		for (int i = 0; i < records.size(); i++) {
-			CheckoutRecord checkoutRecord = records.get(checkoutRecordIds.get(i));
-			for (int j = 0; j < checkoutRecord.getCheckoutRecordEntries().size(); j++) {
-				LocalDate today = LocalDate.now();
-				CheckoutRecordEntry checkoutRecordEntry = checkoutRecord.getCheckoutRecordEntries().get(j);
-				if (checkoutRecordEntry.getBookCopy().getBook().getIsbn().equals(isbn)
-						&& checkoutRecordEntry.getDueDate().compareTo(today) > 1) {
-					checkoutRecordList.add(checkoutRecord);
-				}
-			}
-		}
-
-		return checkoutRecordList;
 	}
 
 	@Override

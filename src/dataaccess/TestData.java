@@ -107,22 +107,25 @@ public class TestData {
 		libraryMember = new LibraryMember("1004", "Ricardo", "Montalbahn", "641-472-2871", addresses.get(7));
 		members.add(libraryMember);
 
+
 		DataAccessFacade.loadMemberMap(members);
 	}
 
 	public void checkoutRecordData() {
 		Book book = new Book("48-56882", "Jimmy's First Day of School", 7, Arrays.asList(allAuthors.get(4)));
 		book.addCopy();
-		book.getCopy(1).changeAvailability();
-		LibraryMember libraryMember = new LibraryMember("1004", "Ricardo", "Montalbahn", "641-472-2871", addresses.get(7));
+		//book.getCopy(1).changeAvailability();
+		//LibraryMember libraryMember = new LibraryMember("1004", "Ricardo", "Montalbahn", "641-472-2871", addresses.get(7));
 
-		CheckoutRecord checkoutRecord = new CheckoutRecord(libraryMember);
-		CheckoutRecordEntry checkoutRecordEntry = new CheckoutRecordEntry(book.getNextAvailableCopy(), LocalDate.now(), LocalDate.now().plusDays(1));
+		CheckoutRecord checkoutRecord = new CheckoutRecord();
+		CheckoutRecordEntry checkoutRecordEntry = new CheckoutRecordEntry(book.getNextAvailableCopy());
 
 		checkoutRecord.addCheckoutRecordEntry(checkoutRecordEntry);
 		List<CheckoutRecord> checkoutRecordList = new ArrayList<>();
 		checkoutRecordList.add(checkoutRecord);
-		DataAccessFacade.loadCheckoutRecordMap(checkoutRecordList);
+
+		List<String> memberIds = Arrays.asList("1004");
+		DataAccessFacade.loadCheckoutRecordMap(memberIds, checkoutRecordList);
 	}
 
 }

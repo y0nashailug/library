@@ -26,8 +26,6 @@ public class LoginWindow extends JFrame implements LibWindow {
     public static final LoginWindow INSTANCE = new LoginWindow();
 	
 	private boolean isInitialized = false;
-	
-	private JPanel mainPanel;
 
 	public boolean isInitialized() {
 		return isInitialized;
@@ -44,15 +42,24 @@ public class LoginWindow extends JFrame implements LibWindow {
     private LoginWindow () {}
 
 	public void init() {
-		mainPanel = new JPanel();
-		BorderLayout bl = new BorderLayout();
-		bl.setVgap(30);
-		mainPanel.setLayout(bl);
+		setSize(320, 260);
 
-		mainPanel.add(new LoginPanel(), BorderLayout.NORTH);
-		mainPanel.setSize(320, 420);
-		getContentPane().add(mainPanel);
+		JPanel mainPanel = new JPanel(new BorderLayout(5, 5));
+
+		JPanel container = new JPanel(new BorderLayout(5, 5));
+		JPanel top = new JPanel(new FlowLayout());
+
+		mainPanel.add(new LoginPanel());
+
+		container.add(top, BorderLayout.PAGE_START);
+		container.add(mainPanel, BorderLayout.CENTER);
+
 		isInitialized(true);
-		pack();
+		setResizable(false);
+
+		getContentPane().add(container);
+		add(container);
+		Util.centerFrameOnDesktop(this);
+		//pack();
 	}
 }

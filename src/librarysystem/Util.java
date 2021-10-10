@@ -18,6 +18,7 @@ public class Util {
 	public static final Color LINK_AVAILABLE = DARK_BLUE;
 	public static final Color LINK_NOT_AVAILABLE = Color.gray;
 	public static final String[] ALL_MENU = {
+			"Logout",
 			"Add member",
 			"Add book",
 			"Add book copy",
@@ -29,9 +30,9 @@ public class Util {
 			"Search book",
 			"Search member checkouts",
 			"Update/Delete member",
-			"Logout",
 	};
 	public static final String[] LIBRARIAN_MENU = {
+			"Logout",
 			"Search member",
 			"All book ids",
 			"All member ids",
@@ -39,9 +40,9 @@ public class Util {
 			"Check Overdue",
 			"Search book",
 			"Search member checkouts",
-			"Logout",
 	};
 	public static final String[] ADMIN_MENU = {
+			"Logout",
 			"Add member",
 			"Add book",
 			"Add book copy",
@@ -49,7 +50,6 @@ public class Util {
 			"All member ids",
 			"Search book",
 			"Update/Delete member",
-			"Logout",
 	};
 	//rgb(18, 75, 14)
 	

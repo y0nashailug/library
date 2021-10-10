@@ -67,29 +67,29 @@ public class UIController extends JFrame implements LibWindow {
         cards = new JPanel(new CardLayout());
         for (String i : items) {
             if (i == Util.ALL_MENU[0]) {
-                cards.add(createNewMemberPanel(), i);
-            } else if (i == Util.ALL_MENU[1]) {
-                cards.add(createAddBookPanel(), i);
-            } else if (i == Util.ALL_MENU[2]) {
-                cards.add(createAddBookCopyPanel(), i);
-            } else if (i == Util.ALL_MENU[3]) {
-                cards.add(createSearchPanel(), i);
-            } else if (i == Util.ALL_MENU[4]) {
-                cards.add(createViewBooksPanel(), i);
-            } else if (i == Util.ALL_MENU[5]) {
-                cards.add(createViewMemberIdsPanel(), i);
-            } else if (i == Util.ALL_MENU[6]) {
-                cards.add(createCheckoutBookPanel(), i);
-            } else if (i == Util.ALL_MENU[7]) {
-                cards.add(createCheckoutStatusPanel(), i);
-            } else if (i == Util.ALL_MENU[8]) {
-                cards.add(createSearchBookPanel(), i);
-            } else if (i == Util.ALL_MENU[9]) {
-                cards.add(createSearchMemberPanel(), i);
-            } else if (i == Util.ALL_MENU[10]) {
-                cards.add(createUpdateMemberPanel(), i);
-            } else if (i == Util.ALL_MENU[11]) {
                 cards.add(createLogoutPanel(), i);
+            } else if (i == Util.ALL_MENU[1]) {
+                cards.add(createNewMemberPanel(), i);
+            } else if (i == Util.ALL_MENU[2]) {
+                cards.add(createAddBookPanel(), i);
+            } else if (i == Util.ALL_MENU[3]) {
+                cards.add(createAddBookCopyPanel(), i);
+            } else if (i == Util.ALL_MENU[4]) {
+                cards.add(createSearchPanel(), i);
+            } else if (i == Util.ALL_MENU[5]) {
+                cards.add(createViewBooksPanel(), i);
+            } else if (i == Util.ALL_MENU[6]) {
+                cards.add(createViewMemberIdsPanel(), i);
+            } else if (i == Util.ALL_MENU[7]) {
+                cards.add(createCheckoutBookPanel(), i);
+            } else if (i == Util.ALL_MENU[8]) {
+                cards.add(createCheckoutStatusPanel(), i);
+            } else if (i == Util.ALL_MENU[9]) {
+                cards.add(createSearchBookPanel(), i);
+            } else if (i == Util.ALL_MENU[10]) {
+                cards.add(createSearchMemberPanel(), i);
+            } else if (i == Util.ALL_MENU[11]) {
+                cards.add(createUpdateMemberPanel(), i);
             }
         }
 
